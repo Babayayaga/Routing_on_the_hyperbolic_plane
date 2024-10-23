@@ -1,0 +1,919 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <author>GeometryFactory</author>
+ <class>Routing_on_the_hyperbolic_plane</class>
+ <widget class="QMainWindow" name="Routing_on_the_hyperbolic_plane">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>772</width>
+    <height>850</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Routing on the hyperbolic plane</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>:/cgal/logos/cgal_icon</normaloff>:/cgal/logos/cgal_icon</iconset>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout">
+    <item row="0" column="0">
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetDefaultConstraint</enum>
+      </property>
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Domain generation: </string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>Level of detail:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="numberPointsSpinBox">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="statusTip">
+         <string>Number of points (in thousands) used in the generation process.</string>
+        </property>
+        <property name="maximum">
+         <number>50000</number>
+        </property>
+        <property name="value">
+         <number>10</number>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Threshold:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QDoubleSpinBox" name="thresholdSpinBox">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="statusTip">
+         <string>Map from [-1, 1] to points. A triangle is an obstacle, if it's average is bigger than the threshold.</string>
+        </property>
+        <property name="decimals">
+         <number>3</number>
+        </property>
+        <property name="minimum">
+         <double>-3.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>3.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.010000000000000</double>
+        </property>
+        <property name="value">
+         <double>0.100000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_6">
+        <property name="text">
+         <string>Radius:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QDoubleSpinBox" name="radiusSpinBox">
+        <property name="statusTip">
+         <string>Obstacle points are located in this circle, centered in the origin.</string>
+        </property>
+        <property name="decimals">
+         <number>5</number>
+        </property>
+        <property name="maximum">
+         <double>0.999990000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.000010000000000</double>
+        </property>
+        <property name="stepType">
+         <enum>QAbstractSpinBox::DefaultStepType</enum>
+        </property>
+        <property name="value">
+         <double>0.999000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkBox">
+        <property name="statusTip">
+         <string>Erosion before dilation. Switches treatments of terrain.</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>Dilation: </string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="dilationSpinBox">
+        <property name="maximum">
+         <number>10</number>
+        </property>
+        <property name="value">
+         <number>5</number>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_10">
+        <property name="text">
+         <string>Erosion: </string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="erosionSpinBox">
+        <property name="maximum">
+         <number>10</number>
+        </property>
+        <property name="value">
+         <number>5</number>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_11">
+        <property name="text">
+         <string>Min: </string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="minSpinBox">
+        <property name="minimum">
+         <number>3</number>
+        </property>
+        <property name="maximum">
+         <number>1000</number>
+        </property>
+        <property name="value">
+         <number>10</number>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </item>
+    <item row="3" column="0">
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetDefaultConstraint</enum>
+      </property>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="removeCheckBox">
+        <property name="text">
+         <string>Remove unconstrained vertices</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Line" name="line_3">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_7">
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Other parameters:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_8">
+        <property name="statusTip">
+         <string>Specify the maximal radius of a hyperbolic segment, drawn as a circular arc.</string>
+        </property>
+        <property name="text">
+         <string>Drawing approximation:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QDoubleSpinBox" name="approxSpinBox">
+        <property name="maximum">
+         <double>150.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>10.000000000000000</double>
+        </property>
+        <property name="value">
+         <double>10.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Line" name="line">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Walking speed:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QDoubleSpinBox" name="speedSpinBox">
+        <property name="maximum">
+         <double>0.500000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+        <property name="value">
+         <double>0.050000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Line" name="line_2">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_9">
+        <property name="text">
+         <string>Path step size:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="pathStepSpinBox">
+        <property name="value">
+         <number>1</number>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_4">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </item>
+    <item row="5" column="0">
+     <widget class="QGraphicsView" name="graphicsView">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>150</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::StrongFocus</enum>
+      </property>
+      <property name="verticalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOff</enum>
+      </property>
+      <property name="horizontalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOff</enum>
+      </property>
+      <property name="dragMode">
+       <enum>QGraphicsView::NoDrag</enum>
+      </property>
+      <property name="transformationAnchor">
+       <enum>QGraphicsView::NoAnchor</enum>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QToolBar" name="fileToolBar">
+   <property name="windowTitle">
+    <string>File Tools</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionClear"/>
+   <addaction name="actionLoadRoutingScenario"/>
+   <addaction name="actionSaveRoutingScenario"/>
+  </widget>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>Visualization Tools</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionRedraw"/>
+   <addaction name="actionRecenter"/>
+   <addaction name="actionTranslateToPoint"/>
+   <addaction name="actionWalk"/>
+   <addaction name="actionDragMode"/>
+   <addaction name="separator"/>
+   <addaction name="actionInsertPoint"/>
+   <addaction name="actionInsertConstraints"/>
+   <addaction name="actionSetPointOnObstacle"/>
+   <addaction name="separator"/>
+   <addaction name="actionShowPointToPointVisibility"/>
+   <addaction name="actionShowPointToAllVisibility"/>
+   <addaction name="separator"/>
+   <addaction name="actionComputeVisibilityGraph"/>
+   <addaction name="actionDijkstra"/>
+   <addaction name="actionFindPath"/>
+   <addaction name="actionWalkPathBackward"/>
+   <addaction name="actionWalkPathForward"/>
+   <addaction name="separator"/>
+   <addaction name="actionGenerateRandomDomain"/>
+   <addaction name="separator"/>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>772</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>&amp;File</string>
+    </property>
+    <addaction name="separator"/>
+    <addaction name="actionClear"/>
+    <addaction name="actionLoadRoutingScenario"/>
+    <addaction name="actionSaveRoutingScenario"/>
+    <addaction name="actionExportPNG"/>
+    <addaction name="separator"/>
+    <addaction name="actionQuit"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>&amp;Edit</string>
+    </property>
+    <addaction name="actionInsertPoint"/>
+    <addaction name="actionSetPointOnObstacle"/>
+    <addaction name="actionInsertConstraints"/>
+    <addaction name="actionInsertRandomPoints"/>
+    <addaction name="actionGenerateRandomDomain"/>
+   </widget>
+   <widget class="QMenu" name="menuTools">
+    <property name="title">
+     <string>&amp;Tools</string>
+    </property>
+    <addaction name="actionRecenter"/>
+    <addaction name="separator"/>
+    <addaction name="actionShowPointToPointVisibility"/>
+    <addaction name="actionShowPointToAllVisibility"/>
+    <addaction name="separator"/>
+    <addaction name="actionTranslateToPoint"/>
+    <addaction name="actionWalk"/>
+    <addaction name="separator"/>
+    <addaction name="actionRedraw"/>
+    <addaction name="separator"/>
+    <addaction name="actionTestSuite"/>
+   </widget>
+   <widget class="QMenu" name="menuOptions">
+    <property name="title">
+     <string>Options</string>
+    </property>
+    <addaction name="actionShowConstraints"/>
+    <addaction name="actionShowTriangulation"/>
+    <addaction name="actionShowFaces"/>
+    <addaction name="actionShowPoints"/>
+    <addaction name="actionShowVisibilityGraph"/>
+    <addaction name="actionShowDijkstraTree"/>
+    <addaction name="actionShowOrigin"/>
+    <addaction name="separator"/>
+    <addaction name="actionColorUnitDisk"/>
+    <addaction name="separator"/>
+    <addaction name="actionShowDecomposition"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuEdit"/>
+   <addaction name="menuTools"/>
+   <addaction name="menuOptions"/>
+  </widget>
+  <action name="actionAbout">
+   <property name="text">
+    <string>&amp;About</string>
+   </property>
+  </action>
+  <action name="actionAboutCGAL">
+   <property name="text">
+    <string>About &amp;CGAL</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="text">
+    <string>&amp;Quit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actionInsertRandomPoints">
+   <property name="icon">
+    <iconset resource="resources/Delaunay_triangulation_2.qrc">
+     <normaloff>:/cgal/Actions/icons/insertRandomPoints.png</normaloff>:/cgal/Actions/icons/insertRandomPoints.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Insert random points</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+I</string>
+   </property>
+  </action>
+  <action name="actionInsertPoint">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>:/cgal/Input/inputPoint.png</normaloff>:/cgal/Input/inputPoint.png</iconset>
+   </property>
+   <property name="text">
+    <string>Insert/move points</string>
+   </property>
+   <property name="toolTip">
+    <string>insert/move points</string>
+   </property>
+   <property name="statusTip">
+    <string>Mouse left/right -&gt; active/destination vertex, Shift + Mouse right -&gt; insert vertex.</string>
+   </property>
+  </action>
+  <action name="actionClear">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/cgal/fileToolbar/fileNew.png</normaloff>:/cgal/fileToolbar/fileNew.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Clear</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+C</string>
+   </property>
+  </action>
+  <action name="actionInsertConstraints">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resources/Delaunay_triangulation_2.qrc">
+     <normaloff>:/cgal/Actions/icons/insertConstraints.png</normaloff>:/cgal/Actions/icons/insertConstraints.png</iconset>
+   </property>
+   <property name="text">
+    <string>Insert polyline constraints</string>
+   </property>
+   <property name="statusTip">
+    <string>Insert non-intersecting borders of obstacles. Mouse left -&gt; new point, Mouse right -&gt; confirm.</string>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+D</string>
+   </property>
+  </action>
+  <action name="actionLoadRoutingScenario">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/cgal/fileToolbar/fileOpen.png</normaloff>:/cgal/fileToolbar/fileOpen.png</iconset>
+   </property>
+   <property name="text">
+    <string>Load routing scenario</string>
+   </property>
+   <property name="statusTip">
+    <string>Load a polygonal domain, see GitHub page for format.</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+L</string>
+   </property>
+  </action>
+  <action name="actionSaveRoutingScenario">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/cgal/fileToolbar/fileSave.png</normaloff>:/cgal/fileToolbar/fileSave.png</iconset>
+   </property>
+   <property name="text">
+    <string>Save routing scenario</string>
+   </property>
+   <property name="toolTip">
+    <string>Save routing scenario</string>
+   </property>
+   <property name="statusTip">
+    <string>Save a polygonal domain, see GitHub page for format.</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionRecenter">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/cgal/Input/zoom-best-fit</normaloff>:/cgal/Input/zoom-best-fit</iconset>
+   </property>
+   <property name="text">
+    <string>Recenter the view</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
+   </property>
+  </action>
+  <action name="actionShowTriangulation">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show triangulation</string>
+   </property>
+   <property name="statusTip">
+    <string>Show constrained Delaunay triangulation of polygonal domain.</string>
+   </property>
+  </action>
+  <action name="actionShowFaces">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show obstacle faces</string>
+   </property>
+   <property name="statusTip">
+    <string>Draw interior of polygonal obstacles.</string>
+   </property>
+  </action>
+  <action name="actionShowConstraints">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show obstacle polyline</string>
+   </property>
+   <property name="statusTip">
+    <string>Show borders of obstacles.</string>
+   </property>
+  </action>
+  <action name="actionShowPoints">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show nodes</string>
+   </property>
+   <property name="statusTip">
+    <string>Draw nodes of triangulation.</string>
+   </property>
+  </action>
+  <action name="actionExportPNG">
+   <property name="icon">
+    <iconset resource="resources/Delaunay_triangulation_2.qrc">
+     <normaloff>:/cgal/Actions/icons/snapshot.png</normaloff>:/cgal/Actions/icons/snapshot.png</iconset>
+   </property>
+   <property name="text">
+    <string>Export .png</string>
+   </property>
+  </action>
+  <action name="actionDragMode">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resources/Delaunay_triangulation_2.qrc">
+     <normaloff>:/cgal/Actions/icons/dragMode.png</normaloff>:/cgal/Actions/icons/dragMode.png</iconset>
+   </property>
+   <property name="text">
+    <string>Drag mode</string>
+   </property>
+  </action>
+  <action name="actionShowPointToPointVisibility">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resources/Delaunay_triangulation_2.qrc">
+     <normaloff>:/cgal/Actions/icons/visibilityPointToPoint.png</normaloff>:/cgal/Actions/icons/visibilityPointToPoint.png</iconset>
+   </property>
+   <property name="text">
+    <string>Can p see q?</string>
+   </property>
+   <property name="statusTip">
+    <string>Test visibility of selected nodes.</string>
+   </property>
+  </action>
+  <action name="actionShowVisibilityGraph">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show visibility graph</string>
+   </property>
+   <property name="statusTip">
+    <string/>
+   </property>
+  </action>
+  <action name="actionShowPointToAllVisibility">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resources/Delaunay_triangulation_2.qrc">
+     <normaloff>:/cgal/Actions/icons/visibilityPointToAll.png</normaloff>:/cgal/Actions/icons/visibilityPointToAll.png</iconset>
+   </property>
+   <property name="text">
+    <string>What points can p see?</string>
+   </property>
+   <property name="toolTip">
+    <string>what points can p see?</string>
+   </property>
+   <property name="statusTip">
+    <string>Show visible nodes from active node.</string>
+   </property>
+  </action>
+  <action name="actionSetPointOnObstacle">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resources/Delaunay_triangulation_2.qrc">
+     <normaloff>:/cgal/Actions/icons/setObstacleOnPoint.png</normaloff>:/cgal/Actions/icons/setObstacleOnPoint.png</iconset>
+   </property>
+   <property name="text">
+    <string>Set point on obstacle</string>
+   </property>
+   <property name="statusTip">
+    <string>Shift to mark triangle, Mouse left/right to select vertex.</string>
+   </property>
+  </action>
+  <action name="actionComputeVisibilityGraph">
+   <property name="icon">
+    <iconset resource="resources/Delaunay_triangulation_2.qrc">
+     <normaloff>:/cgal/Actions/icons/computeVisibilityGraph.png</normaloff>:/cgal/Actions/icons/computeVisibilityGraph.png</iconset>
+   </property>
+   <property name="text">
+    <string>Compute visibility graph</string>
+   </property>
+   <property name="toolTip">
+    <string>Compute visibility graph...</string>
+   </property>
+   <property name="statusTip">
+    <string/>
+   </property>
+  </action>
+  <action name="actionDijkstra">
+   <property name="icon">
+    <iconset resource="resources/Delaunay_triangulation_2.qrc">
+     <normaloff>:/cgal/Actions/icons/dijkstra.png</normaloff>:/cgal/Actions/icons/dijkstra.png</iconset>
+   </property>
+   <property name="text">
+    <string>Dijkstra</string>
+   </property>
+   <property name="toolTip">
+    <string>Compute Dijkstra...</string>
+   </property>
+   <property name="statusTip">
+    <string/>
+   </property>
+  </action>
+  <action name="actionShowDijkstraTree">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show dijkstra tree</string>
+   </property>
+  </action>
+  <action name="actionFindPath">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resources/Delaunay_triangulation_2.qrc">
+     <normaloff>:/cgal/Actions/icons/findPath.png</normaloff>:/cgal/Actions/icons/findPath.png</iconset>
+   </property>
+   <property name="text">
+    <string>Find path</string>
+   </property>
+   <property name="toolTip">
+    <string>Find fastet route between marked points.</string>
+   </property>
+   <property name="statusTip">
+    <string/>
+   </property>
+  </action>
+  <action name="actionColorUnitDisk">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Switch color scheme</string>
+   </property>
+  </action>
+  <action name="actionGenerateRandomDomain">
+   <property name="icon">
+    <iconset resource="resources/Delaunay_triangulation_2.qrc">
+     <normaloff>:/cgal/Actions/icons/generateDomain.png</normaloff>:/cgal/Actions/icons/generateDomain.png</iconset>
+   </property>
+   <property name="text">
+    <string>Generate random domain</string>
+   </property>
+  </action>
+  <action name="actionTranslateToPoint">
+   <property name="icon">
+    <iconset resource="resources/Delaunay_triangulation_2.qrc">
+     <normaloff>:/cgal/Actions/icons/translateToOrigin.png</normaloff>:/cgal/Actions/icons/translateToOrigin.png</iconset>
+   </property>
+   <property name="text">
+    <string>Set active_point to origin</string>
+   </property>
+   <property name="statusTip">
+    <string>Translation of active_point to origin.</string>
+   </property>
+  </action>
+  <action name="actionWalk">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resources/Delaunay_triangulation_2.qrc">
+     <normaloff>:/cgal/Actions/icons/walk.png</normaloff>:/cgal/Actions/icons/walk.png</iconset>
+   </property>
+   <property name="text">
+    <string>Walk with WASD</string>
+   </property>
+  </action>
+  <action name="actionShowOrigin">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show origin</string>
+   </property>
+  </action>
+  <action name="actionRedraw">
+   <property name="icon">
+    <iconset resource="resources/Delaunay_triangulation_2.qrc">
+     <normaloff>:/cgal/Actions/icons/redraw.png</normaloff>:/cgal/Actions/icons/redraw.png</iconset>
+   </property>
+   <property name="text">
+    <string>Redraw</string>
+   </property>
+   <property name="statusTip">
+    <string>Redraw and apply approximation parameter.</string>
+   </property>
+  </action>
+  <action name="actionWalkPathForward">
+   <property name="icon">
+    <iconset resource="resources/Delaunay_triangulation_2.qrc">
+     <normaloff>:/cgal/Actions/icons/walkPathForward.png</normaloff>:/cgal/Actions/icons/walkPathForward.png</iconset>
+   </property>
+   <property name="text">
+    <string>Walk path forward</string>
+   </property>
+   <property name="statusTip">
+    <string>Walk forward step on path.</string>
+   </property>
+  </action>
+  <action name="actionWalkPathBackward">
+   <property name="icon">
+    <iconset resource="resources/Delaunay_triangulation_2.qrc">
+     <normaloff>:/cgal/Actions/icons/walkPathBackward.png</normaloff>:/cgal/Actions/icons/walkPathBackward.png</iconset>
+   </property>
+   <property name="text">
+    <string>Walk path backward</string>
+   </property>
+   <property name="statusTip">
+    <string>Walk backward step on path.</string>
+   </property>
+  </action>
+  <action name="actionTestSuite">
+   <property name="text">
+    <string>Test suite</string>
+   </property>
+  </action>
+  <action name="actionShowDecomposition">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show polygonal chain decomposition</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="resources/Delaunay_triangulation_2.qrc"/>
+  <include location="resources/Delaunay_triangulation_2.qrc"/>
+  <include location="../../../GraphicsView/demo/icons/Triangulation_2.qrc"/>
+  <include location="../../../GraphicsView/demo/icons/Input.qrc"/>
+ </resources>
+ <connections/>
+</ui>

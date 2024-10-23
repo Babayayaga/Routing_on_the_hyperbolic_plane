@@ -1,0 +1,24 @@
+<RCC>
+  <qresource prefix="/cgal/Actions" >
+    <file>icons/insertConstraints.png</file>
+    <file>icons/showTriangulation.png</file>
+    <file>icons/dijkstra.png</file>
+    <file>icons/dragMode.png</file>
+    <file>icons/insertRandomPoints.png</file>
+    <file>icons/visibilityPointToPoint.png</file>
+    <file>icons/findPath.png</file>
+    <file>icons/visibilityPointToAll.png</file>
+    <file>icons/setObstacleOnPoint.png</file>
+    <file>icons/computeVisibilityGraph.png</file>
+    <file>icons/snapshot.png</file>
+    <file>icons/generateDomain.png</file>
+    <file>icons/translateToOrigin.png</file>
+    <file>icons/walk.png</file>
+    <file>icons/redraw.png</file>
+    <file>icons/walkPathForward.png</file>
+    <file>icons/walkPathBackward.png</file>
+  </qresource>
+  <qresource prefix="/cgal/help" >
+    <file alias="about_CGAL.html" >about_CGAL.html</file>
+  </qresource>
+</RCC>

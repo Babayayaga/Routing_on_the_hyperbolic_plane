@@ -6,7 +6,7 @@
 
 #include <QObject>
 
-#include "PoincareDiskTraits.h"
+#include "../../PoincareDiskTraits.h"
 #include <CGAL/Point_2.h>
 
 namespace CGAL::Qt {

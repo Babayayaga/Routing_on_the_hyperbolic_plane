@@ -2,7 +2,7 @@
 #define HYPERBOLICTRIANGLEGRAPHICSITEM_H
 #include <QGraphicsItem>
 #include <CGAL/Qt/Converter.h>
-#include "PoincareDiskTraits.h"
+#include "../../PoincareDiskTraits.h"
 #include "internal/Qt/HyperbolicPainter.h"
 
 namespace CGAL::Qt {

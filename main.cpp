@@ -16,8 +16,8 @@
 #include <fstream>
 #include <list>
 
-#include "BeltramiKleinTraits.h"
-#include "PoincareDiskTraits.h"
+#include "include/internal/BeltramiKleinTraits.h"
+#include "include/internal/PoincareDiskTraits.h"
 #include "internal/RandomDomainGenerator.h"
 #include "internal/Qt/Input/WASDInput.h"
 #include "internal/Qt/Input/PointInput.h"
@@ -664,8 +664,7 @@ void MainWindow::on_actionFindPath_toggled(const bool checked) {
                         routingGraphicsItem->set_show_path(true);
                         double length = routingScenario.get_path_length();
                         statusBar()->showMessage(
-                            QString("A*: %1 seconds, path length: %4.").arg(timer.time()).
-                            arg(routingScenario.number_of_vertices()).arg(length), 8000);
+                            QString("A*: %1 seconds, path length: %2.").arg(timer.time()).arg(length), 8000);
                     } else {
                         statusBar()->showMessage(
                             QString("A*: %1 seconds. Destination node unreachable from start node.").arg(timer.time()),

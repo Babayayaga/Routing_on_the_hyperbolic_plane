@@ -15,13 +15,6 @@ find_package(LEDA QUIET)
 
 find_package(Qt5 QUIET COMPONENTS Widgets)
 
-#add_executable(Routing_on_the_hyperbolic_plane main.cpp)
-#target_link_libraries(Routing_on_the_hyperbolic_plane
-#        Qt5::Core
-#        Qt5::Gui
-#        Qt5::Widgets
-#)
-
 if(CGAL_Qt5_FOUND
         AND Qt5_FOUND
         AND (CGAL_Core_FOUND OR LEDA_FOUND))
@@ -33,7 +26,7 @@ if(CGAL_Qt5_FOUND
     # cpp files
     add_executable ( Routing_on_the_hyperbolic_plane Main.cpp ${CGAL_Qt5_RESOURCE_FILES} ${RESOURCE_FILES} ${UIS}
             include/internal/Qt/Input/PointInput.h
-            include/PoincareDiskTraits.h
+            include/internal/PoincareDiskTraits.h
             include/internal/Qt/Input/PolylineInput.h
             include/internal/Qt/GraphicItems/HyperbolicSegmentGraphicsItem.h
             include/internal/Qt/GraphicItems/RoutingScenarioGraphicsItem.h
@@ -44,7 +37,7 @@ if(CGAL_Qt5_FOUND
             include/internal/RandomDomainGenerator.h
             include/internal/Triangulation_line_face_iterator.h
             include/internal/Qt/Input/WASDInput.h
-            include/BeltramiKleinTraits.h
+            include/internal/BeltramiKleinTraits.h
     )
     target_include_directories(Routing_on_the_hyperbolic_plane PRIVATE ./ ./include)
     add_to_cached_list( CGAL_EXECUTABLE_TARGETS Routing_on_the_hyperbolic_plane )

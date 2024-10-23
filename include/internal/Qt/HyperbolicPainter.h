@@ -8,7 +8,7 @@
 
 #include <CGAL/Qt/DemosMainWindow.h>
 #include <CGAL/Qt/Converter.h>
-#include "PoincareDiskTraits.h"
+#include "internal/PoincareDiskTraits.h"
 
 namespace CGAL::Qt {
     template<typename Traits>

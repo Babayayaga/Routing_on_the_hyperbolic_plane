@@ -36,8 +36,8 @@ namespace CGAL::Qt {
         typedef Exact_complex<FT> Cplx;
         typedef typename T::Point_2 Point_2;
         typedef typename T::Vertex_handle Vertex_handle;
-        typedef typename T::Face_handle Face_handle;
         typedef typename T::Edge Edge;
+        typedef typename T::Face_handle Face_handle;
         typedef typename T::Finite_vertices_iterator Finite_vertices_iterator;
         typedef typename T::Finite_faces_iterator Finite_faces_iterator;
         typedef typename T::Vertex_circulator Vertex_circulator;

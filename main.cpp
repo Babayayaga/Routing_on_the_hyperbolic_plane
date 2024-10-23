@@ -1,4 +1,3 @@
-#include <CGAL/Delaunay_triangulation_2.h>
 #include <CGAL/Delaunay_mesh_face_base_2.h>
 #include <CGAL/Delaunay_mesh_vertex_base_2.h>
 #include <CGAL/Constrained_Delaunay_triangulation_2.h>
@@ -31,7 +30,7 @@ typedef CGAL::Poincare_disk_traits<> Poincare_disk_traits;
 typedef CGAL::Beltrami_klein_traits<> Beltrami_klein_traits;
 
 //either choose Poincare_disk_traits or Beltrami_klein_traits
-typedef Poincare_disk_traits K;
+typedef Beltrami_klein_traits K;
 
 typedef K::FT FT;
 typedef K::Point_2 Point_2;

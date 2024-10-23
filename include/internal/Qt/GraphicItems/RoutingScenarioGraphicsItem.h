@@ -346,6 +346,17 @@ namespace CGAL::Qt {
             painter->setPen(::Qt::NoBrush);
         }
 
+        if (show_decomposition) {
+            for (int i = 0; i < decomposition.size(); ++i) {
+                epen.setColor(decomposition_colors[i]);
+                for (QHyperbolic_segment segment : decomposition[i]) {
+                    painter->setPen(epen);
+                    hyperbolic_painter.draw_hyperbolic_segment(segment);
+                }
+            }
+            epen.setBrush(::Qt::darkGreen);
+        }
+
         if (show_visibility_graph) {
             painter->setPen(epen);
             for (int i = 0; i < r->number_of_vertices(); i++) {
@@ -457,17 +468,6 @@ namespace CGAL::Qt {
                 }
                 hyperbolic_painter.draw_hyperbolic_segment(segment);
             }
-        }
-
-        if (show_decomposition) {
-            for (int i = 0; i < decomposition.size(); ++i) {
-                epen.setColor(decomposition_colors[i]);
-                for (QHyperbolic_segment segment : decomposition[i]) {
-                    painter->setPen(epen);
-                    hyperbolic_painter.draw_hyperbolic_segment(segment);
-                }
-            }
-            epen.setBrush(::Qt::darkGreen);
         }
 
         painter->restore();

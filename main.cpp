@@ -277,7 +277,7 @@ void MainWindow::changedActiveNode(const CGAL::Object &o) {
         Point_2 p;
         if (CGAL::assign(p, o)) {
             routingScenario.set_start_point(p);
-            routingGraphicsItem->repaint();
+            routingGraphicsItem->changed();
         }
     }
 }
@@ -297,7 +297,7 @@ void MainWindow::changedDestinationNode(const CGAL::Object &o) {
         Point_2 p;
         if (CGAL::assign(p, o)) {
             routingScenario.set_destination_point(p);
-            routingGraphicsItem->repaint();
+            routingGraphicsItem->changed();
         }
     }
 }

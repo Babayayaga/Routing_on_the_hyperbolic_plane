@@ -449,15 +449,17 @@ namespace CGAL::Qt {
         }
 
         double hyperbolic_distance(const Point_2 p_, const Point_2 q_) {
-            //if we are in Beltrami Klein model, first translate p_ and q_ to Poincare disk model
             Point_2 p = p_;
             Point_2 q = q_;
+
+            //if we are in Beltrami Klein model, first translate p_ and q_ to Poincare disk model
             if(typeid(Beltrami_klein_traits) == typeid(Traits)) {
                 const double abs_p = p.x() * p.x() + p.y() * p.y();
                 p = Point_2(p.x() / (1 + std::sqrt(1 - abs_p)), p.y() / (1 + std::sqrt(1 - abs_p)));
                 const double abs_q = q.x() * q.x() + q.y() * q.y();
                 q = Point_2(q.x() / (1 + std::sqrt(1 - abs_q)), q.y() / (1 + std::sqrt(1 - abs_q)));
             }
+
             const double px = to_double(p.x());
             const double py = to_double(p.y());
             const double qx = to_double(q.x());
@@ -469,6 +471,7 @@ namespace CGAL::Qt {
             double img = (qy - py) * a - (qx - px) * b;
             real = real / d;
             img = img / d;
+
             double r = std::sqrt(to_double(real * real + img * img));
 
             if(typeid(Beltrami_klein_traits) == typeid(Traits)) {

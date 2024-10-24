@@ -72,6 +72,9 @@ namespace CGAL::Qt {
         }
 
         void construct_obstacle_path() {
+            if(!r->defined_domain) {
+                r->discover_components();
+            }
             std::list<std::vector<Point_2>> obstacles;
             for (std::vector<Vertex_handle> obstacle: r->get_obstacles()) {
                 std::vector<Point_2> points;

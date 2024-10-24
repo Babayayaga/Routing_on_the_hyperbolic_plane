@@ -113,11 +113,9 @@ namespace CGAL {
         typedef typename Traits::Point_2 Point_2;
         typedef typename Traits::Weighted_point_2 Weighted_point_2;
         typedef typename Traits::Euclidean_segment_2 Euclidean_segment_2;
-        typedef typename Traits::Point_2 Point_2;
         typedef typename Traits::Hyperbolic_segment_2 Hyperbolic_segment_2;
         typedef typename Traits::Circle_2 Circle_2;
         typedef typename Traits::Circular_arc_2 Circular_arc_2;
-
         typedef typename Traits::Construct_weighted_circumcenter_2 Construct_weighted_circumcenter_2;
 
     public:

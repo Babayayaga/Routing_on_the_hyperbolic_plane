@@ -821,8 +821,6 @@ int main(int argc, char **argv) {
 
     std::cout << "FINISH" << std::endl;*/
 
-
-
     MainWindow mainWindow;
     mainWindow.show();
     mainWindow.on_actionRecenter_triggered();

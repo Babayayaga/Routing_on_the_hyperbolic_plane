@@ -959,7 +959,7 @@ namespace CGAL::Qt {
                 Face_handle fi = fh->neighbor(i);
                 if (!traversed.contains(fi)) {
                     queue.push_back(fi);
-                    if (t->is_constrained(T::Edge(fh, i))) {
+                    if (t->is_constrained(Edge(fh, i))) {
                         fi->set_in_domain(!fh->is_in_domain());
                     } else {
                         fi->set_in_domain(fh->is_in_domain());

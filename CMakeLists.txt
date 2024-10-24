@@ -24,7 +24,7 @@ if(CGAL_Qt5_FOUND
     qt5_add_resources(RESOURCE_FILES resources/Main.qrc)
 
     # cpp files
-    add_executable ( Routing_on_the_hyperbolic_plane Main.cpp ${CGAL_Qt5_RESOURCE_FILES} ${RESOURCE_FILES} ${UIS}
+    add_executable ( Routing_on_the_hyperbolic_plane main.cpp ${CGAL_Qt5_RESOURCE_FILES} ${RESOURCE_FILES} ${UIS}
             include/internal/Qt/Input/PointInput.h
             include/internal/PoincareDiskTraits.h
             include/internal/Qt/Input/PolylineInput.h

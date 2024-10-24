@@ -30,8 +30,6 @@ namespace CGAL::Qt {
     template<typename T>
     class Routing_scenario {
         typedef typename T::Geom_traits Traits;
-        typedef typename Traits::FT FT;
-        typedef Exact_complex<FT> Cplx;
         typedef typename T::Point_2 Point_2;
         typedef typename T::Edge Edge;
         typedef typename T::Vertex_handle Vertex_handle;

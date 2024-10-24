@@ -480,6 +480,7 @@
     </property>
     <addaction name="actionShowConstraints"/>
     <addaction name="actionShowTriangulation"/>
+    <addaction name="actionShowTriangulationBetween"/>
     <addaction name="actionShowFaces"/>
     <addaction name="actionShowPoints"/>
     <addaction name="actionShowVisibilityGraph"/>
@@ -515,7 +516,7 @@
   </action>
   <action name="actionInsertRandomPoints">
    <property name="icon">
-    <iconset resource="resources/Delaunay_triangulation_2.qrc">
+    <iconset>
      <normaloff>:/cgal/Actions/icons/insertRandomPoints.png</normaloff>:/cgal/Actions/icons/insertRandomPoints.png</iconset>
    </property>
    <property name="text">
@@ -566,7 +567,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="resources/Delaunay_triangulation_2.qrc">
+    <iconset>
      <normaloff>:/cgal/Actions/icons/insertConstraints.png</normaloff>:/cgal/Actions/icons/insertConstraints.png</iconset>
    </property>
    <property name="text">
@@ -676,7 +677,7 @@
   </action>
   <action name="actionExportPNG">
    <property name="icon">
-    <iconset resource="resources/Delaunay_triangulation_2.qrc">
+    <iconset>
      <normaloff>:/cgal/Actions/icons/snapshot.png</normaloff>:/cgal/Actions/icons/snapshot.png</iconset>
    </property>
    <property name="text">
@@ -688,7 +689,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="resources/Delaunay_triangulation_2.qrc">
+    <iconset>
      <normaloff>:/cgal/Actions/icons/dragMode.png</normaloff>:/cgal/Actions/icons/dragMode.png</iconset>
    </property>
    <property name="text">
@@ -700,7 +701,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="resources/Delaunay_triangulation_2.qrc">
+    <iconset>
      <normaloff>:/cgal/Actions/icons/visibilityPointToPoint.png</normaloff>:/cgal/Actions/icons/visibilityPointToPoint.png</iconset>
    </property>
    <property name="text">
@@ -726,7 +727,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="resources/Delaunay_triangulation_2.qrc">
+    <iconset>
      <normaloff>:/cgal/Actions/icons/visibilityPointToAll.png</normaloff>:/cgal/Actions/icons/visibilityPointToAll.png</iconset>
    </property>
    <property name="text">
@@ -744,7 +745,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="resources/Delaunay_triangulation_2.qrc">
+    <iconset>
      <normaloff>:/cgal/Actions/icons/setObstacleOnPoint.png</normaloff>:/cgal/Actions/icons/setObstacleOnPoint.png</iconset>
    </property>
    <property name="text">
@@ -756,7 +757,7 @@
   </action>
   <action name="actionComputeVisibilityGraph">
    <property name="icon">
-    <iconset resource="resources/Delaunay_triangulation_2.qrc">
+    <iconset>
      <normaloff>:/cgal/Actions/icons/computeVisibilityGraph.png</normaloff>:/cgal/Actions/icons/computeVisibilityGraph.png</iconset>
    </property>
    <property name="text">
@@ -771,7 +772,7 @@
   </action>
   <action name="actionDijkstra">
    <property name="icon">
-    <iconset resource="resources/Delaunay_triangulation_2.qrc">
+    <iconset>
      <normaloff>:/cgal/Actions/icons/dijkstra.png</normaloff>:/cgal/Actions/icons/dijkstra.png</iconset>
    </property>
    <property name="text">
@@ -797,7 +798,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="resources/Delaunay_triangulation_2.qrc">
+    <iconset>
      <normaloff>:/cgal/Actions/icons/findPath.png</normaloff>:/cgal/Actions/icons/findPath.png</iconset>
    </property>
    <property name="text">
@@ -820,7 +821,7 @@
   </action>
   <action name="actionGenerateRandomDomain">
    <property name="icon">
-    <iconset resource="resources/Delaunay_triangulation_2.qrc">
+    <iconset>
      <normaloff>:/cgal/Actions/icons/generateDomain.png</normaloff>:/cgal/Actions/icons/generateDomain.png</iconset>
    </property>
    <property name="text">
@@ -829,7 +830,7 @@
   </action>
   <action name="actionTranslateToPoint">
    <property name="icon">
-    <iconset resource="resources/Delaunay_triangulation_2.qrc">
+    <iconset>
      <normaloff>:/cgal/Actions/icons/translateToOrigin.png</normaloff>:/cgal/Actions/icons/translateToOrigin.png</iconset>
    </property>
    <property name="text">
@@ -844,7 +845,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="resources/Delaunay_triangulation_2.qrc">
+    <iconset>
      <normaloff>:/cgal/Actions/icons/walk.png</normaloff>:/cgal/Actions/icons/walk.png</iconset>
    </property>
    <property name="text">
@@ -861,7 +862,7 @@
   </action>
   <action name="actionRedraw">
    <property name="icon">
-    <iconset resource="resources/Delaunay_triangulation_2.qrc">
+    <iconset>
      <normaloff>:/cgal/Actions/icons/redraw.png</normaloff>:/cgal/Actions/icons/redraw.png</iconset>
    </property>
    <property name="text">
@@ -873,7 +874,7 @@
   </action>
   <action name="actionWalkPathForward">
    <property name="icon">
-    <iconset resource="resources/Delaunay_triangulation_2.qrc">
+    <iconset>
      <normaloff>:/cgal/Actions/icons/walkPathForward.png</normaloff>:/cgal/Actions/icons/walkPathForward.png</iconset>
    </property>
    <property name="text">
@@ -885,7 +886,7 @@
   </action>
   <action name="actionWalkPathBackward">
    <property name="icon">
-    <iconset resource="resources/Delaunay_triangulation_2.qrc">
+    <iconset>
      <normaloff>:/cgal/Actions/icons/walkPathBackward.png</normaloff>:/cgal/Actions/icons/walkPathBackward.png</iconset>
    </property>
    <property name="text">
@@ -906,6 +907,14 @@
    </property>
    <property name="text">
     <string>Show polygonal chain decomposition</string>
+   </property>
+  </action>
+  <action name="actionShowTriangulationBetween">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show triangulation between obstacles</string>
    </property>
   </action>
  </widget>

@@ -15,7 +15,6 @@
  */
 
 #include <CGAL/point_generators_2.h>
-#include <CGAL/random_polygon_2.h>
 #include "internal/RoutingScenario.h"
 
 namespace CGAL::Qt {

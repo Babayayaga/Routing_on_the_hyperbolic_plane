@@ -79,6 +79,7 @@ public Q_SLOTS:
     //all gui actions
     //options:
     void on_actionShowTriangulation_toggled(bool checked);
+    void on_actionShowTriangulationBetween_toggled(bool checked);
     void on_actionShowFaces_toggled(bool checked);
     void on_actionShowConstraints_toggled(bool checked);
     void on_actionShowPoints_toggled(bool checked);
@@ -212,6 +213,11 @@ MainWindow::MainWindow()
     this->actionShowPointToPointVisibility->setChecked(false);
     this->actionShowPointToAllVisibility->setChecked(false);
     this->actionShowDijkstraTree->setChecked(false);
+
+    auto *ag3 = new QActionGroup(this);
+    ag3->addAction(this->actionShowTriangulation);
+    ag3->addAction(this->actionShowTriangulationBetween);
+    ag3->setExclusionPolicy(QActionGroup::ExclusionPolicy::ExclusiveOptional);
 
     // Setup the scene and the view
     scene.setItemIndexMethod(QGraphicsScene::NoIndex);
@@ -767,6 +773,10 @@ void MainWindow::on_actionShowDecomposition_toggled(const bool checked) {
     routingGraphicsItem->set_show_decomposition(checked);
 }
 
+void MainWindow::on_actionShowTriangulationBetween_toggled(bool checked) {
+    routingGraphicsItem->triangulation_graphics_item->set_show_triangulation_between_obstacles(checked);
+}
+
 #include "main.moc"
 
 int main(int argc, char **argv) {
@@ -780,7 +790,7 @@ int main(int argc, char **argv) {
     CGAL_QT_INIT_RESOURCES;
 
     //example independent use
-    typedef Beltrami_klein_traits K;
+    /*typedef Beltrami_klein_traits K;
     typedef CGAL::Delaunay_mesh_face_base_2<K> Face_base;
     typedef CGAL::Triangulation_vertex_base_2<K> Vertex_base;
     typedef CGAL::Triangulation_data_structure_2<Vertex_base, Face_base> TDS;
@@ -809,13 +819,13 @@ int main(int argc, char **argv) {
     std::cout << "A* took: " << timer.time() << " seconds." << std::endl;
     timer.reset();
 
-    std::cout << "FINISH" << std::endl;
+    std::cout << "FINISH" << std::endl;*/
 
 
 
-    /*MainWindow mainWindow;
+    MainWindow mainWindow;
     mainWindow.show();
-    mainWindow.on_actionRecenter_triggered();*/
+    mainWindow.on_actionRecenter_triggered();
 
     return app.exec();
 }

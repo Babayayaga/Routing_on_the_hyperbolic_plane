@@ -116,6 +116,7 @@ public Q_SLOTS:
     void on_actionDijkstra_triggered();
     void on_actionFindPath_toggled(bool checked);
     void on_actionGenerateRandomDomain_triggered();
+    void on_pathOptimize_released();
 };
 
 void MainWindow::on_actionColorUnitDisk_triggered(const bool checked) {
@@ -579,10 +580,19 @@ void MainWindow::on_actionShowVisibilityGraph_toggled(const bool checked) {
 }
 
 void MainWindow::on_actionComputeVisibilityGraph_triggered() {
-    if (!routingScenario.defined_visibility_graph && routingScenario.t->dimension() >= 2) {
+    this->actionFindPath->setChecked(false);
+    if (routingScenario.t->dimension() >= 2) {
         CGAL::Timer timer;
         timer.start();
-        routingScenario.build_visibility_graph();
+        if(this->comboBox->currentIndex() == 0) {
+            routingScenario.use_triangulation_as_visibility_graph();
+        }
+        if(this->comboBox->currentIndex() == 1) {
+            routingScenario.build_visibility_graph_naive();
+        }
+        if(this->comboBox->currentIndex() == 2) {
+            routingScenario.build_visibility_graph();
+        }
         timer.stop();
         statusBar()->showMessage(
             QString("Building: %1 seconds, #Nodes: %2, #Edges: %3").arg(timer.time()).arg(
@@ -775,6 +785,11 @@ void MainWindow::on_actionShowDecomposition_toggled(const bool checked) {
 
 void MainWindow::on_actionShowTriangulationBetween_toggled(bool checked) {
     routingGraphicsItem->triangulation_graphics_item->set_show_triangulation_between_obstacles(checked);
+}
+
+void MainWindow::on_pathOptimize_released() {
+    routingScenario.path_optimization();
+    routingGraphicsItem->repaint();
 }
 
 #include "main.moc"

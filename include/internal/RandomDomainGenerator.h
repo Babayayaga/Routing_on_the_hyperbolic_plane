@@ -54,8 +54,6 @@ namespace CGAL::Qt {
             sum.start();
             T* t = r->t;
 
-            std::cout << "min: " << min << std::endl;
-
             Timer timer;
             timer.start();
             std::vector<Point_2> points = inverse_sampling(number_of_points, radius);

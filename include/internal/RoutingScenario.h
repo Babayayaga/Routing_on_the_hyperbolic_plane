@@ -140,11 +140,11 @@ namespace CGAL::Qt {
             t->insert_constraint(va, vb);
         }
 
-        std::list<std::vector<Vertex_handle>> get_obstacles() {
+        std::list<std::vector<Vertex_handle> > get_obstacles() {
             if (!defined_decomposition) {
                 discover_polygon_decomposition();
             }
-            std::list<std::vector<Vertex_handle>> set;
+            std::list<std::vector<Vertex_handle> > set;
             for (std::vector<Vertex_handle> obstacle: obstacles) {
                 std::vector<Vertex_handle> vertices;
                 for (Vertex_handle vh: obstacle) {
@@ -212,7 +212,7 @@ namespace CGAL::Qt {
 
         std::vector<int> get_point_path() {
             std::vector<Point_2> point_path;
-            for(const int index : path) {
+            for (const int index: path) {
                 point_path.push_back(index_vertex_map[path[index]]->point());
             }
             return point_path;
@@ -220,9 +220,9 @@ namespace CGAL::Qt {
 
         double get_path_length() {
             double sum = 0;
-            for(int i = 0; i < path.size() - 1; ++i) {
+            for (int i = 0; i < path.size() - 1; ++i) {
                 sum += hyperbolic_distance(index_vertex_map[path[i]]->point(),
-                    index_vertex_map[path[i + 1]]->point());
+                                           index_vertex_map[path[i + 1]]->point());
             }
             return sum;
         }
@@ -371,19 +371,24 @@ namespace CGAL::Qt {
                 visibles_start_node.insert(vh);
             }
         }
+
         bool compute_intersected_faces();
+
         std::set<Vertex_handle> what_points_can_p_see(Vertex_handle vp);
 
         void dijkstra();
+
         //return true if destination node reachable from start node
         bool a_star();
 
         void build_visibility_graph_naive();
+
         bool can_p_see_q(Vertex_handle vp, Vertex_handle vq);
 
         void build_visibility_graph();
 
         void use_triangulation_as_visibility_graph();
+
         void path_optimization();
 
         //sets in_domain for every triangle in triangulation
@@ -453,7 +458,7 @@ namespace CGAL::Qt {
             Point_2 q = q_;
 
             //if we are in Beltrami Klein model, first translate p_ and q_ to Poincare disk model
-            if(typeid(Beltrami_klein_traits) == typeid(Traits)) {
+            if (typeid(Beltrami_klein_traits) == typeid(Traits)) {
                 const double abs_p = p.x() * p.x() + p.y() * p.y();
                 p = Point_2(p.x() / (1 + std::sqrt(1 - abs_p)), p.y() / (1 + std::sqrt(1 - abs_p)));
                 const double abs_q = q.x() * q.x() + q.y() * q.y();
@@ -474,7 +479,7 @@ namespace CGAL::Qt {
 
             double r = std::sqrt(to_double(real * real + img * img));
 
-            if(typeid(Beltrami_klein_traits) == typeid(Traits)) {
+            if (typeid(Beltrami_klein_traits) == typeid(Traits)) {
                 r = 2 * r / (1 + r * r);
             }
 
@@ -495,7 +500,8 @@ namespace CGAL::Qt {
     template<typename T>
     Routing_scenario<T>::Routing_scenario() : defined_domain(false), defined_visibility_graph(false),
                                               start_node_handle(nullptr), destination_node_handle(nullptr),
-                                              defined_dijkstra(false), defined_decomposition(false), defined_path(false) {
+                                              defined_dijkstra(false), defined_decomposition(false),
+                                              defined_path(false) {
         t = new T();
     }
 
@@ -543,17 +549,10 @@ namespace CGAL::Qt {
         if (!defined_domain) {
             discover_components();
         }
-        if (defined_visibility_graph) {
-            int index = vertex_index_map[vp];
-            for (int i = offsets[index]; i < offsets[index + 1]; ++i) {
-                set.insert(index_vertex_map[adjacencies[i]]);
-            }
-        } else {
-            for (Finite_vertices_iterator vq = t->finite_vertices_begin();
-                 vq != t->finite_vertices_end(); ++vq) {
-                if (can_p_see_q(vp, vq)) {
-                    set.insert(vq);
-                }
+        for (Finite_vertices_iterator vq = t->finite_vertices_begin();
+             vq != t->finite_vertices_end(); ++vq) {
+            if (can_p_see_q(vp, vq)) {
+                set.insert(vq);
             }
         }
         return set;
@@ -593,12 +592,7 @@ namespace CGAL::Qt {
     //iterate through all pairs of vertices and check visibility of each pair
     template<typename T>
     void Routing_scenario<T>::build_visibility_graph_naive() {
-        //int steps = 0;
-        //print_out_vertex_index_mapping();
-        //print_out_index_vertex_mapping();
-        if (defined_visibility_graph) {
-            return;
-        }
+        clear_graphs();
         if (!defined_domain) {
             discover_components();
         }
@@ -634,9 +628,7 @@ namespace CGAL::Qt {
 
     template<typename T>
     void Routing_scenario<T>::build_visibility_graph() {
-        if (defined_visibility_graph) {
-            return;
-        }
+        clear_graphs();
         if (!defined_domain) {
             discover_components();
         }
@@ -678,9 +670,7 @@ namespace CGAL::Qt {
             } while (++fc != first);
             offsets.push_back(adjacency_counter);
         }
-        //std::cout << "finished build of visibility graph" << std::endl;
         defined_visibility_graph = true;
-        //print_out_visibility_graph();
         compute_distances();
     }
 
@@ -741,6 +731,7 @@ namespace CGAL::Qt {
     //only checking visibility for all incident vertices
     template<typename T>
     void Routing_scenario<T>::use_triangulation_as_visibility_graph() {
+        clear_graphs();
         if (!defined_domain) {
             discover_components();
         }

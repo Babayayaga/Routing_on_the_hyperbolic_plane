@@ -41,6 +41,7 @@ namespace CGAL::Qt {
         typedef typename T::Face_circulator Face_circulator;
         typedef typename T::Line_face_circulator Line_face_circulator;
         typedef typename T::Constrained_edges_iterator Constrained_edges_iterator;
+        typedef Beltrami_klein_traits<Exact_predicates_inexact_constructions_kernel> Beltrami_klein_traits;
         typedef Triangulation_line_face_iterator<T> Line_face_iterator;
 
     public:
@@ -447,7 +448,16 @@ namespace CGAL::Qt {
             obstacles.clear();
         }
 
-        double hyperbolic_distance(const Point_2 p, const Point_2 q) {
+        double hyperbolic_distance(const Point_2 p_, const Point_2 q_) {
+            //if we are in Beltrami Klein model, first translate p_ and q_ to Poincare disk model
+            Point_2 p = p_;
+            Point_2 q = q_;
+            if(typeid(Beltrami_klein_traits) == typeid(Traits)) {
+                const double abs_p = p.x() * p.x() + p.y() * p.y();
+                p = Point_2(p.x() / (1 + std::sqrt(1 - abs_p)), p.y() / (1 + std::sqrt(1 - abs_p)));
+                const double abs_q = q.x() * q.x() + q.y() * q.y();
+                q = Point_2(q.x() / (1 + std::sqrt(1 - abs_q)), q.y() / (1 + std::sqrt(1 - abs_q)));
+            }
             const double px = to_double(p.x());
             const double py = to_double(p.y());
             const double qx = to_double(q.x());
@@ -459,7 +469,12 @@ namespace CGAL::Qt {
             double img = (qy - py) * a - (qx - px) * b;
             real = real / d;
             img = img / d;
-            const double r = std::sqrt(to_double(real * real + img * img));
+            double r = std::sqrt(to_double(real * real + img * img));
+
+            if(typeid(Beltrami_klein_traits) == typeid(Traits)) {
+                r = 2 * r / (1 + r * r);
+            }
+
             return std::log((1 + r) / (1 - r));
         }
 

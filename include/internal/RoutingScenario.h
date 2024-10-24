@@ -24,8 +24,6 @@
 #include <iostream>
 #include <queue>
 #include <CGAL/Timer.h>
-
-#include "BeltramiKleinTraits.h"
 #include "Triangulation_line_face_iterator.h"
 
 namespace CGAL::Qt {
@@ -389,6 +387,9 @@ namespace CGAL::Qt {
         void use_triangulation_as_visibility_graph();
         void path_optimization();
 
+        //sets in_domain for every triangle in triangulation
+        void discover_components();
+
         //underlying constrained delaunay triangulation
         T *t;
 
@@ -463,9 +464,6 @@ namespace CGAL::Qt {
             const double r = std::sqrt(to_double(real * real + img * img));
             return std::log((1 + r) / (1 - r));
         }
-
-        //sets in_domain for every triangle in triangulation
-        void discover_components();
 
         void discover_polygon_decomposition();
 

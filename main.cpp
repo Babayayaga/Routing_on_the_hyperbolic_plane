@@ -780,7 +780,7 @@ int main(int argc, char **argv) {
     CGAL_QT_INIT_RESOURCES;
 
     //example independent use
-    /*typedef Beltrami_klein_traits K;
+    typedef Beltrami_klein_traits K;
     typedef CGAL::Delaunay_mesh_face_base_2<K> Face_base;
     typedef CGAL::Triangulation_vertex_base_2<K> Vertex_base;
     typedef CGAL::Triangulation_data_structure_2<Vertex_base, Face_base> TDS;
@@ -789,7 +789,8 @@ int main(int argc, char **argv) {
     typedef CGAL::Qt::Routing_scenario<T> RoutingScenario;
     RoutingScenario routing_scenario = RoutingScenario();
     auto rg = CGAL::Qt::Random_domain_generator<T>(&routing_scenario);
-    rg.generate_random_domain(50000000, 0.999, 0.01, 5, 5, 5, true, false);
+    rg.generate_random_domain(20000000, 0.999, 0.01, 5, 5, 5, true, false);
+    std::cout << "Number of vertices: " << routing_scenario.number_of_vertices() << std::endl;
 
     routing_scenario.set_start_point(CGAL::ORIGIN);
     routing_scenario.set_destination_point(Point_2(0, 0.99));
@@ -808,13 +809,13 @@ int main(int argc, char **argv) {
     std::cout << "A* took: " << timer.time() << " seconds." << std::endl;
     timer.reset();
 
-    std::cout << "FINISH" << std::endl;*/
+    std::cout << "FINISH" << std::endl;
 
 
 
-    MainWindow mainWindow;
+    /*MainWindow mainWindow;
     mainWindow.show();
-    mainWindow.on_actionRecenter_triggered();
+    mainWindow.on_actionRecenter_triggered();*/
 
     return app.exec();
 }

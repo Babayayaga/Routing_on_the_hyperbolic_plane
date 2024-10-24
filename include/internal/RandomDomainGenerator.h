@@ -91,10 +91,20 @@ namespace CGAL::Qt {
             if(min > 3) {
                 timer.start();
                 remove_small_obstacles(t, min);
+                //since we are removing constrained edges, this step is needed
+                //when removing constrained edge we don't know the new in_domain value of both incident faces
+                //can also be neglected, but then remove_unconstrained_points_in_obstacle_iterior() gives slightly wrong results
+                r->discover_components();
                 timer.stop();
                 std::cout << "Removing obstacles with less than min points took: " << timer.time() << " seconds." << std::endl;
                 timer.reset();
             }
+
+            timer.start();
+            remove_unconstrained_points_in_obstacle_iterior(t);
+            timer.stop();
+            std::cout << "Removing vertices in interior of an obstacle but with no incident constraints took: " << timer.time() << " seconds." << std::endl;
+            timer.reset();
 
             if(remove) {
                 timer.start();
@@ -127,6 +137,19 @@ namespace CGAL::Qt {
                     }
                 }
             }
+        }
+
+        //remove points in iterior of obstacles that have no incident constraints
+        void remove_unconstrained_points_in_obstacle_iterior(T* t) {
+            std::set<Vertex_handle> set;
+            for (Finite_vertices_iterator fi = t->finite_vertices_begin(); fi != t->finite_vertices_end(); ++fi) {
+                if(!t->are_there_incident_constraints(fi)) {
+                    if(fi->face()->is_in_domain()) {
+                        set.insert(fi);
+                    }
+                }
+            }
+            r->remove_vertices(set);
         }
 
         //remove points that have no incident constraints

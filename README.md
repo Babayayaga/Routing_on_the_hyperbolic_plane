@@ -12,7 +12,7 @@ To be able to use CGALs Triangulation classes in the Beltrami-Klein and Poincar√
 is needed for exact results. Alltogether, computing the orientation of three points is faster in the Beltrami-Klein model, thus all algorithms in this project run faster in it (see thesis for detailed comparision). 
 ## Generating a polygonal domain
 Due to the lack of "real" routing problems on the hyperbolic plane, we implemented random generation of polygons (see `RandomDomainGenerator`). First, we sample a number of random points within the disk $D$ with Euclidean radius $0 < R_e < 1$. A point is sampled by sampling its angle uniformly, while the radial coordinate density is given by $\rho(r)=\sinh(r) / (\cosh(R)-1)$, where $R$ is the hyperbolic radius of $D$. On the point set we compute a Delaunay triangulation and choose the `in_domain` value ([`Delaunay_mesh_face_base_2`](https://doc.cgal.org/latest/Mesh_2/classCGAL_1_1Delaunay__mesh__face__base__2.html)) for its triangles randomly. We apply some "smoothing" steps, among others the following one: Every triangle not `in_domain` with more than one neighboring `in_domain` triangle, is set to be `in_domain`. And vice versa.
-From this we infer the constrained edges of the triangulation and insert them.
+In the end, we infer the constrained edges of the triangulation and insert them as constraints.
 
 <img src="https://github.com/user-attachments/assets/c74927c3-6a4e-46ee-ab8c-5ae0fb7d053e" width="300">
 <img src="https://github.com/user-attachments/assets/f24cd5ae-f9bd-41f7-9df6-ac22e8955da4" width="300">

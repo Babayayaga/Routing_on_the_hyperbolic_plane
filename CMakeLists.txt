@@ -39,6 +39,23 @@ if(CGAL_Qt5_FOUND
             include/internal/Qt/Input/WASDInput.h
             include/internal/BeltramiKleinTraits.h
     )
+
+    add_executable ( experiments experiment.cpp
+            include/internal/Qt/Input/PointInput.h
+            include/internal/PoincareDiskTraits.h
+            include/internal/Qt/Input/PolylineInput.h
+            include/internal/Qt/GraphicItems/HyperbolicSegmentGraphicsItem.h
+            include/internal/Qt/GraphicItems/RoutingScenarioGraphicsItem.h
+            include/internal/RoutingScenario.h
+            include/internal/Qt/Input/TriangulationSelectTriangle.h
+            include/internal/Qt/Input/QObjectInput.h
+            include/internal/Qt/GraphicItems/HyperbolicTriangleGraphicsItem.h
+            include/internal/RandomDomainGenerator.h
+            include/internal/Triangulation_line_face_iterator.h
+            include/internal/Qt/Input/WASDInput.h
+            include/internal/BeltramiKleinTraits.h
+    )
+
     target_include_directories(Routing_on_the_hyperbolic_plane PRIVATE ./ ./include)
     add_to_cached_list( CGAL_EXECUTABLE_TARGETS Routing_on_the_hyperbolic_plane )
     target_link_libraries ( Routing_on_the_hyperbolic_plane CGAL::CGAL CGAL::CGAL_Qt5 Qt5::Widgets)
@@ -48,8 +65,13 @@ if(CGAL_Qt5_FOUND
         target_link_libraries ( Routing_on_the_hyperbolic_plane ${LEDA_LIBRARIES})
     endif()
 
+    target_include_directories(experiments PRIVATE ./ ./include)
+    add_to_cached_list( CGAL_EXECUTABLE_TARGETS experiments )
+    target_link_libraries ( experiments CGAL::CGAL CGAL::CGAL_Qt5)
+
     include(${CGAL_MODULES_DIR}/CGAL_add_test.cmake)
     cgal_add_compilation_test( Routing_on_the_hyperbolic_plane )
+
 else()
     message("NOTICE: This demo requires CGAL_Core (or LEDA), and Qt5 and will not be compiled.")
 endif()

@@ -487,7 +487,9 @@
     <addaction name="actionClear"/>
     <addaction name="actionLoadRoutingScenario"/>
     <addaction name="actionSaveRoutingScenario"/>
+    <addaction name="separator"/>
     <addaction name="actionExportPNG"/>
+    <addaction name="actionExportSVG"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
@@ -958,6 +960,11 @@
    </property>
    <property name="text">
     <string>Show triangulation between obstacles</string>
+   </property>
+  </action>
+  <action name="actionExportSVG">
+   <property name="text">
+    <string>Export .svg</string>
    </property>
   </action>
  </widget>

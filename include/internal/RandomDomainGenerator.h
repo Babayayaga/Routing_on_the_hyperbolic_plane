@@ -16,6 +16,7 @@
 
 #include <CGAL/point_generators_2.h>
 #include "internal/RoutingScenario.h"
+#include <random>
 
 namespace CGAL::Qt {
     template<typename T>
@@ -110,6 +111,12 @@ namespace CGAL::Qt {
                 std::cout << "Removing points with no incident constrained edges took: " << timer.time() << " seconds." << std::endl;
                 timer.reset();
             }
+
+            timer.start();
+            r->discover_components();
+            timer.stop();
+            std::cout << "Discovering components took: " << timer.time() << " seconds." << std::endl;
+            timer.reset();
 
             sum.stop();
             std::cout << "Generating domain took: " << sum.time() << " seconds." << std::endl;

@@ -459,10 +459,8 @@ namespace CGAL::Qt {
 
             //if we are in Beltrami Klein model, first translate p_ and q_ to Poincare disk model
             if (typeid(Beltrami_klein_traits) == typeid(Traits)) {
-                const double abs_p = p.x() * p.x() + p.y() * p.y();
-                p = Point_2(p.x() / (1 + std::sqrt(1 - abs_p)), p.y() / (1 + std::sqrt(1 - abs_p)));
-                const double abs_q = q.x() * q.x() + q.y() * q.y();
-                q = Point_2(q.x() / (1 + std::sqrt(1 - abs_q)), q.y() / (1 + std::sqrt(1 - abs_q)));
+                p = beltrami_klein_to_poincare(p);
+                q = beltrami_klein_to_poincare(q);
             }
 
             const double px = to_double(p.x());

@@ -30,7 +30,7 @@ typedef CGAL::Poincare_disk_traits<> Poincare_disk_traits;
 typedef CGAL::Beltrami_klein_traits<> Beltrami_klein_traits;
 
 //either choose Poincare_disk_traits or Beltrami_klein_traits
-typedef Poincare_disk_traits K;
+typedef Beltrami_klein_traits K;
 
 typedef K::FT FT;
 typedef K::Point_2 Point_2;
@@ -100,6 +100,7 @@ public Q_SLOTS:
 
     //tools:
     void on_actionExportPNG_triggered();
+    void on_actionExportSVG_triggered();
     void on_actionSaveRoutingScenario_triggered();
     void on_actionClear_triggered();
     void on_actionRecenter_triggered();
@@ -310,6 +311,23 @@ void MainWindow::on_actionExportPNG_triggered() {
         QPixmap pixMap = this->graphicsView->grab();
         pixMap.save(fileName);
     }
+}
+
+void MainWindow::on_actionExportSVG_triggered() {
+    QString fileName = QFileDialog::getSaveFileName(this,
+                                                    "Export to SVG", ".", "SVG (*.svg)\n");
+    //for svg
+    QSvgGenerator generator;
+    generator.setFileName(fileName);
+    generator.setSize(QSize(static_cast<int>(this->graphicsView->viewport()->width()),
+        static_cast<int>(this->graphicsView->viewport()->width())));
+    generator.setViewBox(QRectF(-10,-10, this->graphicsView->viewport()->width() + 20,
+        this->graphicsView->viewport()->width() + 20));
+    QPainter painter;
+    painter.begin(&generator);
+    scene.clearSelection();
+    scene.render(&painter);
+    painter.end();
 }
 
 void MainWindow::on_actionInsertPoint_toggled(const bool checked) {
@@ -788,8 +806,12 @@ void MainWindow::on_actionShowTriangulationBetween_toggled(bool checked) {
 }
 
 void MainWindow::on_pathOptimize_released() {
-    routingScenario.path_optimization();
-    routingGraphicsItem->repaint();
+    if(routingScenario.defined_path) {
+        routingScenario.path_optimization();
+        routingGraphicsItem->repaint();
+        double length = routingScenario.get_path_length();
+        statusBar()->showMessage(QString("Path length: %1.").arg(length), 4000);
+    }
 }
 
 #include "main.moc"

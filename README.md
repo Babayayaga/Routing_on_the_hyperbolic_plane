@@ -15,3 +15,7 @@ Due to the lack of "real" routing problems on the hyperbolic plane, we implement
 From this we infer the constrained edges of the triangulation and insert them.
 
 <img src="https://github.com/user-attachments/assets/c74927c3-6a4e-46ee-ab8c-5ae0fb7d053e" width="300">
+<img src="https://github.com/user-attachments/assets/f24cd5ae-f9bd-41f7-9df6-ac22e8955da4" width="300">
+
+(Routing scenarios with ~20k points, left Beltrami-Klein model, right Poincaré disk)
+

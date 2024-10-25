@@ -1,7 +1,7 @@
 # Routing on the hyperbolic plane
 This repository contains the code for the thesis `Routing on the hyperbolic plane`. It solves and visualizes the analoge of the [Euclidean shortest 
 path problem](https://en.wikipedia.org/wiki/Euclidean_shortest_path) on the hyperbolic plane, calculation and visualization are carried out in the 
-[Beltrami-Klein model](https://en.wikipedia.org/wiki/Beltrami%E2%80%93Klein_model) and the [Poincaré disk model](https://en.wikipedia.org/wiki/Poincar%C3%A9_disk_model). Here, a routing problem in a hyperbolic polygonal domain,
+[Beltrami-Klein model](https://en.wikipedia.org/wiki/Beltrami%E2%80%93Klein_model) and the [Poincaré disk model](https://en.wikipedia.org/wiki/Poincar%C3%A9_disk_model). Here, a routing problem in a hyperbolic polygonal domain
 is solved by first computing a [constrained Delaunay triangulation (CGAL)](https://doc.cgal.org/latest/Triangulation_2/index.html#Section_2D_Triangulations_Constrained_Delaunay)
 as navigation mesh. Then, we use a [triangular expansion algorithm](https://www.researchgate.net/figure/Triangular-expansion-algorithm-recursion-entering-triangle-through-edge-e_fig1_260873070) 
 to construct a visibility graph, now A* or Dijkstra are applied. For large problems, we can choose to restrict the visibiliy graph to be

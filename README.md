@@ -27,7 +27,7 @@ For displaying, we use Qts `QMainWindow`, it contains a `QGraphicsScene` and a `
 <img src = "https://github.com/user-attachments/assets/6094d5b6-7f74-4c01-a8f8-cbaa4f3ee476" width = "230">
 <img src = "https://github.com/user-attachments/assets/d6063c26-3552-42f6-a2b9-5fae6663017f" width = "230">
 
-(Triangulation of free space, Dijkstra tree, points visible from start node, shortest path between start and end node)
+(Beltrami-Klein model: Triangulation of free space, Dijkstra tree, points visible from start node, shortest path between start and end node)
 
 We can infer closed polygonal chains, that may only intersect in their vertices, from the constrained edges of the triangulation. This decomposition into polygonal chains is used to store and load in a `RoutingScenario`, to disregard small obstacles and to draw the iterior of an obstacle with a `QPainterPath`. The fill rule of `QPainterPath` is set to `Qt::OddEvenFill`.
 

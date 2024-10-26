@@ -19,3 +19,11 @@ In the end, we infer the constrained edges of the triangulation and insert them 
 
 (Routing scenarios with ~20k points, left Beltrami-Klein model, right Poincaré disk)
 
+## Visualization
+For displaying, we use Qts `QMainWindow`, it contains a `QGraphicsScene` and a `QGraphicsView`. The two custom `QGraphicsItems`, namly `TriangulationGraphicsItem` and `RoutingScenarioGraphicsItem` are added to the scene. The `RoutingScenarioGraphicsItem` is parent of the `TriangulationGraphicsItem`. All routing specific variables are stored inside the chief class of this project, `RoutingScenario`. The `RoutingScenarioGraphicsItem` has acess to them and visualizes them, if enabled (path between two nodes, all points seen by the start node, Dijkstra tree, visibility graph). The triangulation is painted by the `TriangulationGraphicsItem`, constrained edges can be drawn seperatly. 
+We can infer closed polygonal chains, that may only intersect in their vertices, from the constrained edges of the triangulation. This decomposition into polygonal chains is used to store and load in a `RoutingScenario` and to disregard small obstacles. The chains are stored inside the `Routing_scenario` class. A `QPainterPath` with `Qt::OddEvenFill` is used, to draw the obstacles interior. The edges are `QArcs`
+
+<img src = "https://github.com/user-attachments/assets/6446ea86-00d4-4683-8a27-18fa84d3aee0" width = "230">
+<img src = "https://github.com/user-attachments/assets/47258cd5-2872-4e44-a02e-f9660f744cce" width = "230">
+<img src = "https://github.com/user-attachments/assets/d43c9477-93fb-43f4-b00a-8784c86ee8db" width = "230">
+<img src = "https://github.com/user-attachments/assets/c4f24ee7-48fc-410c-b7a9-2fadf095de96" width = "230">

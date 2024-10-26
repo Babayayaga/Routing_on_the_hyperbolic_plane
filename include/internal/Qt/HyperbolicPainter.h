@@ -13,15 +13,15 @@
 namespace CGAL::Qt {
     template<typename Traits>
     class Hyperbolic_painter {
-        typedef typename Poincare_disk_traits<> Gt;
-        typedef typename Gt::Hyperbolic_segment_2 Hyperbolic_segment_2;
-        typedef typename Gt::Circular_arc_2 Circular_arc_2;
-        typedef typename Gt::Euclidean_segment_2 Euclidean_segment_2;
-        typedef typename Gt::Point_2 Point_2;
-        typedef typename Gt::Circle_2 Circle_2;
-        typedef typename Gt::Triangle_2 Triangle_2;
-        typedef typename Gt::Construct_segment_2 Construct_segment_2;
-        typedef typename Gt::FT FT;
+        typedef Poincare_disk_traits<> Gt;
+        typedef Gt::Hyperbolic_segment_2 Hyperbolic_segment_2;
+        typedef Gt::Circular_arc_2 Circular_arc_2;
+        typedef Gt::Euclidean_segment_2 Euclidean_segment_2;
+        typedef Gt::Point_2 Point_2;
+        typedef Gt::Circle_2 Circle_2;
+        typedef Gt::Triangle_2 Triangle_2;
+        typedef Gt::Construct_segment_2 Construct_segment_2;
+        typedef Gt::FT FT;
 
         Gt gt;
         constexpr static double APPROXIMATION_BOUND = 100;
@@ -135,9 +135,10 @@ namespace CGAL::Qt {
         QPainterPath construct_path(std::list<std::vector<Point_2> > obstacles,
                                     const double approximation_bound = APPROXIMATION_BOUND) const {
             QPainterPath obstaclePath;
-            for (std::list<std::vector<Point_2> >::iterator obstacle_iterator = obstacles.begin();
+            for (std::list<std::vector<Point_2>>::iterator obstacle_iterator = obstacles.begin();
                  obstacle_iterator != obstacles.end(); ++obstacle_iterator) {
                 std::vector<Point_2> obstacle = *obstacle_iterator;
+                obstacle.push_back(obstacle.front());
                 obstaclePath.addPath(construct_polygon_path(obstacle, approximation_bound));
             }
             return obstaclePath;

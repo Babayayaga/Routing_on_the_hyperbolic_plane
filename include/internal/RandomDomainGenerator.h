@@ -112,6 +112,9 @@ namespace CGAL::Qt {
                 timer.reset();
             }
 
+            //we could also remove triangles, where all edges are constrained edges
+            //and triangles where two sides are constrained edges
+
             timer.start();
             r->discover_components();
             timer.stop();

@@ -140,7 +140,7 @@ namespace CGAL::Qt {
             t->insert_constraint(va, vb);
         }
 
-        std::list<std::vector<Vertex_handle> > get_obstacles() {
+        std::list<std::vector<Vertex_handle>> get_obstacles() {
             if (!defined_decomposition) {
                 discover_polygon_decomposition();
             }
@@ -906,6 +906,8 @@ namespace CGAL::Qt {
     void Routing_scenario<T>::discover_polygon_decomposition() {
         CGAL::Timer timer;
         timer.start();
+
+        obstacles.clear();
 
         std::vector<Vertex_handle> visited_points;
         std::set<Edge> edges;

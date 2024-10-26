@@ -42,3 +42,10 @@ We can infer closed polygonal chains, that may only intersect in their vertices,
 
 ### Walking, rotating and measuring distances
 The `RoutingScenarioGraphicsItem` keeps track of the current positions of each `Vertex_handle`. The map `t_map` assigns to each `Vertex_handle` a `Point_2`, its current position. We can apply the following Möbius transformation to the Poincaré model: $\rho(z) = (z-x) / (-\overline{x}z+1)$ where $z, x$ are complex numbers in the unit circle. $\rho$ sends $x$ to zero and zero to $-x$ and is a translation in the Poincaré disk model. Applying this transformation to the `Vertex_handles` and drawing edges and faces correspondingly, creates the illusion to walk on the hyperbolic plane. For example walking 0.1 Euclidean units to the right is done by applying $\rho(z) = (z-0.1) / (-0.1z+1)$ to all points in the scene. Rotating the iterior of the unit disk by some angle is an isometry too. Both isometries are coded in the `RoutingScenarioGraphicsItem`, when applied we take the old points in the `t_map` and calculate their image points, this way we get the composition of our transformations. To move in the Beltrami-Klein model, we map the Beltrami-Klein model to the Poincaré model, apply the transformation and map back. Distances are measured in a similiar way, to get the distance of two points $p,q$ in the Poincaré model, we map $p$ to zero with $\rho$ and consider the image of $q$ under $\rho$. It's easy to calculate their distance now $d(p',q')=\ln{(r+1) / (r-1)}$, where $r$ is the radius of $q'$. And since $\rho$ is an isometry the distance between $p'$ and $q'$ is the same as the distance between $p$ and $q$.
+
+## The applet
+The applet visualizes the routing on the hyperbolic plane and should be self-explanatory (hopefully). It's possible to create own routing scenarios by inserting points and polygons.
+
+<img src = "https://github.com/user-attachments/assets/ec21a3d8-6388-48b7-8da1-4eb143b31afa" width = "500">
+
+(Picture of the applet)

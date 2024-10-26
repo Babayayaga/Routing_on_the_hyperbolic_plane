@@ -45,13 +45,12 @@ The `RoutingScenarioGraphicsItem` keeps track of the current positions of each `
 
 ## The applet
 The applet visualizes the routing on the hyperbolic plane and should be self-explanatory (hopefully). It's possible to:
-* create routing scenarios by drawing points and polygons
-* create routing scenarios randomly
-* solve routing scenarios
-* save/load routing scenarios
+* create routing scenarios by drawing points and polygons or random generation
+* solve routing scenarios in two different ways
+* display various visibility relations
+* save/load polygonal domains
 * export scene as .svg
 * export scene as .png
-* display visibility relations
 
 <img src = "https://github.com/user-attachments/assets/ec21a3d8-6388-48b7-8da1-4eb143b31afa" width = "500">
 

@@ -95,6 +95,9 @@ namespace CGAL::Qt {
             if (show_edges) {
                 construct_edges();
             }
+            if(show_triangulation_between_obstacles) {
+                construct_edges_between_obstacles();
+            }
             repaint();
         }
 
@@ -137,7 +140,7 @@ namespace CGAL::Qt {
           approximation_bound(10), transformed(false) {
         set_vertices_pen(QPen(::Qt::red, 5, ::Qt::SolidLine, ::Qt::RoundCap, ::Qt::RoundJoin));
         set_edges_pen(QPen(::Qt::black, 0, ::Qt::SolidLine, ::Qt::RoundCap, ::Qt::RoundJoin));
-        set_constraints_pen(QPen(::Qt::darkMagenta, 0, ::Qt::SolidLine, ::Qt::RoundCap, ::Qt::RoundJoin));
+        set_constraints_pen(QPen(::Qt::darkMagenta, 0.01, ::Qt::SolidLine, ::Qt::RoundCap, ::Qt::RoundJoin));
     }
 
     template<typename T>
@@ -175,7 +178,8 @@ namespace CGAL::Qt {
             for (QHyperbolic_segment edge: edges) {
                 hyperbolic_painter.draw_hyperbolic_segment(edge);
             }
-        } else if (show_constraints) {
+        }
+        if (show_constraints) {
             painter->setPen(constraints_pen);
             for (QHyperbolic_segment edge: constrained_edges) {
                 hyperbolic_painter.draw_hyperbolic_segment(edge);

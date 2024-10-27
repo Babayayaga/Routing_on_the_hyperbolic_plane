@@ -246,6 +246,21 @@ namespace CGAL::Qt {
             return sum;
         }
 
+        double average_path_length_dijkstra() {
+            if(!defined_dijkstra) {
+                return 0;
+            }
+            double sum = 0;
+            int counter = 0;
+            for(int i = 0; i < dijkstra_result.size(); ++i) {
+                if(dijkstra_result[i].second != DBL_MAX) {
+                    ++counter;
+                    sum = sum + dijkstra_result[i].second;
+                }
+            }
+            return sum / counter;
+        }
+
         void print_out_visibility_graph() {
             std::cout << "visibility graph: " << std::endl;
             //each vertex is part of the visibility graph

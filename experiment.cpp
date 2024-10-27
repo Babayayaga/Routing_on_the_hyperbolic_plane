@@ -80,12 +80,13 @@ int main() {
             std::cout << "Compute A* or Dijkstra (0/1)? ";
             std::cin >> a_star_or_dijkstra;
             if (a_star_or_dijkstra) {
-                routing_scenario.dijkstra();
                 std::cout << "Computing Dijkstra..." << std::endl;
+                routing_scenario.dijkstra();
                 routing_scenario.get_path_from_dijkstra();
+                std::cout << "Average path length Dijkstra: " << routing_scenario.average_path_length_dijkstra() << std::endl;
             } else {
-                routing_scenario.a_star();
                 std::cout << "Computing A*..." << std::endl;
+                routing_scenario.a_star();
             }
             std::cout << "Result: Path length: " << routing_scenario.get_path_length()
                     << ". Number of nodes: " << routing_scenario.get_indices_path().size() << std::endl;

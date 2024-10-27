@@ -30,7 +30,7 @@ typedef CGAL::Poincare_disk_traits<> Poincare_disk_traits;
 typedef CGAL::Beltrami_klein_traits<> Beltrami_klein_traits;
 
 //either choose Poincare_disk_traits or Beltrami_klein_traits
-typedef Poincare_disk_traits K;
+typedef Beltrami_klein_traits K;
 
 typedef K::FT FT;
 typedef K::Point_2 Point_2;
@@ -614,13 +614,13 @@ void MainWindow::on_actionComputeVisibilityGraph_triggered() {
             routingScenario.build_visibility_graph();
         }
         timer.stop();
-        timer.stop();
         statusBar()->showMessage(
             QString("Building: %1 seconds, #Nodes: %2, #Edges: %3").arg(timer.time()).arg(
                 routingScenario.number_of_vertices()).arg(routingScenario.adjacencies.size() / 2), 8000);
         std::cout << "Visibility-graph build took: " << timer.time() << " seconds. #Edges: " << routingScenario.adjacencies.size()
                 / 2 << "." << std::endl;
         std::cout << "Vertex_index_map size: " << routingScenario.vertex_index_map.size() << std::endl;
+        timer.reset();
     } else {
         statusBar()->showMessage(QString("Already computed."), 4000);
     }

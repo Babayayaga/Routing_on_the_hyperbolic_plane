@@ -51,8 +51,11 @@ namespace CGAL::Qt {
         void generate_random_domain(const int number_of_points, const double radius,
                       const double threshold, const int erosions, const int dilations, const int min,
                       const bool b, const bool remove) {
+            std::cout << std::endl;
+            std::cout << "-----Domain generation-----" << std::endl;
             Timer sum;
             sum.start();
+
             T* t = r->t;
 
             Timer timer;
@@ -122,7 +125,8 @@ namespace CGAL::Qt {
             timer.reset();
 
             sum.stop();
-            std::cout << "Generating domain took: " << sum.time() << " seconds." << std::endl;
+            std::cout << "-----Generating domain took: " << sum.time() << " seconds.-----" << std::endl;
+            std::cout << std::endl;
         }
 
         //remove polygonal chains with less than min vertices

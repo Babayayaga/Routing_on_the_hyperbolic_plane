@@ -65,6 +65,9 @@ int main() {
             std::cout <<
                     "(0) All-to-all visibility check (1) Triagular expansion algorithm (2) Routing on triangulation: ";
             std::cin >> algorithm;
+            std::cout << "Computing visibility graph..." << std::endl;
+            CGAL::Timer timer;
+            timer.start();
             if (algorithm == 0) {
                 routing_scenario.build_visibility_graph_naive();
             } else if (algorithm == 1) {
@@ -72,8 +75,8 @@ int main() {
             } else {
                 routing_scenario.use_triangulation_as_visibility_graph();
             }
-            std::cout << "Computing visibility graph..." << std::endl;
-            std::cout << "Result: Number of edges: " << routing_scenario.edges_visibility_graph() << std::endl;
+            timer.stop();
+            std::cout << "Computing visibility graph took: " << timer.time() << " seconds. Number of edges: " << routing_scenario.edges_visibility_graph() << std::endl;
             std::cout << "Compute A* or Dijkstra (0/1)? ";
             std::cin >> a_star_or_dijkstra;
             if (a_star_or_dijkstra) {
@@ -92,11 +95,13 @@ int main() {
             if (optimize_path) {
                 routing_scenario.path_optimization();
                 std::cout << "Optimize path..." << std::endl;
+                std::cout << "Result: Path length: " << routing_scenario.get_path_length()
+                    << ". Number of nodes: " << routing_scenario.get_indices_path().size() << std::endl;
             }
 
             std::cout << "Continue with current polygonal domain (0/1)? ";
             std::cin >> new_domain;
-        } while (!new_domain);
+        } while (new_domain);
             std::cout << "Again (0/1)? ";
             std::cin >> end;
     } while (!end);

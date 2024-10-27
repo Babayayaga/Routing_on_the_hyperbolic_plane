@@ -912,9 +912,6 @@ namespace CGAL::Qt {
 
     template<typename T>
     void Routing_scenario<T>::discover_polygon_decomposition() {
-        CGAL::Timer timer;
-        timer.start();
-
         obstacles.clear();
 
         std::vector<Vertex_handle> visited_points;
@@ -947,19 +944,12 @@ namespace CGAL::Qt {
             visited_points.clear();
         }
         defined_decomposition = true;
-
-        timer.stop();
-        std::cout << "discover_polygon_decomposition took: " << timer.time() << " seconds." << std::endl;
-        timer.reset();
     }
 
     template<typename T>
     void Routing_scenario<T>::discover_components() {
         if (t->dimension() != 2)
             return;
-
-        CGAL::Timer timer;
-        timer.start();
 
         Face_handle start = t->infinite_face();
         std::list<Face_handle> queue;
@@ -986,10 +976,6 @@ namespace CGAL::Qt {
             }
         }
         defined_domain = true;
-
-        timer.stop();
-        std::cout << "discover_components took: " << timer.time() << " seconds." << std::endl;
-        timer.reset();
     }
 
     template<typename T>

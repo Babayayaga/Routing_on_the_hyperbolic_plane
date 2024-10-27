@@ -79,6 +79,14 @@ namespace CGAL::Qt {
             return t->number_of_vertices();
         }
 
+        int number_of_faces() {
+            return t->number_of_faces();
+        }
+
+        int edges_visibility_graph() {
+            return adjacencies.size() / 2;
+        }
+
         Vertex_handle insert_point(Point_2 p) {
             defined_domain = false;
             clear_graphs();

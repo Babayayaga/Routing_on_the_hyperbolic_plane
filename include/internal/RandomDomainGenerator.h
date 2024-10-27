@@ -185,20 +185,18 @@ namespace CGAL::Qt {
 
         void make_smoother(T* t, const bool b, const int erosions, const int dilations) {
             if (b) {
-                std::cout << "Erosion before dilation." << std::endl;
-                for (int i = 0; i < erosions; i++) {
-                    erosion(2, t);
-                }
                 for (int i = 0; i < dilations; i++) {
                     dilation(2, t);
+                }
+                for (int i = 0; i < erosions; i++) {
+                    erosion(2, t);
                 }
             } else {
-                std::cout << "Dilation before erosion." << std::endl;
                 for (int i = 0; i < erosions; i++) {
-                    dilation(2, t);
+                    erosion(2, t);
                 }
                 for (int i = 0; i < dilations; i++) {
-                    erosion(2, t);
+                    dilation(2, t);
                 }
             }
         }

@@ -109,7 +109,7 @@ namespace CGAL::Qt {
 
             if(remove) {
                 timer.start();
-                remove_unconstrained_points(t);
+                r->remove_unconstrained_points(t);
                 timer.stop();
                 std::cout << "Removing points with no incident constrained edges took: " << timer.time() << " seconds." << std::endl;
                 timer.reset();
@@ -158,17 +158,6 @@ namespace CGAL::Qt {
                     if(fi->face()->is_in_domain()) {
                         set.insert(fi);
                     }
-                }
-            }
-            r->remove_vertices(set);
-        }
-
-        //remove points that have no incident constraints
-        void remove_unconstrained_points(T* t) {
-            std::set<Vertex_handle> set;
-            for (Finite_vertices_iterator fi = t->finite_vertices_begin(); fi != t->finite_vertices_end(); ++fi) {
-                if(!t->are_there_incident_constraints(fi)) {
-                    set.insert(fi);
                 }
             }
             r->remove_vertices(set);

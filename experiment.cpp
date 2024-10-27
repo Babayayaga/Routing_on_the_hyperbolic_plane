@@ -104,6 +104,6 @@ int main() {
         } while (new_domain);
             std::cout << "Again (0/1)? ";
             std::cin >> end;
-    } while (!end);
+    } while (end);
     exit(0);
 }

@@ -599,6 +599,8 @@ void MainWindow::on_actionShowVisibilityGraph_toggled(const bool checked) {
 
 void MainWindow::on_actionComputeVisibilityGraph_triggered() {
     this->actionFindPath->setChecked(false);
+    this->actionShowVisibilityGraph->setChecked(false);
+    this->actionShowDijkstraTree->setChecked(false);
     if (routingScenario.t->dimension() >= 2) {
         CGAL::Timer timer;
         timer.start();
@@ -611,6 +613,7 @@ void MainWindow::on_actionComputeVisibilityGraph_triggered() {
         if(this->comboBox->currentIndex() == 2) {
             routingScenario.build_visibility_graph();
         }
+        timer.stop();
         timer.stop();
         statusBar()->showMessage(
             QString("Building: %1 seconds, #Nodes: %2, #Edges: %3").arg(timer.time()).arg(

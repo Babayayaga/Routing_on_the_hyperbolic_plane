@@ -182,6 +182,17 @@ namespace CGAL::Qt {
             t->remove_constrained_edge(fh, index);
         }
 
+        //remove points that have no incident constraints
+        void remove_unconstrained_points(T* t) {
+            std::set<Vertex_handle> set;
+            for (Finite_vertices_iterator fi = t->finite_vertices_begin(); fi != t->finite_vertices_end(); ++fi) {
+                if(!t->are_there_incident_constraints(fi)) {
+                    set.insert(fi);
+                }
+            }
+            remove_vertices(set);
+        }
+
         void clear() {
             clear_routing_scenario();
             t->clear();

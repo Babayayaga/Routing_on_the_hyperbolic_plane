@@ -56,7 +56,7 @@ The applet visualizes the routing on the hyperbolic plane and should be self-exp
 
 (Picture of the applet)
 
-A use without the applet is established in the `experiments.cpp` file.
+A use without the applet is established in `experiments.cpp`.
 
 ## Some performance tests
 

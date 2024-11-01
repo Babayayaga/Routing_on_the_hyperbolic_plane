@@ -183,11 +183,28 @@ namespace CGAL::Qt {
         }
 
         //remove points that have no incident constraints
-        void remove_unconstrained_points(T* t) {
+        void remove_all_unconstrained_points() {
             std::set<Vertex_handle> set;
             for (Finite_vertices_iterator fi = t->finite_vertices_begin(); fi != t->finite_vertices_end(); ++fi) {
                 if(!t->are_there_incident_constraints(fi)) {
                     set.insert(fi);
+                }
+            }
+            remove_vertices(set);
+        }
+
+        //remove points that have no incident constraints
+        //and lie in obstacle interior
+        void remove_unconstrained_points_in_obstacle_interior() {
+            if(!defined_domain) {
+                discover_components();
+            }
+            std::set<Vertex_handle> set;
+            for (Finite_vertices_iterator fi = t->finite_vertices_begin(); fi != t->finite_vertices_end(); ++fi) {
+                if(!t->are_there_incident_constraints(fi)) {
+                    if(fi->face()->is_in_domain()) {
+                        set.insert(fi);
+                    }
                 }
             }
             remove_vertices(set);

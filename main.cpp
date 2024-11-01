@@ -443,6 +443,7 @@ void MainWindow::on_actionInsertRandomPoints_triggered() {
     timer.start();
 
     routingScenario.insert_points(points.begin(), points.end());
+    routingScenario.remove_unconstrained_points_in_obstacle_interior();
 
     timer.stop();
     statusBar()->showMessage(QString("Inserting points: %1 seconds.").arg(timer.time()), 6000);
@@ -741,7 +742,7 @@ void MainWindow::on_actionGenerateRandomDomain_triggered() {
     timer.start();
     generator.generate_random_domain(this->numberPointsSpinBox->value() * 1000, this->radiusSpinBox->value(),
                        this->thresholdSpinBox->value(), this->erosionSpinBox->value(),
-        this->dilationSpinBox->value(), this->minSpinBox->value(),this->checkBox->checkState(), this->removeCheckBox->checkState());
+        this->dilationSpinBox->value(), this->minSpinBox->value(),this->checkBox->checkState());
     timer.stop();
     this->actionSetPointOnObstacle->setChecked(true);
     statusBar()->showMessage(

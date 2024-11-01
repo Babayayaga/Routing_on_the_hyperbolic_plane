@@ -39,11 +39,8 @@ int main() {
         std::cin >> radius;
         std::cout << "Threshold: ";
         std::cin >> threshold;
-        std::cout << "Disregard points with no incident constraints (0/1)? ";
-        std::cin >> remove_points_in_free_space;
         std::cout << "Generating..." << std::endl;
-        random_generator.generate_random_domain(number_of_points, radius, threshold, 5, 5, 5, true,
-                                                remove_points_in_free_space);
+        random_generator.generate_random_domain(number_of_points, radius, threshold, 5, 5, 5, true);
         std::cout << "Result: Number of points: " << routing_scenario.number_of_vertices() << ". Number of faces: " <<
                 routing_scenario.number_of_faces() << std::endl;
 

@@ -49,14 +49,14 @@ namespace CGAL::Qt {
         }
 
         void generate_random_domain(const int number_of_points, const double radius,
-                      const double threshold, const int erosions, const int dilations, const int min,
-                      const bool b, const bool remove) {
+                                    const double threshold, const int erosions, const int dilations, const int min,
+                                    const bool b) {
             std::cout << std::endl;
             std::cout << "-----Domain generation-----" << std::endl;
             Timer sum;
             sum.start();
 
-            T* t = r->t;
+            T *t = r->t;
 
             Timer timer;
             timer.start();
@@ -86,10 +86,11 @@ namespace CGAL::Qt {
             timer.start();
             discover_edges(t);
             timer.stop();
-            std::cout << "Discovering and inserting constrained edges took: " << timer.time() << " seconds." << std::endl;
+            std::cout << "Discovering and inserting constrained edges took: " << timer.time() << " seconds." <<
+                    std::endl;
             timer.reset();
 
-            if(min > 3) {
+            if (min > 3) {
                 timer.start();
                 remove_small_obstacles(t, min);
                 //since we are removing constrained edges, this step is needed
@@ -97,23 +98,17 @@ namespace CGAL::Qt {
                 //can also be neglected, but then remove_unconstrained_points_in_obstacle_iterior() gives slightly wrong results
                 r->discover_components();
                 timer.stop();
-                std::cout << "Removing obstacles with less than min points took: " << timer.time() << " seconds." << std::endl;
+                std::cout << "Removing obstacles with less than min points took: " << timer.time() << " seconds." <<
+                        std::endl;
                 timer.reset();
             }
 
             timer.start();
-            remove_unconstrained_points_in_obstacle_iterior(t);
+            r->remove_all_unconstrained_points();
             timer.stop();
-            std::cout << "Removing vertices in interior of an obstacle but with no incident constraints took: " << timer.time() << " seconds." << std::endl;
+            std::cout << "Removing points with no incident constrained edges took: " << timer.time() << " seconds." <<
+                    std::endl;
             timer.reset();
-
-            if(remove) {
-                timer.start();
-                r->remove_unconstrained_points(t);
-                timer.stop();
-                std::cout << "Removing points with no incident constrained edges took: " << timer.time() << " seconds." << std::endl;
-                timer.reset();
-            }
 
             //we could also remove triangles, where all edges are constrained edges
             //and triangles where two sides are constrained edges
@@ -129,42 +124,40 @@ namespace CGAL::Qt {
             std::cout << std::endl;
         }
 
+        void insert_uniformly_distributed_points(const int n) {
+            Timer timer;
+            timer.start();
+            std::vector<Point_2> points = inverse_sampling(n, radius);
+            r->insert_points(points.begin(), points.end());
+            r->remove_unconstrained_points_in_obstacle_interior();
+            timer.stop();
+            std::cout << "Inserting additional points took: " << timer.time() << " seconds." << std::endl;
+            timer.reset();
+        }
+
         //remove polygonal chains with less than min vertices
-        void remove_small_obstacles(T* t, const int min) {
-            std::list<std::vector<Vertex_handle>> obstacles = r->get_obstacles();
+        void remove_small_obstacles(T *t, const int min) {
+            std::list<std::vector<Vertex_handle> > obstacles = r->get_obstacles();
             std::set<Edge> set;
-            for(std::vector<Vertex_handle> obstacle : obstacles) {
-                if(obstacle.size() < min) {
+            for (std::vector<Vertex_handle> obstacle: obstacles) {
+                if (obstacle.size() < min) {
                     //remove edges of obstacle
-                    for(int i = 0; i < obstacle.size(); ++i) {
+                    for (int i = 0; i < obstacle.size(); ++i) {
                         Face_circulator fc = t->incident_faces(obstacle[i]), done(fc);
                         do {
                             int index = fc->index(obstacle[i]);
-                            if(fc->vertex(fc->ccw(index)) == obstacle[(i + 1) % obstacle.size()]) {
+                            if (fc->vertex(fc->ccw(index)) == obstacle[(i + 1) % obstacle.size()]) {
                                 r->remove_constrained_edge(fc, fc->cw(index));
                                 break;
                             }
-                        } while(++fc != done);
+                        } while (++fc != done);
                     }
                 }
             }
-        }
-
-        //remove points in iterior of obstacles that have no incident constraints
-        void remove_unconstrained_points_in_obstacle_iterior(T* t) {
-            std::set<Vertex_handle> set;
-            for (Finite_vertices_iterator fi = t->finite_vertices_begin(); fi != t->finite_vertices_end(); ++fi) {
-                if(!t->are_there_incident_constraints(fi)) {
-                    if(fi->face()->is_in_domain()) {
-                        set.insert(fi);
-                    }
-                }
-            }
-            r->remove_vertices(set);
         }
 
         //give every vertex a value from [-1,1], then decide for each triangle the in_domain value
-        void set_faces_in_domain(T* t, const double threshold) {
+        void set_faces_in_domain(T *t, const double threshold) {
             std::map<Vertex_handle, float> map;
             Random random;
             for (Finite_vertices_iterator fi = t->finite_vertices_begin(); fi != t->finite_vertices_end(); ++fi) {
@@ -183,7 +176,7 @@ namespace CGAL::Qt {
             }
         }
 
-        void make_smoother(T* t, const bool b, const int erosions, const int dilations) {
+        void make_smoother(T *t, const bool b, const int erosions, const int dilations) {
             if (b) {
                 for (int i = 0; i < dilations; i++) {
                     dilation(2, t);
@@ -267,7 +260,7 @@ namespace CGAL::Qt {
                 const double angle = angle_distr(gen);
 
                 //if Beltrami Klein model is used
-                if(typeid(T) == typeid(Beltrami_klein_traits<>)) {
+                if (typeid(T) == typeid(Beltrami_klein_traits<>)) {
                     r = 2 * r / (1 + r * r);
                 }
 
@@ -299,7 +292,7 @@ namespace CGAL::Qt {
                     const double angle = angle_distr(gen);
 
                     //if Beltrami Klein model is used
-                    if(typeid(T) == typeid(Beltrami_klein_traits<>)) {
+                    if (typeid(T) == typeid(Beltrami_klein_traits<>)) {
                         x = 2 * x / (1 + x * x);
                     }
 

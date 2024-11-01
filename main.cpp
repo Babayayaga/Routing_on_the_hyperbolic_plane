@@ -425,6 +425,11 @@ void MainWindow::on_actionShowPoints_toggled(const bool checked) {
 }
 
 void MainWindow::on_actionInsertRandomPoints_triggered() {
+    this->actionShowVisibilityGraph->setChecked(false);
+    this->actionShowDijkstraTree->setChecked(false);
+    this->actionShowPointToAllVisibility->setChecked(false);
+    this->actionShowPointToPointVisibility->setChecked(false);
+    this->actionFindPath->setChecked(false);
     on_actionRecenter_triggered();
     bool ok = false;
     const int number_of_points = QInputDialog::getInt(this, "Number of random points",
@@ -444,11 +449,18 @@ void MainWindow::on_actionInsertRandomPoints_triggered() {
     timer.start();
 
     routingScenario.insert_points(points.begin(), points.end());
-    routingScenario.remove_unconstrained_points_in_obstacle_interior();
 
     timer.stop();
     statusBar()->showMessage(QString("Inserting points: %1 seconds.").arg(timer.time()), 6000);
     std::cout << "inserting points took: " << timer.time() << " seconds." << std::endl;
+    timer.reset();
+
+    timer.start();
+    routingScenario.remove_unconstrained_points_in_obstacle_interior();
+    timer.stop();
+    std::cout << "remove_unconstrained_points_in_obstacle_interior took: " << timer.time() << " seconds." << std::endl;
+    statusBar()->showMessage(QString("remove_unconstrained_points_in_obstacle_interior: %1 seconds.").arg(timer.time()), 6000);
+    timer.reset();
 
     routingGraphicsItem->changed();
 }

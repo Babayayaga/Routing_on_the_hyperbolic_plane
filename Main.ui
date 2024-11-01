@@ -7,8 +7,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>774</width>
-    <height>836</height>
+    <width>911</width>
+    <height>890</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -189,6 +189,19 @@
        </widget>
       </item>
       <item>
+       <widget class="QCheckBox" name="checkBox">
+        <property name="statusTip">
+         <string>Erosion before dilation. Switches treatments of terrain.</string>
+        </property>
+        <property name="text">
+         <string>Dilation before Erosion</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
        <spacer name="horizontalSpacer_2">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -206,25 +219,17 @@
     <item row="4" column="0">
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
-       <widget class="QLabel" name="label_9">
-        <property name="text">
-         <string>Path step size:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QSpinBox" name="pathStepSpinBox">
-        <property name="value">
-         <number>1</number>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="Line" name="line_3">
+       <spacer name="horizontalSpacer_5">
         <property name="orientation">
-         <enum>Qt::Vertical</enum>
+         <enum>Qt::Horizontal</enum>
         </property>
-       </widget>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
       </item>
       <item>
        <widget class="QLabel" name="label_12">
@@ -256,13 +261,6 @@
           <string>triangle expansion algorithm</string>
          </property>
         </item>
-       </widget>
-      </item>
-      <item>
-       <widget class="Line" name="line">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
        </widget>
       </item>
       <item>
@@ -324,34 +322,17 @@
        <enum>QLayout::SetDefaultConstraint</enum>
       </property>
       <item>
-       <widget class="QCheckBox" name="checkBox">
-        <property name="statusTip">
-         <string>Erosion before dilation. Switches treatments of terrain.</string>
-        </property>
-        <property name="text">
-         <string>Dilation before Erosion</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="removeCheckBox">
-        <property name="text">
-         <string>Remove unconstrained vertices</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="Line" name="line_2">
+       <spacer name="horizontalSpacer_3">
         <property name="orientation">
-         <enum>Qt::Vertical</enum>
+         <enum>Qt::Horizontal</enum>
         </property>
-       </widget>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
       </item>
       <item>
        <widget class="QLabel" name="label_7">
@@ -406,6 +387,20 @@
         </property>
         <property name="value">
          <double>0.050000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_9">
+        <property name="text">
+         <string>Path step size:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="pathStepSpinBox">
+        <property name="value">
+         <number>1</number>
         </property>
        </widget>
       </item>
@@ -478,7 +473,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>774</width>
+     <width>911</width>
      <height>21</height>
     </rect>
    </property>

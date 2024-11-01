@@ -521,6 +521,9 @@ namespace CGAL::Qt {
     template<typename T>
     void Routing_scenario_graphics_item<T>::changed() {
         //std::cout << "changed" << std::endl;
+        if(!r->defined_domain) {
+            r->discover_components();
+        }
         decomposition.clear();
         decomposition_colors.clear();
         if (transformed) {

@@ -425,6 +425,7 @@ void MainWindow::on_actionShowPoints_toggled(const bool checked) {
 }
 
 void MainWindow::on_actionInsertRandomPoints_triggered() {
+    on_actionRecenter_triggered();
     bool ok = false;
     const int number_of_points = QInputDialog::getInt(this, "Number of random points",
                                                       "Enter number of random points", 5000,

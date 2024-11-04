@@ -62,14 +62,20 @@ int main() {
             std::cout <<
                     "(0) All-to-all visibility check (1) Triagular expansion algorithm (2) Routing on triangulation: ";
             std::cin >> algorithm;
-            std::cout << "Computing visibility graph..." << std::endl;
             CGAL::Timer timer;
             timer.start();
             if (algorithm == 0) {
+                std::cout << "Computing visibility graph..." << std::endl;
                 routing_scenario.build_visibility_graph_naive();
             } else if (algorithm == 1) {
+                std::cout << "Computing visibility graph..." << std::endl;
                 routing_scenario.build_visibility_graph();
             } else {
+                int additional_points = 0;
+                std::cout << "Insert uniformly distributed random points? N: ";
+                std::cin >> additional_points;
+                random_generator.insert_uniformly_distributed_points(additional_points, radius);
+                std::cout << "Computing visibility graph..." << std::endl;
                 routing_scenario.use_triangulation_as_visibility_graph();
             }
             timer.stop();

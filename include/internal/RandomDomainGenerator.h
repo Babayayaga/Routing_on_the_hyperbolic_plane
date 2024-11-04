@@ -38,6 +38,7 @@ namespace CGAL::Qt {
 
         static double probability_density(const double er, const double area) {
             return 2 * er / (1 - er * er) / area;
+            //return 2*er; //Euclidean
         }
 
         static double inverse_antiderivative(const double x, const double area) {
@@ -124,7 +125,7 @@ namespace CGAL::Qt {
             std::cout << std::endl;
         }
 
-        void insert_uniformly_distributed_points(const int n) {
+        void insert_uniformly_distributed_points(const int n, const double radius) {
             Timer timer;
             timer.start();
             std::vector<Point_2> points = inverse_sampling(n, radius);
@@ -244,8 +245,7 @@ namespace CGAL::Qt {
             }
         }
 
-        static std::vector<Point_2> inverse_sampling(
-            const int number_of_points, const double radius) {
+        std::vector<Point_2> inverse_sampling(const int number_of_points, const double radius) {
             std::vector<Point_2> samples;
             std::random_device rd;
             std::mt19937 gen(rd());
@@ -260,7 +260,7 @@ namespace CGAL::Qt {
                 const double angle = angle_distr(gen);
 
                 //if Beltrami Klein model is used
-                if (typeid(T) == typeid(Beltrami_klein_traits<>)) {
+                if (typeid(Geom_traits) == typeid(Beltrami_klein_traits<>)) {
                     r = 2 * r / (1 + r * r);
                 }
 
@@ -272,7 +272,7 @@ namespace CGAL::Qt {
             return samples;
         }
 
-        static std::vector<Point_2> rejection_sampling(const int number_of_points, const double radius) {
+        std::vector<Point_2> rejection_sampling(const int number_of_points, const double radius) {
             std::vector<Point_2> samples;
             std::random_device rd;
             std::mt19937 gen(rd());
@@ -292,7 +292,7 @@ namespace CGAL::Qt {
                     const double angle = angle_distr(gen);
 
                     //if Beltrami Klein model is used
-                    if (typeid(T) == typeid(Beltrami_klein_traits<>)) {
+                    if (typeid(Geom_traits) == typeid(Beltrami_klein_traits<>)) {
                         x = 2 * x / (1 + x * x);
                     }
 

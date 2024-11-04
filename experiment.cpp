@@ -63,51 +63,58 @@ int main() {
                     "(0) All-to-all visibility check (1) Triagular expansion algorithm (2) Routing on triangulation: ";
             std::cin >> algorithm;
             CGAL::Timer timer;
-            timer.start();
             if (algorithm == 0) {
                 std::cout << "Computing visibility graph..." << std::endl;
+                timer.start();
                 routing_scenario.build_visibility_graph_naive();
+                timer.stop();
             } else if (algorithm == 1) {
                 std::cout << "Computing visibility graph..." << std::endl;
+                timer.start();
                 routing_scenario.build_visibility_graph();
+                timer.stop();
             } else {
                 int additional_points = 0;
                 std::cout << "Insert uniformly distributed random points? N: ";
                 std::cin >> additional_points;
-                random_generator.insert_uniformly_distributed_points(additional_points, radius);
+                if (additional_points > 0) {
+                    std::cout << "Inserting additional points..." << std::endl;
+                    random_generator.insert_uniformly_distributed_points(additional_points, radius);
+                    routing_scenario.discover_components();
+                }
                 std::cout << "Computing visibility graph..." << std::endl;
+                timer.start();
                 routing_scenario.use_triangulation_as_visibility_graph();
+                timer.stop();
             }
-            timer.stop();
-            std::cout << "Computing visibility graph took: " << timer.time() << " seconds. Number of edges: " << routing_scenario.edges_visibility_graph() << std::endl;
+            std::cout << "Computing visibility graph took: " << timer.time() << " seconds. Number of edges: "
+                    << routing_scenario.edges_visibility_graph() << " Number of nodes: "
+                    << routing_scenario.number_of_vertices() << std::endl;
+            timer.reset();
             std::cout << "Compute A* or Dijkstra (0/1)? ";
             std::cin >> a_star_or_dijkstra;
             if (a_star_or_dijkstra) {
                 std::cout << "Computing Dijkstra..." << std::endl;
                 routing_scenario.dijkstra();
                 routing_scenario.get_path_from_dijkstra();
-                std::cout << "Average path length Dijkstra: " << routing_scenario.average_path_length_dijkstra() << std::endl;
+                std::cout << "Average path length Dijkstra: " << routing_scenario.average_path_length_dijkstra() <<
+                        std::endl;
             } else {
                 std::cout << "Computing A*..." << std::endl;
                 routing_scenario.a_star();
             }
-            std::cout << "Result: Path length: " << routing_scenario.get_path_length()
-                    << ". Number of nodes: " << routing_scenario.get_indices_path().size() << std::endl;
 
             std::cout << "Optimize path (0/1)?  ";
             std::cin >> optimize_path;
             if (optimize_path) {
                 routing_scenario.path_optimization();
-                std::cout << "Optimize path..." << std::endl;
-                std::cout << "Result: Path length: " << routing_scenario.get_path_length()
-                    << ". Number of nodes: " << routing_scenario.get_indices_path().size() << std::endl;
             }
 
             std::cout << "Continue with current polygonal domain (0/1)? ";
             std::cin >> new_domain;
         } while (new_domain);
-            std::cout << "Again (0/1)? ";
-            std::cin >> end;
+        std::cout << "Again (0/1)? ";
+        std::cin >> end;
     } while (end);
     exit(0);
 }

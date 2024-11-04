@@ -126,14 +126,14 @@ namespace CGAL::Qt {
         }
 
         void insert_uniformly_distributed_points(const int n, const double radius) {
-            Timer timer;
-            timer.start();
+            /*Timer timer;
+            timer.start();*/
             std::vector<Point_2> points = inverse_sampling(n, radius);
             r->insert_points(points.begin(), points.end());
             r->remove_unconstrained_points_in_obstacle_interior();
-            timer.stop();
+            /*timer.stop();
             std::cout << "Inserting additional points took: " << timer.time() << " seconds." << std::endl;
-            timer.reset();
+            timer.reset();*/
         }
 
         //remove polygonal chains with less than min vertices

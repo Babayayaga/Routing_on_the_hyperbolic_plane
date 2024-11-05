@@ -37,16 +37,20 @@ namespace CGAL::Qt {
         explicit Random_domain_generator(Routing_scenario<T> *r);
 
         static double probability_density(const double er, const double area) {
-            return 2 * er / (1 - er * er) / area;
+            /*const double area = std::cosh(std::log((1 + radius) / (1 - radius))) - 1;*/
+            //return 2 * er / (1 - er * er) / area;
             //return 2*er; //Euclidean
+            return std::sinh(er) / area;
         }
 
         static double inverse_antiderivative(const double x, const double area) {
-            return std::sqrt(1 - std::exp(-x * area));
+            //return std::sqrt(1 - std::exp(-x * area));
+            return std::acosh(x * area + 1);
         }
 
         static double antiderivative(const double x, const double area) {
-            return -std::log(1 - x * x) / area;
+            //return -std::log(1 - x * x) / area;
+            return (std::cosh(x) - 1) / area;
         }
 
         void generate_random_domain(const int number_of_points, const double radius,
@@ -249,7 +253,7 @@ namespace CGAL::Qt {
             std::vector<Point_2> samples;
             std::random_device rd;
             std::mt19937 gen(rd());
-            const double area = std::cosh(std::log((1 + radius) / (1 - radius))) - 1;
+            const double area = std::cosh(radius) - 1;
             const double x_max = antiderivative(radius, area);
             //std::cout << "area " << area << std::endl;
             //std::cout << "x_max " << x_max << std::endl;
@@ -261,7 +265,9 @@ namespace CGAL::Qt {
 
                 //if Beltrami Klein model is used
                 if (typeid(Geom_traits) == typeid(Beltrami_klein_traits<>)) {
-                    r = 2 * r / (1 + r * r);
+                    r = std::tanh(r);
+                } else {
+                    r = std::tanh(r/2);
                 }
 
                 double x_ = std::cos(angle) * r;
@@ -273,35 +279,42 @@ namespace CGAL::Qt {
         }
 
         std::vector<Point_2> rejection_sampling(const int number_of_points, const double radius) {
+            int rejected_counter = 0; //for testing how often point is rejected
+            int number_of_tries = 0;
             std::vector<Point_2> samples;
             std::random_device rd;
             std::mt19937 gen(rd());
             std::uniform_real_distribution<> x_distr(0, radius);
-            //one could simplify the area computation
-            const double area = std::cosh(std::log((1 + radius) / (1 - radius))) - 1;
+            const double area = std::cosh(radius) - 1;
             const double y_max = probability_density(radius, area);
             std::uniform_real_distribution<> y_distr(0, y_max);
             std::uniform_real_distribution<> angle_distr(0, 2 * CGAL_PI);
-            //std::cout << "y_max: " << y_max << std::endl;
             while (samples.size() < number_of_points) {
-                double x = /*radius * std::sqrt(*/x_distr(gen)/*)*/;
+                double x = x_distr(gen);
                 const double y = y_distr(gen);
-                //std::cout << "x: " << x << " y: " << y << std::endl;
-                //std::cout << "std::log((x + 1) / (1 - x)) = " << std::log((x + 1) / (1 - x)) << std::endl;
                 if (y <= probability_density(x, area)) {
                     const double angle = angle_distr(gen);
 
+                    //from hyperbolic radius to Euclidean radius in Poincaré disk model
                     //if Beltrami Klein model is used
                     if (typeid(Geom_traits) == typeid(Beltrami_klein_traits<>)) {
-                        x = 2 * x / (1 + x * x);
+                        x = std::tanh(x);
+                    } else {
+                        x = std::tanh(x / 2);
                     }
 
                     double x_ = std::cos(angle) * x;
                     double y_ = std::sin(angle) * x;
+
                     //std::cout << "sampled point: x " << x_ << ", y: " << y_ << std::endl;
                     samples.push_back(Point_2(x_, y_));
+                } else {
+                    ++rejected_counter;
                 }
+                ++number_of_tries;
             }
+            std::cout << "rejected " << rejected_counter << " points out of " << number_of_tries << " attempts." <<
+                    std::endl;
             return samples;
         }
 

@@ -64,7 +64,6 @@ namespace CGAL {
 
         Orientation operator()(const Point_2 p, const Point_2 q, const Point_2 query) {
             if (p != q && q != query && query != p) {
-                Circle_2 poincare(Point_2(FT(0), FT(0)), FT(1));
                 Point_2 O(FT(0), FT(0));
                 Orientation bb = _gt.euclidean_orientation_2_object()(p, q, O);
                 if (bb == COLLINEAR) {
@@ -83,20 +82,20 @@ namespace CGAL {
                 Point_2 ip(inv.real(), inv.imag());
                 Circle_2 _c = Circle_2(p, q, ip);
 
-                Orientation eo = _gt.euclidean_orientation_2_object()(p, _c.center(), q);
-                Bounded_side bs = _c.bounded_side(query);
+                const Orientation eo = _gt.euclidean_orientation_2_object()(p, q, _c.center());
+                const Bounded_side bs = _c.bounded_side(query);
 
                 if (bs == ON_BOUNDED_SIDE) {
-                    if (eo == LEFT_TURN) {
-                        return RIGHT_TURN;
-                    }
-                    return LEFT_TURN;
-                }
-                if (bs == ON_UNBOUNDED_SIDE) {
                     if (eo == LEFT_TURN) {
                         return LEFT_TURN;
                     }
                     return RIGHT_TURN;
+                }
+                if (bs == ON_UNBOUNDED_SIDE) {
+                    if (eo == LEFT_TURN) {
+                        return RIGHT_TURN;
+                    }
+                    return LEFT_TURN;
                 }
                 return COLLINEAR;
             }

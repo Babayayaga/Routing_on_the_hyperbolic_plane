@@ -90,6 +90,7 @@ public Q_SLOTS:
     void on_actionShowDecomposition_toggled(bool checked);
     void on_actionShowOrigin_toggled(bool checked);
     void on_actionColorUnitDisk_triggered(bool checked);
+    void on_actionShowUnitCircle_triggered(bool checked);
 
     //edit:
     void on_actionInsertConstraints_toggled(bool checked);
@@ -119,6 +120,10 @@ public Q_SLOTS:
     void on_actionGenerateRandomDomain_triggered();
     void on_pathOptimize_released();
 };
+
+void MainWindow::on_actionShowUnitCircle_triggered(const bool checked) {
+    disk->setVisible(checked);
+}
 
 void MainWindow::on_actionColorUnitDisk_triggered(const bool checked) {
     if (checked) {
@@ -441,19 +446,26 @@ void MainWindow::on_actionInsertRandomPoints_triggered() {
     CGAL::Timer timer;
     timer.start();
     auto generator = CGAL::Qt::Random_domain_generator<Triangulation>(&routingScenario);
-    const std::vector<Point_2> points = generator.inverse_sampling(number_of_points, this->radiusSpinBox->value());
-    timer.stop();
-    std::cout << "sampling points took: " << timer.time() << " seconds." << std::endl;
-    statusBar()->showMessage(QString("Sampling points: %1 seconds.").arg(timer.time()), 6000);
-    timer.reset();
-    timer.start();
+    if(this->blueNoise->checkState()) {
+        generator.blue_noise(this->candidatesSpinBox->value(), number_of_points, this->radiusSpinBox->value());
+        std::cout << "blue noise took: " << timer.time() << " seconds." << std::endl;
+        statusBar()->showMessage(QString("Blue noise: %1 seconds.").arg(timer.time()), 6000);
+        timer.reset();
+    } else {
+        const std::vector<Point_2> points = generator.inverse_sampling(number_of_points, this->radiusSpinBox->value());
+        timer.stop();
+        std::cout << "sampling points took: " << timer.time() << " seconds." << std::endl;
+        statusBar()->showMessage(QString("Sampling points: %1 seconds.").arg(timer.time()), 6000);
+        timer.reset();
+        timer.start();
 
-    routingScenario.insert_points(points.begin(), points.end());
+        routingScenario.insert_points(points.begin(), points.end());
 
-    timer.stop();
-    statusBar()->showMessage(QString("Inserting points: %1 seconds.").arg(timer.time()), 6000);
-    std::cout << "inserting points took: " << timer.time() << " seconds." << std::endl;
-    timer.reset();
+        timer.stop();
+        statusBar()->showMessage(QString("Inserting points: %1 seconds.").arg(timer.time()), 6000);
+        std::cout << "inserting points took: " << timer.time() << " seconds." << std::endl;
+        timer.reset();
+    }
 
     timer.start();
     routingScenario.remove_unconstrained_points_in_obstacle_interior();
@@ -755,7 +767,8 @@ void MainWindow::on_actionGenerateRandomDomain_triggered() {
     timer.start();
     generator.generate_random_domain(this->numberPointsSpinBox->value() * 1000, this->radiusSpinBox->value(),
                        this->thresholdSpinBox->value(), this->erosionSpinBox->value(),
-        this->dilationSpinBox->value(), this->minSpinBox->value(),this->checkBox->checkState());
+        this->dilationSpinBox->value(), this->minSpinBox->value(),this->checkBox->checkState(),
+        this->blueNoise->checkState(), this->candidatesSpinBox->value());
     timer.stop();
     this->actionSetPointOnObstacle->setChecked(true);
     statusBar()->showMessage(

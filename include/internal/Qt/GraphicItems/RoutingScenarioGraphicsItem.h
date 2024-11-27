@@ -313,7 +313,7 @@ namespace CGAL::Qt {
     Routing_scenario_graphics_item<T>::Routing_scenario_graphics_item(Routing_scenario *r)
         : r(r), hyperbolic_painter(0), show_point_to_all_visibility(false)
           , show_point_to_point_visibility(false), show_visibility_graph(false), show_dijkstra_tree(false),
-          show_path(false), obstacle_brush(QColor(140, 140, 140, 100)), show_obstacle_interior(false),
+          show_path(false), obstacle_brush(QColor(0, 0, 255, 150)), show_obstacle_interior(false),
           show_origin(false)
           , approximation_radius(10), transformed(false), location(ORIGIN), show_decomposition(false) {
         triangulation_graphics_item = new TriangulationGraphicsItem(r->t);
@@ -321,8 +321,8 @@ namespace CGAL::Qt {
         triangulation_graphics_item->setParentItem(this);
         triangulation_graphics_item->setFlag(ItemStacksBehindParent);
 
-        epen.setWidthF(0.008);
-        epen.setBrush(::Qt::darkGreen);
+        epen.setWidthF(0.000);
+        epen.setBrush(::Qt::black);
 
         vpen1.setStyle(::Qt::SolidLine);
         vpen1.setWidth(8);
@@ -385,7 +385,7 @@ namespace CGAL::Qt {
 
         if (show_point_to_point_visibility && r->start_node_handle != nullptr && r->destination_node_handle !=
             nullptr) {
-            painter->setBrush(QBrush(::Qt::lightGray));
+            painter->setBrush(QBrush(QColor(150,150,150,100)));
             painter->setPen(::Qt::NoPen);
             for (Face_handle face: r->crossed_faces) {
                 QPainterPath triangle_path;

@@ -31,6 +31,7 @@ namespace CGAL::Qt {
         typedef typename T::Edge_circulator Edge_circulator;
         typedef typename T::Face_handle Face_handle;
         typedef typename T::Vertex_handle Vertex_handle;
+        typedef typename T::Vertex_circulator Vertex_circulator;
         typedef typename T::Edge Edge;
 
     public:
@@ -55,7 +56,7 @@ namespace CGAL::Qt {
 
         void generate_random_domain(const int number_of_points, const double radius,
                                     const double threshold, const int erosions, const int dilations, const int min,
-                                    const bool b) {
+                                    const bool erosion_before_dilation, const bool blue_noise, const int candidates) {
             std::cout << std::endl;
             std::cout << "-----Domain generation-----" << std::endl;
             Timer sum;
@@ -65,25 +66,31 @@ namespace CGAL::Qt {
 
             Timer timer;
             timer.start();
-            std::vector<Point_2> points = inverse_sampling(number_of_points, radius);
-            timer.stop();
-            std::cout << "Sampling points took: " << timer.time() << " seconds." << std::endl;
-            timer.reset();
+            if(blue_noise) {
+                this->blue_noise(candidates, number_of_points, radius);
+                timer.stop();
+                std::cout << "Blue noise toook: " << timer.time() << " seconds." << std::endl;
+                timer.reset();
+            } else {
+                std::vector<Point_2> points = inverse_sampling(number_of_points, radius);
+                timer.stop();
+                std::cout << "Sampling points took: " << timer.time() << " seconds." << std::endl;
+                timer.reset();
+                timer.start();
+                r->insert_points(points.begin(), points.end());
+                timer.stop();
+                std::cout << "Inserting points took: " << timer.time() << " seconds." << std::endl;
+                timer.reset();
+            }
 
             timer.start();
-            t->insert(points.begin(), points.end());
-            timer.stop();
-            std::cout << "Inserting points took: " << timer.time() << " seconds." << std::endl;
-            timer.reset();
-
-            timer.start();
-            set_faces_in_domain(t, threshold);
+            set_faces_in_domain_method1(t, threshold);
             timer.stop();
             std::cout << "Initial in_domain assignment took: " << timer.time() << " seconds." << std::endl;
             timer.reset();
 
             timer.start();
-            make_smoother(t, b, erosions, dilations);
+            make_smoother(t, erosion_before_dilation, erosions, dilations);
             timer.stop();
             std::cout << "Erosion and dilation took: " << timer.time() << " seconds." << std::endl;
             timer.reset();
@@ -98,10 +105,6 @@ namespace CGAL::Qt {
             if (min > 3) {
                 timer.start();
                 remove_small_obstacles(t, min);
-                //since we are removing constrained edges, this step is needed
-                //when removing constrained edge we don't know the new in_domain value of both incident faces
-                //can also be neglected, but then remove_unconstrained_points_in_obstacle_iterior() gives slightly wrong results
-                r->discover_components();
                 timer.stop();
                 std::cout << "Removing obstacles with less than min points took: " << timer.time() << " seconds." <<
                         std::endl;
@@ -114,9 +117,6 @@ namespace CGAL::Qt {
             std::cout << "Removing points with no incident constrained edges took: " << timer.time() << " seconds." <<
                     std::endl;
             timer.reset();
-
-            //we could also remove triangles, where all edges are constrained edges
-            //and triangles where two sides are constrained edges
 
             timer.start();
             r->discover_components();
@@ -162,17 +162,38 @@ namespace CGAL::Qt {
         }
 
         //give every vertex a value from [-1,1], then decide for each triangle the in_domain value
-        void set_faces_in_domain(T *t, const double threshold) {
-            std::map<Vertex_handle, float> map;
-            Random random;
-            for (Finite_vertices_iterator fi = t->finite_vertices_begin(); fi != t->finite_vertices_end(); ++fi) {
-                map.insert({fi, random.get_double(-1, 1)});
+        void set_faces_in_domain_method1(T *t, const double threshold) {
+            //std::map<Vertex_handle, float> map;
+            std::vector<double> value;
+            std::random_device rd;
+            std::mt19937 gen(rd());
+            std::uniform_real_distribution<> value_dist(-1, 1);
+            //Random random;
+
+            for (int i = 0; i < r->number_of_vertices(); ++i) {
+                value.push_back(value_dist(gen));
             }
 
+            //smoothing values
+            /*for (int i = 0; i < r->number_of_vertices(); ++i) {
+                double sum = 0;
+                double neighbors = 0;
+                Vertex_handle vh = r->index_vertex_map[i];
+                Vertex_circulator vc = r->t->incident_vertices(vh), done(vc);
+                do {
+                    if (!r->t->is_infinite(vc)) {
+                        const double neighbor_value = value[r->vertex_index_map[vc]];
+                        sum += neighbor_value;
+                        ++neighbors;
+                    }
+                } while (++vc != done);
+                value[i] = sum / neighbors;
+            }*/
+
             for (Finite_faces_iterator fi = t->finite_faces_begin(); fi != t->finite_faces_end(); ++fi) {
-                const double x = map[fi->vertex(0)];
-                const double y = map[fi->vertex(1)];
-                const double z = map[fi->vertex(2)];
+                const double x = value[r->vertex_index_map[fi->vertex(0)]];
+                const double y = value[r->vertex_index_map[fi->vertex(1)]];
+                const double z = value[r->vertex_index_map[fi->vertex(2)]];
                 if ((x + y + z) / 3 > threshold) {
                     fi->set_in_domain(true);
                 } else {
@@ -180,6 +201,25 @@ namespace CGAL::Qt {
                 }
             }
         }
+
+        /*void set_faces_in_domain_method2(T *t, const double threshold) {
+            std::random_device rd;
+            std::mt19937 gen(rd());
+            std::uniform_real_distribution<> value_dist(0, 1);
+
+            for (Finite_vertices_iterator fvi = t->finite_vertices_begin(); fvi != t->finite_vertices_end(); ++fvi) {
+                Face_circulator fc = t->incident_faces(fvi), first(fc);
+                do {
+                    if (t->is_infinite(fc)) {
+                        continue;
+                    }
+                    int index = fc->index(fvi);
+                    Vertex_handle left = fc->vertex(fc->cw(index));
+                    Vertex_handle right = fc->vertex(fc->ccw(index));
+                    visit_k_nearest(Edge(fc, index), left, right, fvi);
+                } while (++fc != first);
+            }
+        }*/
 
         void make_smoother(T *t, const bool b, const int erosions, const int dilations) {
             if (b) {
@@ -249,6 +289,61 @@ namespace CGAL::Qt {
             }
         }
 
+        void blue_noise(const int k, const int n, const double radius) {
+            std::vector<Point_2> first_list = inverse_sampling(3, radius);
+            r->insert_points(first_list.begin(), first_list.end());
+            for(int i = 1; i < n; ++i) {
+                //std::cout << i << "-th iteration" << std::endl;
+                double min_max_distance = 0;
+                int best_index;
+                std::vector<Point_2> candidates = inverse_sampling(k, radius);
+                for(int j = 0; j < k; ++j) {
+                    Point_2 candidate = candidates[j];
+                    Face_handle face = r->t->locate(candidate);
+                    Vertex_handle v0 = face->vertex(0);
+                    Vertex_handle v1 = face->vertex(1);
+                    Vertex_handle v2 = face->vertex(2);
+                    double d0, d1, d2;
+                    if (!r->t->is_infinite(v0)) {
+                        d0 = r->hyperbolic_distance(v0->point(), candidate);
+                    } else {
+                        d0 = DBL_MAX;
+                    }
+                    if (!r->t->is_infinite(v1)) {
+                        d1 = r->hyperbolic_distance(v1->point(), candidate);
+                    } else {
+                        d1 = DBL_MAX;
+                    }
+                    if (!r->t->is_infinite(v2)) {
+                        d2 = r->hyperbolic_distance(v2->point(), candidate);
+                    } else {
+                        d2 = DBL_MAX;
+                    }
+                    double min;
+                    if(d1 > d0) {
+                        if(d2 > d0) {
+                            min = d0;
+                        }
+                        else {
+                            min = d2;
+                        }
+                    } else {
+                        if(d2 > d1) {
+                            min = d1;
+                        }
+                        else {
+                            min = d2;
+                        }
+                    }
+                    if(min > min_max_distance) {
+                        min_max_distance = min;
+                        best_index = j;
+                    }
+                }
+                r->insert_point(candidates[best_index]);
+            }
+        }
+
         std::vector<Point_2> inverse_sampling(const int number_of_points, const double radius) {
             std::vector<Point_2> samples;
             std::random_device rd;
@@ -267,7 +362,7 @@ namespace CGAL::Qt {
                 if (typeid(Geom_traits) == typeid(Beltrami_klein_traits<>)) {
                     r = std::tanh(r);
                 } else {
-                    r = std::tanh(r/2);
+                    r = std::tanh(r / 2);
                 }
 
                 double x_ = std::cos(angle) * r;

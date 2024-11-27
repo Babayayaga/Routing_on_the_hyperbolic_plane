@@ -7,7 +7,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>917</width>
+    <width>905</width>
     <height>890</height>
    </rect>
   </property>
@@ -115,22 +115,25 @@
       <item>
        <widget class="QDoubleSpinBox" name="radiusSpinBox">
         <property name="statusTip">
-         <string>Obstacle points are located in this circle, centered in the origin.</string>
+         <string>Obstacle points are located in this disk, centered in the origin. Radius is in hyperbolic units.</string>
         </property>
         <property name="decimals">
-         <number>5</number>
+         <number>3</number>
+        </property>
+        <property name="minimum">
+         <double>1.000000000000000</double>
         </property>
         <property name="maximum">
          <double>20.000000000000000</double>
         </property>
         <property name="singleStep">
-         <double>0.000010000000000</double>
+         <double>0.100000000000000</double>
         </property>
         <property name="stepType">
          <enum>QAbstractSpinBox::DefaultStepType</enum>
         </property>
         <property name="value">
-         <double>0.999000000000000</double>
+         <double>5.000000000000000</double>
         </property>
        </widget>
       </item>
@@ -322,6 +325,30 @@
        <enum>QLayout::SetDefaultConstraint</enum>
       </property>
       <item>
+       <widget class="QCheckBox" name="blueNoise">
+        <property name="text">
+         <string>Blue noise</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_13">
+        <property name="text">
+         <string>Candidates:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="candidatesSpinBox">
+        <property name="maximum">
+         <number>20</number>
+        </property>
+        <property name="value">
+         <number>3</number>
+        </property>
+       </widget>
+      </item>
+      <item>
        <spacer name="horizontalSpacer_3">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -476,7 +503,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>917</width>
+     <width>905</width>
      <height>21</height>
     </rect>
    </property>
@@ -534,6 +561,7 @@
     <addaction name="actionShowOrigin"/>
     <addaction name="separator"/>
     <addaction name="actionColorUnitDisk"/>
+    <addaction name="actionShowUnitCircle"/>
     <addaction name="separator"/>
     <addaction name="actionShowDecomposition"/>
    </widget>
@@ -966,6 +994,17 @@
   <action name="actionExportSVG">
    <property name="text">
     <string>Export .svg</string>
+   </property>
+  </action>
+  <action name="actionShowUnitCircle">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show unit circle</string>
    </property>
   </action>
  </widget>

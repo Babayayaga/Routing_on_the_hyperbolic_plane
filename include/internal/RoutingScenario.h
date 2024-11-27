@@ -415,6 +415,38 @@ namespace CGAL::Qt {
             return Point_2(2 * p.x() / d, 2 * p.y() / d);
         }
 
+        double hyperbolic_distance(const Point_2 p_, const Point_2 q_) {
+            Point_2 p = p_;
+            Point_2 q = q_;
+
+            //if we are in Beltrami Klein model, first translate p_ and q_ to Poincare disk model
+            if (typeid(Beltrami_klein_traits) == typeid(Traits)) {
+                p = beltrami_klein_to_poincare(p);
+                q = beltrami_klein_to_poincare(q);
+            }
+
+            const double px = to_double(p.x());
+            const double py = to_double(p.y());
+            const double qx = to_double(q.x());
+            const double qy = to_double(q.y());
+            const double a = 1 - px * qx - py * qy;
+            const double b = py * qx - px * qy;
+            const double d = a * a + b * b;
+            double real = (qx - px) * a + (qy - py) * b;
+            double img = (qy - py) * a - (qx - px) * b;
+            real = real / d;
+            img = img / d;
+
+            double r = std::sqrt(to_double(real * real + img * img));
+
+            if (typeid(Beltrami_klein_traits) == typeid(Traits)) {
+                r = 2 * r / (1 + r * r);
+            }
+
+            return std::log((1 + r) / (1 - r));
+            //return std::sqrt((p.x() - q.x()) * (p.x() - q.x()) + (p.y() - q.y()) * (p.y() - q.y()));
+        }
+
         //debugging methods
         void compute_visible_vertices_from_start_node() {
             visibles_start_node.clear();
@@ -502,37 +534,6 @@ namespace CGAL::Qt {
         void clear_decomposition() {
             defined_decomposition = false;
             obstacles.clear();
-        }
-
-        double hyperbolic_distance(const Point_2 p_, const Point_2 q_) {
-            Point_2 p = p_;
-            Point_2 q = q_;
-
-            //if we are in Beltrami Klein model, first translate p_ and q_ to Poincare disk model
-            if (typeid(Beltrami_klein_traits) == typeid(Traits)) {
-                p = beltrami_klein_to_poincare(p);
-                q = beltrami_klein_to_poincare(q);
-            }
-
-            const double px = to_double(p.x());
-            const double py = to_double(p.y());
-            const double qx = to_double(q.x());
-            const double qy = to_double(q.y());
-            const double a = 1 - px * qx - py * qy;
-            const double b = py * qx - px * qy;
-            const double d = a * a + b * b;
-            double real = (qx - px) * a + (qy - py) * b;
-            double img = (qy - py) * a - (qx - px) * b;
-            real = real / d;
-            img = img / d;
-
-            double r = std::sqrt(to_double(real * real + img * img));
-
-            if (typeid(Beltrami_klein_traits) == typeid(Traits)) {
-                r = 2 * r / (1 + r * r);
-            }
-
-            return std::log((1 + r) / (1 - r));
         }
 
         void discover_polygon_decomposition();

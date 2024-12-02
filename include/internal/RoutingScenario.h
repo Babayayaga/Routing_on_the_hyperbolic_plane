@@ -405,13 +405,17 @@ namespace CGAL::Qt {
         }
 
         Point_2 beltrami_klein_to_poincare(const Point_2 p) {
-            const double abs = p.x() * p.x() + p.y() * p.y();
+            const double px = to_double(p.x());
+            const double py = to_double(p.y());
+            const double abs = px * px + py * py;
             double d = 1 + sqrt(1 - abs);
-            return Point_2(p.x() / d, p.y() / d);
+            return Point_2(px / d, py / d);
         }
 
         Point_2 poincare_to_beltrami_klein(const Point_2 p) {
-            double d = 1 + p.x() * p.x() + p.y() * p.y();
+            const double px = to_double(p.x());
+            const double py = to_double(p.y());
+            double d = 1 + px * px + py * py;
             return Point_2(2 * p.x() / d, 2 * p.y() / d);
         }
 
@@ -545,6 +549,8 @@ namespace CGAL::Qt {
         void visibles_from_angle(Edge e, Vertex_handle l, Vertex_handle r, Vertex_handle c, int *adjacency_counter);
 
         std::vector<int> path;
+
+        int number_of_orientation_tests = 0;
     };
 
     template<typename T>
@@ -678,6 +684,9 @@ namespace CGAL::Qt {
 
     template<typename T>
     void Routing_scenario<T>::build_visibility_graph() {
+        std::cout << std::endl;
+        number_of_orientation_tests = 0; //for evaluation
+
         clear_graphs();
         if (!defined_domain) {
             discover_components();
@@ -722,6 +731,8 @@ namespace CGAL::Qt {
         }
         defined_visibility_graph = true;
         compute_distances();
+
+        std::cout << "number of orientation test: " << number_of_orientation_tests << std::endl;
     }
 
     template<typename T>
@@ -742,6 +753,7 @@ namespace CGAL::Qt {
         Point_2 p = vh->point();
 
         //std::cout << "begin orientation" << std::endl;
+        ++number_of_orientation_tests;
         Orientation o_left = t->orientation(c->point(), l->point(), p);
         //std::cout << "finished orientation" << std::endl;
         if (o_left == LEFT_TURN) {
@@ -758,6 +770,7 @@ namespace CGAL::Qt {
             return;
         }
 
+        ++number_of_orientation_tests;
         Orientation o_right = t->orientation(c->point(), r->point(), p);
         if (o_right == RIGHT_TURN) {
             //std::cout << "RIGHT_TURN " << l->point() << std::endl;
@@ -996,20 +1009,20 @@ namespace CGAL::Qt {
             return;
 
         Face_handle start = t->infinite_face();
-        std::list<Face_handle> queue;
-        queue.push_back(start);
+        std::stack<Face_handle> queue;
+        queue.push(start);
         std::set<Face_handle> traversed;
         traversed.insert(start);
         start->set_in_domain(false);
 
         while (!queue.empty()) {
-            Face_handle fh = queue.front();
-            queue.pop_front();
+            Face_handle fh = queue.top();
+            queue.pop();
 
             for (int i = 0; i < 3; i++) {
                 Face_handle fi = fh->neighbor(i);
                 if (!traversed.contains(fi)) {
-                    queue.push_back(fi);
+                    queue.push(fi);
                     if (t->is_constrained(Edge(fh, i))) {
                         fi->set_in_domain(!fh->is_in_domain());
                     } else {

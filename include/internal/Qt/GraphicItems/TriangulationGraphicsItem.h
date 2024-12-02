@@ -139,8 +139,9 @@ namespace CGAL::Qt {
           show_vertices(false), show_constraints(false),
           approximation_bound(10), transformed(false) {
         set_vertices_pen(QPen(::Qt::black, 5, ::Qt::SolidLine, ::Qt::RoundCap, ::Qt::RoundJoin));
-        set_edges_pen(QPen(QColor(0,0,0,255), 0.004, ::Qt::SolidLine, ::Qt::RoundCap, ::Qt::RoundJoin));
-        set_constraints_pen(QPen(::Qt::black, 0.000, ::Qt::SolidLine, ::Qt::RoundCap, ::Qt::RoundJoin));
+        set_edges_pen(QPen(QColor(0,0,0,255), 0.002, ::Qt::SolidLine, ::Qt::RoundCap, ::Qt::RoundJoin));
+        set_edges_pen(QPen(QColor(0,0,0,255), 0.002, ::Qt::SolidLine, ::Qt::RoundCap, ::Qt::RoundJoin));
+        set_constraints_pen(QPen(::Qt::green, 0.005, ::Qt::SolidLine, ::Qt::RoundCap, ::Qt::RoundJoin));
     }
 
     template<typename T>

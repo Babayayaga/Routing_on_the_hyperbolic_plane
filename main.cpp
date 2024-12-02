@@ -30,7 +30,7 @@ typedef CGAL::Poincare_disk_traits<> Poincare_disk_traits;
 typedef CGAL::Beltrami_klein_traits<> Beltrami_klein_traits;
 
 //either choose Poincare_disk_traits or Beltrami_klein_traits
-typedef Poincare_disk_traits K;
+typedef Beltrami_klein_traits K;
 
 typedef K::FT FT;
 typedef K::Point_2 Point_2;
@@ -234,6 +234,10 @@ MainWindow::MainWindow()
 
     // Turn the vertical axis upside down
     this->graphicsView->scale(1, -1);
+
+    //Point_2 p = Point_2(0.9999, 0.999999999);
+    //std::cout<< sizeof(Triangulation::Face) << std::endl;
+    //std::cout << std::setprecision(20) << "tanh(14)" << std::tanh(12) << std::endl;
 
     // The navigation adds zooming and translation functionality to the
     // QGraphicsView

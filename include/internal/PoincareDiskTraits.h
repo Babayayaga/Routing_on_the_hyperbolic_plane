@@ -15,6 +15,7 @@
 #include <CGAL/Exact_predicates_exact_constructions_kernel.h>
 #include <CGAL/Bbox_2.h>
 #include <CGAL/Hyperbolic_triangulation_2/internal/Exact_complex.h>
+#include <CGAL/Exact_predicates_exact_constructions_kernel_with_sqrt.h>
 #include <CGAL/Origin.h>
 #include <boost/variant.hpp>
 
@@ -143,7 +144,7 @@ namespace CGAL {
         const Traits &_gt;
     };
 
-    template<typename Kernel = Exact_predicates_inexact_constructions_kernel>
+    template<typename Kernel = Exact_predicates_inexact_constructions_kernel/*_with_sqrt*/>
     class Poincare_disk_traits : public Kernel {
         typedef Poincare_disk_traits Self;
         typedef Kernel Base;

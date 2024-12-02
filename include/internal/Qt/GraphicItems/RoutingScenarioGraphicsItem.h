@@ -231,8 +231,8 @@ namespace CGAL::Qt {
         }
 
         Point_2 rotate_point_around_origin(const Point_2 p, const double angle) {
-            const double x = p.x();
-            const double y = p.y();
+            const double x = to_double(p.x());
+            const double y = to_double(p.y());
             const double c = cos(angle);
             const double s = sin(angle);
             const double x_ = x * c - y * s;
@@ -321,7 +321,7 @@ namespace CGAL::Qt {
         triangulation_graphics_item->setParentItem(this);
         triangulation_graphics_item->setFlag(ItemStacksBehindParent);
 
-        epen.setWidthF(0.000);
+        epen.setWidthF(0.01);
         epen.setBrush(::Qt::black);
 
         vpen1.setStyle(::Qt::SolidLine);

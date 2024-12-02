@@ -67,7 +67,7 @@ namespace CGAL::Qt {
             Timer timer;
             timer.start();
             if(blue_noise) {
-                this->blue_noise(candidates, number_of_points, radius);
+                this->  blue_noise(candidates, number_of_points, radius);
                 timer.stop();
                 std::cout << "Blue noise toook: " << timer.time() << " seconds." << std::endl;
                 timer.reset();
@@ -292,7 +292,7 @@ namespace CGAL::Qt {
         void blue_noise(const int k, const int n, const double radius) {
             std::vector<Point_2> first_list = inverse_sampling(3, radius);
             r->insert_points(first_list.begin(), first_list.end());
-            for(int i = 1; i < n; ++i) {
+            for(int i = 3; i < n; ++i) {
                 //std::cout << i << "-th iteration" << std::endl;
                 double min_max_distance = 0;
                 int best_index;

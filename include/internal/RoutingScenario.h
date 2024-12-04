@@ -334,7 +334,7 @@ namespace CGAL::Qt {
             std::cout << "index->vertex mapping end." << std::endl;
         }
 
-        void test_suite() {
+        bool test_suite() {
             std::cout << std::endl;
             std::cout << "TEST SUITE START" << std::endl;
             clear_graphs();
@@ -356,17 +356,23 @@ namespace CGAL::Qt {
             const double time_2 = timer.time();
             timer.reset();
 
-            std::cout << "1. Algorithm: Time: " << time_1 << std::endl;
+            /*std::cout << "1. Algorithm: Time: " << time_1 << std::endl;
             std::cout << "2. Algorithm: Time: " << time_2 << std::endl;
             std::cout << "1. Algorithm: Size of adjacency list = " << adjacencies_copy.size() << std::endl;
-            std::cout << "2. Algorithm: Size of adjacency list = " << adjacencies.size() << std::endl;
+            std::cout << "2. Algorithm: Size of adjacency list = " << adjacencies.size() << std::endl;*/
+
+            if(adjacencies_copy.size() != adjacencies.size()) {
+                return false;
+            }
 
             for (int i = 0; i < offsets.size(); ++i) {
                 if (offsets_copy[i] != offsets[i]) {
                     std::cout << "Unequal results in offset vector! At index: " << i << std::endl;
-                    break;
+                    return false;
                 }
             }
+
+            return true;
 
             //test shortest path
             //although if visibility graphs are equal, result are equal

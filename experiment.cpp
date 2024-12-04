@@ -40,7 +40,7 @@ int main() {
         std::cout << "Threshold: ";
         std::cin >> threshold;
         std::cout << "Generating..." << std::endl;
-        random_generator.generate_random_domain(number_of_points, radius, threshold, 5, 5, 5, true);
+        random_generator.generate_random_domain(number_of_points, radius, threshold, 5, 5, 5, true, false, 0);
         std::cout << "Result: Number of points: " << routing_scenario.number_of_vertices() << ". Number of faces: " <<
                 routing_scenario.number_of_faces() << std::endl;
 
@@ -116,5 +116,16 @@ int main() {
         std::cout << "Again (0/1)? ";
         std::cin >> end;
     } while (end);
-    exit(0);
+
+
+    /*int error = 0;
+    for(int i = 0; i < 1000; ++i) {
+        random_generator.generate_random_domain(20*1000, 5, 0.1, 5, 5, 5, true, false, 0);
+        if(!routing_scenario.test_suite()) {
+            error = 1;
+            break;
+        }
+    }
+    std::cout << "finished with " << error << std::endl;
+    exit(0);*/
 }

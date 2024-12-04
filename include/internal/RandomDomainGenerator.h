@@ -61,6 +61,7 @@ namespace CGAL::Qt {
             std::cout << "-----Domain generation-----" << std::endl;
             Timer sum;
             sum.start();
+            r->clear();
 
             T *t = r->t;
 
@@ -167,7 +168,7 @@ namespace CGAL::Qt {
             std::vector<double> value;
             std::random_device rd;
             std::mt19937 gen(rd());
-            std::uniform_real_distribution<> value_dist(-1, 1);
+            std::uniform_real_distribution<> value_dist(0, 1);
             //Random random;
 
             for (int i = 0; i < r->number_of_vertices(); ++i) {
@@ -194,7 +195,7 @@ namespace CGAL::Qt {
                 const double x = value[r->vertex_index_map[fi->vertex(0)]];
                 const double y = value[r->vertex_index_map[fi->vertex(1)]];
                 const double z = value[r->vertex_index_map[fi->vertex(2)]];
-                if ((x + y + z) / 3 > threshold) {
+                if ((x + y + z) / 3 /*value_dist(gen)*/ > threshold) {
                     fi->set_in_domain(true);
                 } else {
                     fi->set_in_domain(false);

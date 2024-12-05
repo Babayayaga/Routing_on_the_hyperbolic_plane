@@ -57,77 +57,77 @@ namespace CGAL::Qt {
         void generate_random_domain(const int number_of_points, const double radius,
                                     const double threshold, const int erosions, const int dilations, const int min,
                                     const bool erosion_before_dilation, const bool blue_noise, const int candidates) {
-            std::cout << std::endl;
+            /*std::cout << std::endl;
             std::cout << "-----Domain generation-----" << std::endl;
             Timer sum;
-            sum.start();
+            sum.start();*/
             r->clear();
 
             T *t = r->t;
 
-            Timer timer;
-            timer.start();
+            /*Timer timer;
+            timer.start();*/
             if(blue_noise) {
                 this->  blue_noise(candidates, number_of_points, radius);
-                timer.stop();
+                /*timer.stop();
                 std::cout << "Blue noise toook: " << timer.time() << " seconds." << std::endl;
-                timer.reset();
+                timer.reset();*/
             } else {
                 std::vector<Point_2> points = inverse_sampling(number_of_points, radius);
-                timer.stop();
+                /*timer.stop();
                 std::cout << "Sampling points took: " << timer.time() << " seconds." << std::endl;
                 timer.reset();
-                timer.start();
+                timer.start();*/
                 r->insert_points(points.begin(), points.end());
-                timer.stop();
+                /*timer.stop();
                 std::cout << "Inserting points took: " << timer.time() << " seconds." << std::endl;
-                timer.reset();
+                timer.reset();*/
             }
 
-            timer.start();
+            //timer.start();
             set_faces_in_domain_method1(t, threshold);
-            timer.stop();
+            /*timer.stop();
             std::cout << "Initial in_domain assignment took: " << timer.time() << " seconds." << std::endl;
-            timer.reset();
+            timer.reset();*/
 
-            timer.start();
+            //timer.start();
             make_smoother(t, erosion_before_dilation, erosions, dilations);
-            timer.stop();
+            /*timer.stop();
             std::cout << "Erosion and dilation took: " << timer.time() << " seconds." << std::endl;
-            timer.reset();
+            timer.reset();*/
 
-            timer.start();
+            //timer.start();
             discover_edges(t);
-            timer.stop();
+            /*timer.stop();
             std::cout << "Discovering and inserting constrained edges took: " << timer.time() << " seconds." <<
                     std::endl;
-            timer.reset();
+            timer.reset();*/
 
             if (min > 3) {
-                timer.start();
+                //timer.start();
                 remove_small_obstacles(t, min);
-                timer.stop();
+                /*timer.stop();
                 std::cout << "Removing obstacles with less than min points took: " << timer.time() << " seconds." <<
                         std::endl;
-                timer.reset();
+                timer.reset();*/
             }
 
-            timer.start();
+            //timer.start();
             r->remove_all_unconstrained_points();
-            timer.stop();
+            /*timer.stop();
             std::cout << "Removing points with no incident constrained edges took: " << timer.time() << " seconds." <<
                     std::endl;
-            timer.reset();
+            timer.reset();*/
 
-            timer.start();
+            //timer.start();
             r->discover_components();
-            timer.stop();
+            /*timer.stop();
             std::cout << "Discovering components took: " << timer.time() << " seconds." << std::endl;
             timer.reset();
 
             sum.stop();
             std::cout << "-----Generating domain took: " << sum.time() << " seconds.-----" << std::endl;
-            std::cout << std::endl;
+            std::cout << std::endl;*/
         }
 
         void insert_uniformly_distributed_points(const int n, const double radius) {

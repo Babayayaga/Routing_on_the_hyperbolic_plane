@@ -22,7 +22,7 @@ int main() {
     auto routing_scenario = RoutingScenario();
     auto random_generator = CGAL::Qt::Random_domain_generator<T>(&routing_scenario);
 
-    int number_of_points;
+    /*int number_of_points;
     int min;
     double radius;
     double threshold;
@@ -128,4 +128,28 @@ int main() {
     }
     std::cout << "finished with " << error << std::endl;
     exit(0);*/
+
+    const int trials = 1;
+    int number_of_points = 0;
+    CGAL::Timer timer;
+    std::list<int> tests = {/*5000, 10000, 50000, 100000, 250000, 500000, 1000000,
+        5000000, 10000000, 20000000*/ 25000000};
+    for (int test : tests) {
+        std::cout << "test: " << test << std::endl;
+        const double radius = std::acosh(test / (2 * CGAL_PI * 100) + 1);
+        std::cout << "radius: " << radius << std::endl;
+        timer.start();
+        for (int i = 0; i < trials; ++i) {
+            random_generator.generate_random_domain(test, radius, 0.55, 5, 5, 50, true, false, 0);
+            number_of_points += routing_scenario.number_of_vertices();
+        }
+        timer.stop();
+        const double time = timer.time();
+        const double average_time = time / trials;
+        timer.reset();
+        std::cout << "average time: " << average_time << std::endl;
+        std::cout << "average number_of_points: " << number_of_points / trials << std::endl;
+        number_of_points = 0;
+        std::cout << std::endl;
+    }
 }

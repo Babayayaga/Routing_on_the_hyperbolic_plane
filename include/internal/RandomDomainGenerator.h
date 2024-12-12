@@ -57,111 +57,77 @@ namespace CGAL::Qt {
         void generate_random_domain(const int number_of_points, const double radius,
                                     const double threshold, const int erosions, const int dilations, const int min,
                                     const bool erosion_before_dilation, const bool blue_noise, const int candidates) {
-            /*std::cout << std::endl;
+            std::cout << std::endl;
             std::cout << "-----Domain generation-----" << std::endl;
             Timer sum;
-            sum.start();*/
+            sum.start();
             r->clear();
 
             T *t = r->t;
 
-            /*Timer timer;
-            double t1 = 0;
-            double t2 = 0;
-            timer.start();*/
+            Timer timer;
+            timer.start();
             if(blue_noise) {
                 this->  blue_noise(candidates, number_of_points, radius);
-                /*timer.stop();
-                t1 = timer.time();
-                t2 = timer.time();
+                timer.stop();
                 std::cout << "Blue noise toook: " << timer.time() << " seconds." << std::endl;
-                timer.reset();*/
+                timer.reset();
             } else {
                 std::vector<Point_2> points = inverse_sampling(number_of_points, radius);
-                /*timer.stop();
-                t1 = timer.time();
+                timer.stop();
                 std::cout << "Sampling points took: " << timer.time() << " seconds." << std::endl;
-                timer.reset();*/
-
-                //timer.start();
+                timer.reset();
+                timer.start();
                 r->insert_points(points.begin(), points.end());
-                /*timer.stop();
-                t2 = timer.time();
+                timer.stop();
                 std::cout << "Inserting points took: " << timer.time() << " seconds." << std::endl;
-                timer.reset();*/
+                timer.reset();
             }
 
-            /*double t3 = 0;
-            timer.start();*/
+            timer.start();
             set_faces_in_domain_method1(t, threshold);
-            //timer.stop();
-            //t3 = timer.time();
-            //std::cout << "Initial in_domain assignment took: " << timer.time() << " seconds." << std::endl;
-            /*timer.reset();
+            timer.stop();
+            std::cout << "Initial in_domain assignment took: " << timer.time() << " seconds." << std::endl;
+            timer.reset();
 
-            double t4 = 0;
-            timer.start();*/
+            timer.start();
             make_smoother(t, erosion_before_dilation, erosions, dilations);
-            /*timer.stop();
-            //t4 = timer.time();
-            t3 = timer.time();
+            timer.stop();
             std::cout << "Erosion and dilation took: " << timer.time() << " seconds." << std::endl;
             timer.reset();
 
-            double t5 = 0;
-            timer.start();*/
+            timer.start();
             discover_edges(t);
-            /*timer.stop();
-            t5 = timer.time();
+            timer.stop();
             std::cout << "Discovering and inserting constrained edges took: " << timer.time() << " seconds." <<
                     std::endl;
             timer.reset();
 
-            double t6 = 0;*/
             if (min > 3) {
-                //timer.start();
+                timer.start();
                 remove_small_obstacles(t, min);
-                /*timer.stop();
-                t6 = timer.time();
+                timer.stop();
                 std::cout << "Removing obstacles with less than min points took: " << timer.time() << " seconds." <<
                         std::endl;
-                timer.reset();*/
-            } /*else {
-                t6 = 0;
-            }*/
+                timer.reset();
+            }
 
-            /*double t7 = 0;
-            timer.start();*/
+            timer.start();
             r->remove_all_unconstrained_points();
-            /*timer.stop();
-            t7 = timer.time();
+            timer.stop();
             std::cout << "Removing points with no incident constrained edges took: " << timer.time() << " seconds." <<
                     std::endl;
             timer.reset();
 
-            double t8 = 0;
-            timer.start();*/
+            timer.start();
             r->discover_components();
-            /*timer.stop();
-            t8 = timer.time();
+            timer.stop();
             std::cout << "Discovering components took: " << timer.time() << " seconds." << std::endl;
             timer.reset();
 
             sum.stop();
             std::cout << "-----Generating domain took: " << sum.time() << " seconds.-----" << std::endl;
             std::cout << std::endl;
-
-            double summ = sum.time();
-            double p1 = t1 / summ;
-            double p2 = t2 / summ;
-            double p3 = t3 / summ;
-            //double p4 = t4 / summ;
-            double p5 = t5 / summ;
-            double p6 = t6 / summ;
-            double p7 = t7 / summ;
-            double p8 = t8 / summ;*/
-            //std::cout << p1 << " , " << p2 << " , " << p3 << " , " << /*p4 << " , " <<*/
-            //    p5 << " , " << p6 << " , " << p7 << " , " << p8 << std::endl;
         }
 
         void insert_uniformly_distributed_points(const int n, const double radius) {

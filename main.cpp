@@ -236,13 +236,18 @@ MainWindow::MainWindow()
     this->graphicsView->scale(1, -1);
 
     //Point_2 p = Point_2(0.9999, 0.999999999);
-    //std::cout<< sizeof(Triangulation::Face) << std::endl;
+    std::cout<< sizeof(Triangulation::Vertex) << std::endl;
+    std::cout<< sizeof(Point_2) << std::endl;
     //std::cout << std::setprecision(100) << "tanh(14)" << std::tanh(18.715) << std::endl;
     //std::cout << nextafter(1.0, 0) << std::endl;
+
+    //std::cout << "size of test " << sizeof(Vertex_base) << std::endl;
 
     // The navigation adds zooming and translation functionality to the
     // QGraphicsView
     this->addNavigation(this->graphicsView);
+    this->actionUse_OpenGL->setChecked(true);
+    this->setUseOpenGL(true);
 
     this->setupStatusBar();
     this->setupOptionsMenu();
@@ -866,37 +871,10 @@ int main(int argc, char **argv) {
     // Import resources from libCGAL (QT5).
     CGAL_QT_INIT_RESOURCES;
 
-    //example independent use
-    /*typedef Beltrami_klein_traits K;
-    typedef CGAL::Delaunay_mesh_face_base_2<K> Face_base;
-    typedef CGAL::Triangulation_vertex_base_2<K> Vertex_base;
-    typedef CGAL::Triangulation_data_structure_2<Vertex_base, Face_base> TDS;
-    typedef CGAL::No_constraint_intersection_tag Itag;
-    typedef CGAL::Constrained_Delaunay_triangulation_2<K, TDS, Itag> T;
-    typedef CGAL::Qt::Routing_scenario<T> RoutingScenario;
-    RoutingScenario routing_scenario = RoutingScenario();
-    auto rg = CGAL::Qt::Random_domain_generator<T>(&routing_scenario);
-    rg.generate_random_domain(20000000, 0.999, 0.01, 5, 5, 5, true, false);
-    std::cout << "Number of vertices: " << routing_scenario.number_of_vertices() << std::endl;
-
-    routing_scenario.set_start_point(CGAL::ORIGIN);
-    routing_scenario.set_destination_point(Point_2(0, 0.99));
-
-    CGAL::Timer timer;
-    timer.start();
-    routing_scenario.use_triangulation_as_visibility_graph();
-    timer.stop();
-    std::cout << "Building visibility graph took: " << timer.time() << " seconds." << std::endl;
-    timer.reset();
-    //routing_scenario.use_triangulation_as_visibility_graph();
-    //routing_scenario.build_visibility_graph_naive();
-    timer.start();
-    routing_scenario.a_star();
-    timer.stop();
-    std::cout << "A* took: " << timer.time() << " seconds." << std::endl;
-    timer.reset();
-
-    std::cout << "FINISH" << std::endl;*/
+    /*char buffer[sizeof(BOOST_PLATFORM) + sizeof(BOOST_COMPILER) +sizeof(__DATE__ )+ 5];
+    sprintf(buffer, "[%s/%s](%s)", BOOST_PLATFORM, BOOST_COMPILER, __DATE__);
+    std::string compileinfo(buffer);
+    std::cout << compileinfo << std::endl;*/
 
     MainWindow mainWindow;
     mainWindow.show();

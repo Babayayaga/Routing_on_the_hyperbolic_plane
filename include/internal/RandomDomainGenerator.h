@@ -130,12 +130,17 @@ namespace CGAL::Qt {
             std::cout << std::endl;
         }
 
-        void insert_uniformly_distributed_points(const int n, const double radius) {
+        void insert_uniformly_distributed_points(const int n, const double radius, const bool b, const int k) {
             /*Timer timer;
             timer.start();*/
-            std::vector<Point_2> points = inverse_sampling(n, radius);
-            r->insert_points(points.begin(), points.end());
-            r->remove_unconstrained_points_in_obstacle_interior();
+            if(!b) {
+                std::vector<Point_2> points = inverse_sampling(n, radius);
+                r->insert_points(points.begin(), points.end());
+                r->remove_unconstrained_points_in_obstacle_interior();
+            } else {
+                blue_noise(k, n, radius);
+                r->remove_unconstrained_points_in_obstacle_interior();
+            }
             /*timer.stop();
             std::cout << "Inserting additional points took: " << timer.time() << " seconds." << std::endl;
             timer.reset();*/

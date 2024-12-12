@@ -285,7 +285,6 @@ void benchmark_routing_on_triangulation() {
         std::cout << "--routing on subgraph--" << std::endl;
         sum_time = 0;
         double approx_sum_path_length = 0;
-        reachable_counter = 0;
         std::vector<double> approx_path_lengths;
         for(std::pair<Vertex_handle, Vertex_handle> query : queries) {
             routing_scenario.set_point_to_start(query.first);
@@ -298,7 +297,6 @@ void benchmark_routing_on_triangulation() {
             if(reachable) {
                 sum_time += timer.time();
                 approx_sum_path_length += routing_scenario.get_path_length();
-                ++reachable_counter;
                 approx_path_lengths.push_back(routing_scenario.get_path_length());
             }
             timer.reset();

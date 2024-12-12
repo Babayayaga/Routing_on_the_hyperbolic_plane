@@ -41,7 +41,7 @@ namespace CGAL::Qt {
         typedef typename T::Face_circulator Face_circulator;
         typedef typename T::Line_face_circulator Line_face_circulator;
         typedef typename T::Constrained_edges_iterator Constrained_edges_iterator;
-        typedef Beltrami_klein_traits<Exact_predicates_inexact_constructions_kernel> Beltrami_klein_traits;
+        typedef CGAL::Beltrami_klein_traits<Exact_predicates_inexact_constructions_kernel> Beltrami_klein_traits;
         typedef Triangulation_line_face_iterator<T> Line_face_iterator;
 
     public:
@@ -85,6 +85,10 @@ namespace CGAL::Qt {
 
         int edges_visibility_graph() {
             return adjacencies.size() / 2;
+        }
+
+        int average_vertex_degree() {
+            return edges_visibility_graph()/number_of_vertices();
         }
 
         Vertex_handle insert_point(Point_2 p) {
@@ -478,7 +482,7 @@ namespace CGAL::Qt {
 
         bool can_p_see_q(Vertex_handle vp, Vertex_handle vq);
 
-        void build_visibility_graph();
+        int build_visibility_graph();
 
         void use_triangulation_as_visibility_graph();
 
@@ -689,8 +693,10 @@ namespace CGAL::Qt {
     }
 
     template<typename T>
-    void Routing_scenario<T>::build_visibility_graph() {
+    int Routing_scenario<T>::build_visibility_graph() {
         std::cout << std::endl;
+        CGAL::Timer timer;
+        timer.start();
         number_of_orientation_tests = 0; //for evaluation
 
         clear_graphs();
@@ -736,9 +742,13 @@ namespace CGAL::Qt {
             offsets.push_back(adjacency_counter);
         }
         defined_visibility_graph = true;
-        compute_distances();
 
+        timer.stop();
+        std::cout << "building visibility graph took: " << timer.time() << std::endl;
         std::cout << "number of orientation test: " << number_of_orientation_tests << std::endl;
+
+        compute_distances();
+        return number_of_orientation_tests;
     }
 
     template<typename T>
@@ -1011,6 +1021,7 @@ namespace CGAL::Qt {
 
     template<typename T>
     void Routing_scenario<T>::discover_components() {
+        std::cout << "discover components" << std::endl;
         if (t->dimension() != 2)
             return;
 

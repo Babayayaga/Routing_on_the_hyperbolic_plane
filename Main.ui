@@ -251,17 +251,17 @@
         </property>
         <item>
          <property name="text">
+          <string>triangle expansion algorithm</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
           <string>use triangulation as visibility graph</string>
          </property>
         </item>
         <item>
          <property name="text">
           <string>all-to-all naive algorithm</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>triangle expansion algorithm</string>
          </property>
         </item>
        </widget>

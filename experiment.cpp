@@ -33,8 +33,9 @@ int main() {
     auto routing_scenario_b = RoutingScenario_B();
     auto random_generator_b = CGAL::Qt::Random_domain_generator<T_B>(&routing_scenario_b);
 
+    std::cout << sizeof(T_P::Triangulation_data_structure::Face_data) << std::endl;
 
-    int number_of_points;
+    /*int number_of_points;
     int min;
     double radius;
     double threshold;
@@ -52,7 +53,11 @@ int main() {
         std::cout << "Threshold: ";
         std::cin >> threshold;
         std::cout << "Generating..." << std::endl;
+        CGAL::Timer genTimer;
+        genTimer.start();
         random_generator_p.generate_random_domain(number_of_points, radius, threshold, 5, 5, 5, true, false, 0);
+        genTimer.stop();
+        std::cout << "Timer.time(): " << genTimer.time() << std::endl;
         std::cout << "Result: Number of points: " << routing_scenario_p.number_of_vertices() << ". Number of faces: " <<
                 routing_scenario_p.number_of_faces() << std::endl;
 
@@ -145,12 +150,12 @@ int main() {
     //polygonal domain generation test
     //poincare
     //std::cout << "Poincare" << std::endl;
-    /*std::vector<int> trials = {100, 100, 100, 100, 100, 100, 100, 100, 100, 50, 1};
-    int number_of_points = 0;
-    CGAL::Timer timer;
-    std::list<int> tests = {5000, 10000, 50000, 100000, 250000, 500000, 1000000,
-        5000000, 10000000, 20000000, 25000000};
-    int test_counter = 0;*/
+    //std::vector<int> trials = {/*100, 100, 100, 100, 100, 100, 20, 10,*/ 1/*, 5, 1*/};
+    //int number_of_points = 0;
+    //CGAL::Timer timer;
+    //std::list<int> tests = {/*5000, 10000, 50000, 100000, 250000, 500000, 1000000,
+    //    5000000, 10000000*/ /*20000000,*/ 25000000};
+    //int test_counter = 0;
     /*for (int test : tests) {
         std::cout << "test: " << test << std::endl;
         const double radius = std::acosh(test / (2 * CGAL_PI * 100) + 1);
@@ -177,12 +182,23 @@ int main() {
         std::cout << "test: " << test << std::endl;
         const double radius = std::acosh(test / (2 * CGAL_PI * 100) + 1);
         std::cout << "radius: " << radius << std::endl;
+        double min = DBL_MAX;
+        double max = 0;
         timer.start();
         for (int i = 0; i < trials[test_counter]; ++i) {
             if(i%10==0) {
                 std::cout << "fffff" << std::endl;
             }
+            CGAL::Timer timerSmall;
+            timerSmall.start();
             random_generator_b.generate_random_domain(test, radius, 0.55, 5, 5, 50, true, false, 0);
+            timerSmall.stop();
+            if(min > timerSmall.time()) {
+                min = timerSmall.time();
+            }
+            if(timerSmall.time() > max) {
+                max = timerSmall.time();
+            }
             number_of_points += routing_scenario_b.number_of_vertices();
         }
         timer.stop();
@@ -190,20 +206,16 @@ int main() {
         const double average_time = time / trials[test_counter];
         timer.reset();
         std::cout << "average time: " << average_time << std::endl;
+        std::cout << "min time: " << min << std::endl;
+        std::cout << "max time: " << max << std::endl;
         std::cout << "average number_of_points: " << number_of_points / trials[test_counter] << std::endl;
         number_of_points = 0;
         std::cout << std::endl;
         ++test_counter;
     }*/
 
-    //exact_predicates_exact_constructions_test
-    /*const int trials = 100;
-    std::list<int> tests = {5000, 10000, 50000, 100000, 250000, 500000};
-    std::list <double> radii = {2, 3, 4, 5, 6, 7, 8, 9};
-    for(int test : tests) {
-        random_generator.generate_random_domain(test, radius, 0.55, 5, 5, 50, true, false, 0);
-    }*/
 
-    //
+    for(int i = 0; i < 1000; ++i) {
 
+    }
 }

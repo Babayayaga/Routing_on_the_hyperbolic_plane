@@ -30,7 +30,7 @@ typedef CGAL::Poincare_disk_traits<> Poincare_disk_traits;
 typedef CGAL::Beltrami_klein_traits<> Beltrami_klein_traits;
 
 //either choose Poincare_disk_traits or Beltrami_klein_traits
-typedef Poincare_disk_traits K;
+typedef Beltrami_klein_traits K;
 
 typedef K::FT FT;
 typedef K::Point_2 Point_2;
@@ -635,14 +635,16 @@ void MainWindow::on_actionComputeVisibilityGraph_triggered() {
     if (routingScenario.t->dimension() >= 2) {
         CGAL::Timer timer;
         timer.start();
+
+        int number_of_orientation_tests = 0;
         if(this->comboBox->currentIndex() == 0) {
-            routingScenario.use_triangulation_as_visibility_graph();
+            number_of_orientation_tests = routingScenario.build_visibility_graph();
         }
         if(this->comboBox->currentIndex() == 1) {
-            routingScenario.build_visibility_graph_naive();
+            routingScenario.use_triangulation_as_visibility_graph();
         }
         if(this->comboBox->currentIndex() == 2) {
-            routingScenario.build_visibility_graph();
+            routingScenario.build_visibility_graph_naive();
         }
         timer.stop();
         statusBar()->showMessage(
@@ -651,6 +653,9 @@ void MainWindow::on_actionComputeVisibilityGraph_triggered() {
         std::cout << "Visibility-graph build took: " << timer.time() << " seconds. #Edges: " << routingScenario.adjacencies.size()
                 / 2 << "." << std::endl;
         std::cout << "Vertex_index_map size: " << routingScenario.vertex_index_map.size() << std::endl;
+        if(number_of_orientation_tests != 0) {
+            std::cout << "Average time orientation test: " << timer.time()/number_of_orientation_tests << std::endl;
+        }
         timer.reset();
     } else {
         statusBar()->showMessage(QString("Already computed."), 4000);

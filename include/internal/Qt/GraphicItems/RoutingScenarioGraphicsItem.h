@@ -27,8 +27,8 @@
 namespace CGAL::Qt {
     template<typename T>
     class Routing_scenario_graphics_item : public QGraphicsItem {
-        typedef typename CGAL::Qt::TriangulationGraphicsItem<T> TriangulationGraphicsItem;
-        typedef typename Routing_scenario<T> Routing_scenario;
+        typedef CGAL::Qt::TriangulationGraphicsItem<T> TriangulationGraphicsItem;
+        typedef CGAL::Qt::Routing_scenario<T> Routing_scenario;
         typedef typename T::Point_2 Point_2;
         typedef typename T::Geom_traits Geom_traits;
         typedef typename Geom_traits::Triangle_2 Triangle_2;

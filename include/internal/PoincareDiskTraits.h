@@ -144,7 +144,7 @@ namespace CGAL {
         const Traits &_gt;
     };
 
-    template<typename Kernel = Exact_predicates_exact_constructions_kernel_with_sqrt>
+    template<typename Kernel = Exact_predicates_inexact_constructions_kernel/*_with_sqrt*/>
     class Poincare_disk_traits : public Kernel {
         typedef Poincare_disk_traits Self;
         typedef Kernel Base;
@@ -153,7 +153,7 @@ namespace CGAL {
         typedef typename Kernel::FT FT;
         typedef typename Kernel::Point_2 Point_2;
         typedef typename Kernel::Circle_2 Circle_2;
-        typedef Circular_arc_2<Self> Circular_arc_2;
+        typedef CGAL::Circular_arc_2<Self> Circular_arc_2;
         typedef typename Kernel::Segment_2 Euclidean_segment_2;
         typedef boost::variant<Circular_arc_2, Euclidean_segment_2> Hyperbolic_segment_2;
         typedef typename Kernel::Triangle_2 Triangle_2;
@@ -161,7 +161,7 @@ namespace CGAL {
 
         typedef Construct_hyperbolic_segment_2<Self> Construct_segment_2;
         typedef typename Kernel::Orientation_2 Euclidean_Orientation_2;
-        typedef Orientation_2<Self> Orientation_2;
+        typedef CGAL::Orientation_2<Self> Orientation_2;
 
         explicit Poincare_disk_traits(const Base &kernel = Base()) : Base(kernel) {
         }

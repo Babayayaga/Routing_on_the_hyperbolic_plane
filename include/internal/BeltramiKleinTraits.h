@@ -53,7 +53,7 @@ namespace CGAL {
 
     public:
         typedef typename Kernel::Side_of_oriented_circle_2 Euclidean_side_of_oriented_circle_2;
-        typedef Side_of_oriented_circle_2<Self> Side_of_oriented_circle_2;
+        typedef CGAL::Side_of_oriented_circle_2<Self> Side_of_oriented_circle_2;
 
         explicit Beltrami_klein_traits(const Base &kernel = Base()) : Base(kernel) {}
 

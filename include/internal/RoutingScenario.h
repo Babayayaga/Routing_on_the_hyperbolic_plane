@@ -88,7 +88,7 @@ namespace CGAL::Qt {
         }
 
         double average_vertex_degree() {
-            return edges_visibility_graph()/number_of_vertices();
+            return (double) edges_visibility_graph() / number_of_vertices();
         }
 
         Vertex_handle insert_point(Point_2 p) {

@@ -60,10 +60,12 @@ void benchmark_random_generation() {
 
     CGAL::Timer sum_timer;
     sum_timer.start();
+    double total_number_of_points = 0;
     for(int i = 0; i < trials; ++i) {
         CGAL::Timer timer;
         timer.start();
         random_generator.generate_random_domain(n, r_h, t, 5, 5, m, true, false, 0);
+        total_number_of_points += routing_scenario.number_of_vertices();
         timer.stop();
 
         if(timer.time() > max_time) {
@@ -76,6 +78,7 @@ void benchmark_random_generation() {
     }
     sum_timer.stop();
 
+    std::cout << "average number of points: " << total_number_of_points / trials << std::endl;
     std::cout << "average time: " << sum_timer.time() / trials << std::endl;
     std::cout << "min. time: " << min_time << std::endl;
     std::cout << "max. time: " << max_time << std::endl;
@@ -85,7 +88,7 @@ void load_polygonal_domain() {
     std::string file_name;
     std::cout << "Enter file name: ";
     std::cin >> file_name;
-    std::ifstream ifs("../resources/polygonal domains/" + file_name);
+    std::ifstream ifs("../resources/polygonal_domains/" + file_name);
     if (ifs.fail()) {
         std::cout << "Failed to open file." << std::endl;
         return;
@@ -126,6 +129,7 @@ void load_polygonal_domain() {
     routing_scenario.discover_components();
 
     std::cout << "Loading successfully" << std::endl;
+    std::cout << "number of vertices: " << routing_scenario.number_of_vertices() << std::endl;
 }
 
 void save_polygonal_domain() {
@@ -133,7 +137,7 @@ void save_polygonal_domain() {
     std::cout << "Enter file name: ";
     std::cin >> file_name;
     if (!file_name.empty()) {
-        std::ofstream ofs("../resources/polygonal domains/" + file_name);
+        std::ofstream ofs("../resources/polygonal_domains/" + file_name);
         if (ofs.fail()) {
             std::cout << "Failed to find directory." << std::endl;
             return;
@@ -188,6 +192,7 @@ void generate_polygonal_domain() {
     std::cin >> t;
 
     random_generator.generate_random_domain(n, r_h, t, 5, 5, m, true, false, 0);
+    std::cout << "number of vertices: " << routing_scenario.number_of_vertices() << std::endl;
 
     std::cout << "Save (0/1) ?";
     std::cin >> save;

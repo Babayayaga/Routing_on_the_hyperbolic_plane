@@ -87,7 +87,7 @@ namespace CGAL::Qt {
             return adjacencies.size() / 2;
         }
 
-        int average_vertex_degree() {
+        double average_vertex_degree() {
             return edges_visibility_graph()/number_of_vertices();
         }
 

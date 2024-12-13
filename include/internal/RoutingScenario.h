@@ -488,6 +488,8 @@ namespace CGAL::Qt {
 
         void path_optimization();
 
+        void greedy_optimization();
+
         //sets in_domain for every triangle in triangulation
         void discover_components();
 
@@ -856,6 +858,26 @@ namespace CGAL::Qt {
             index = check;
         }
         shortend_path.push_back(path[path.size() - 1]);
+        path = shortend_path;
+    }
+
+    template<typename T>
+    void Routing_scenario<T>::greedy_optimization() {
+        if (path.size() < 3) {
+            return;
+        }
+        std::vector<int> shortend_path;
+        shortend_path.push_back(path[0]);
+        int index = 0;
+        while (index != path.size() - 1) {
+            int check = index + 2;
+            while (check < path.size() && can_p_see_q(index_vertex_map[path[index]], index_vertex_map[path[check]])) {
+                ++check;
+            }
+            shortend_path.push_back(path[check - 1]);
+            index = check - 1;
+        }
+        //shortend_path.push_back(path[path.size() - 1]);
         path = shortend_path;
     }
 

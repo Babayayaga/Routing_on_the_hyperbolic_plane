@@ -275,6 +275,17 @@ void benchmark_routing_on_triangulation() {
             timer.reset();
         }
 
+        bool b2;
+        int opti = -1;
+        std::cout << "Use path optimization (0/1) ? ";
+        std::cin >> b2;
+        if(b2) {
+            std::cout << "Use greedy optimization   (0)" << std::endl;
+            std::cout << "Use full optimization     (1)" << std::endl;
+            std::cout << "Which optimizazion: ";
+            std::cin >> opti;
+        }
+
         timer.start();
         routing_scenario.use_triangulation_as_visibility_graph();
         timer.stop();
@@ -284,6 +295,7 @@ void benchmark_routing_on_triangulation() {
 
         std::cout << "--routing on subgraph--" << std::endl;
         sum_time = 0;
+        double opti_time = 0;
         double approx_sum_path_length = 0;
         std::vector<double> approx_path_lengths;
         for(std::pair<Vertex_handle, Vertex_handle> query : queries) {
@@ -295,6 +307,19 @@ void benchmark_routing_on_triangulation() {
             timer.stop();
 
             if(reachable) {
+
+                if(opti != -1) {
+                    CGAL::Timer opti_timer;
+                    opti_timer.start();
+                    if(opti == 0) {
+                        routing_scenario.greedy_optimization();
+                    } else if(opti == 1) {
+                        routing_scenario.path_optimization();
+                    }
+                    opti_timer.stop();
+                    opti_time += opti_timer.time();
+                }
+
                 sum_time += timer.time();
                 approx_sum_path_length += routing_scenario.get_path_length();
                 approx_path_lengths.push_back(routing_scenario.get_path_length());
@@ -311,6 +336,9 @@ void benchmark_routing_on_triangulation() {
             if(ratio < min) {
                 min = ratio;
             }
+        }
+        if(opti != -1) {
+            std::cout << "average path optimization took: " << opti_time / reachable_counter << std::endl;
         }
         std::cout << "min ratio: " << min << std::endl;
         std::cout << "max ratio: " << max << std::endl;

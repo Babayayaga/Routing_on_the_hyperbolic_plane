@@ -30,7 +30,7 @@ typedef CGAL::Poincare_disk_traits<> Poincare_disk_traits;
 typedef CGAL::Beltrami_klein_traits<> Beltrami_klein_traits;
 
 //either choose Poincare_disk_traits or Beltrami_klein_traits
-typedef Beltrami_klein_traits K;
+typedef Poincare_disk_traits K;
 
 typedef K::FT FT;
 typedef K::Point_2 Point_2;
@@ -852,7 +852,7 @@ void MainWindow::on_actionShowTriangulationBetween_toggled(bool checked) {
 
 void MainWindow::on_pathOptimize_released() {
     if(routingScenario.defined_path) {
-        routingScenario.path_optimization();
+        routingScenario.greedy_optimization();
         routingGraphicsItem->repaint();
         double length = routingScenario.get_path_length();
         statusBar()->showMessage(QString("Path length: %1.").arg(length), 4000);

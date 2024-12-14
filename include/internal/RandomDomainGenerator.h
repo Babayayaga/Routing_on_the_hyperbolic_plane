@@ -67,65 +67,86 @@ namespace CGAL::Qt {
 
             Timer timer;
             timer.start();
+            double sampling_time, insertion_time;
             if(blue_noise) {
                 this->  blue_noise(candidates, number_of_points, radius);
                 timer.stop();
-                std::cout << "Blue noise toook: " << timer.time() << " seconds." << std::endl;
+                sampling_time = timer.time();
+                insertion_time = timer.time();
+                //std::cout << "Blue noise toook: " << timer.time() << " seconds." << std::endl;
                 timer.reset();
             } else {
                 std::vector<Point_2> points = inverse_sampling(number_of_points, radius);
                 timer.stop();
-                std::cout << "Sampling points took: " << timer.time() << " seconds." << std::endl;
+                sampling_time = timer.time();
+                //std::cout << "Sampling points took: " << timer.time() << " seconds." << std::endl;
                 timer.reset();
                 timer.start();
                 r->insert_points(points.begin(), points.end());
                 timer.stop();
-                std::cout << "Inserting points took: " << timer.time() << " seconds." << std::endl;
+                insertion_time = timer.time();
+                //std::cout << "Inserting points took: " << timer.time() << " seconds." << std::endl;
                 timer.reset();
             }
 
             timer.start();
             set_faces_in_domain_method1(t, threshold);
             timer.stop();
-            std::cout << "Initial in_domain assignment took: " << timer.time() << " seconds." << std::endl;
+            const double boolean_time = timer.time();
+            //std::cout << "Initial in_domain assignment took: " << timer.time() << " seconds." << std::endl;
             timer.reset();
 
             timer.start();
             make_smoother(t, erosion_before_dilation, erosions, dilations);
             timer.stop();
-            std::cout << "Erosion and dilation took: " << timer.time() << " seconds." << std::endl;
+            const double smoothing_time = timer.time();
+            //std::cout << "Erosion and dilation took: " << timer.time() << " seconds." << std::endl;
             timer.reset();
 
             timer.start();
             discover_edges(t);
             timer.stop();
-            std::cout << "Discovering and inserting constrained edges took: " << timer.time() << " seconds." <<
-                    std::endl;
+            const double edges_time = timer.time();
+            //std::cout << "Discovering and inserting constrained edges took: " << timer.time() << " seconds." <<
+                    //std::endl;
             timer.reset();
 
+            double remove_obstacle_time = 0;
             if (min > 3) {
                 timer.start();
                 remove_small_obstacles(t, min);
                 timer.stop();
-                std::cout << "Removing obstacles with less than min points took: " << timer.time() << " seconds." <<
-                        std::endl;
+                remove_obstacle_time = timer.time();
+                //std::cout << "Removing obstacles with less than min points took: " << timer.time() << " seconds." <<
+                  //      std::endl;
                 timer.reset();
             }
 
             timer.start();
             r->remove_all_unconstrained_points();
             timer.stop();
-            std::cout << "Removing points with no incident constrained edges took: " << timer.time() << " seconds." <<
-                    std::endl;
+            const double remove_points_time = timer.time();
+            //std::cout << "Removing points with no incident constrained edges took: " << timer.time() << " seconds." <<
+                    //std::endl;
             timer.reset();
 
             timer.start();
             r->discover_components();
             timer.stop();
-            std::cout << "Discovering components took: " << timer.time() << " seconds." << std::endl;
+            const double discover_time = timer.time();
+            //std::cout << "Discovering components took: " << timer.time() << " seconds." << std::endl;
             timer.reset();
 
             sum.stop();
+            const double sum_time = sum.time();
+            std::cout << "sampling points: " << sampling_time << " %: " << sampling_time / sum_time  << std::endl;
+            std::cout << "inserting points: " << insertion_time << " %: " << insertion_time / sum_time  << std::endl;
+            std::cout << "boolean assignment: " << boolean_time << " %: " << boolean_time / sum_time  << std::endl;
+            std::cout << "smoothing took: " << smoothing_time << " %: " << smoothing_time / sum_time  << std::endl;
+            std::cout << "discover edges: " << edges_time << " %: " << edges_time / sum_time  << std::endl;
+            std::cout << "remove small obstacles: " << remove_obstacle_time << " %: " << remove_obstacle_time / sum_time  << std::endl;
+            std::cout << "remove points: " << remove_points_time << " %: " << remove_points_time / sum_time  << std::endl;
+            std::cout << "discover components: " << discover_time << " %: " << discover_time / sum_time  << std::endl;
             std::cout << "-----Generating domain took: " << sum.time() << " seconds.-----" << std::endl;
             std::cout << std::endl;
         }

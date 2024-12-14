@@ -30,7 +30,7 @@ typedef CGAL::Poincare_disk_traits<> Poincare_disk_traits;
 typedef CGAL::Beltrami_klein_traits<> Beltrami_klein_traits;
 
 //either choose Poincare_disk_traits or Beltrami_klein_traits
-typedef Beltrami_klein_traits K;
+typedef Poincare_disk_traits K;
 
 typedef K::FT FT;
 typedef K::Point_2 Point_2;
@@ -641,9 +641,9 @@ void MainWindow::on_actionComputeVisibilityGraph_triggered() {
         CGAL::Timer timer;
         timer.start();
 
-        int number_of_orientation_tests = 0;
+        double number_of_orientation_tests = 0;
         if(this->comboBox->currentIndex() == 0) {
-            number_of_orientation_tests = routingScenario.build_visibility_graph();
+            number_of_orientation_tests = routingScenario.build_visibility_graph().second;
         }
         if(this->comboBox->currentIndex() == 1) {
             routingScenario.use_triangulation_as_visibility_graph();

@@ -369,23 +369,25 @@ void benchmark_tea() {
 
     CGAL::Timer sum;
     sum.start();
+    double number_o_tests = 0;
     double sum_times_orientation_tests = 0;
     double min_o_time = DBL_MAX, max_o_time = 0;
     double min = DBL_MAX, max = 0;
     for(int i = 0; i < trials; ++i) {
         CGAL::Timer timer;
         timer.start();
-        const double avg_o = routing_scenario.build_visibility_graph();
+        const std::pair<double, double> pair = routing_scenario.build_visibility_graph();
         timer.stop();
 
-        sum_times_orientation_tests +=avg_o;
+        sum_times_orientation_tests +=pair.first;
+        number_o_tests += pair.second;
 
-        if(min_o_time > avg_o) {
-            min_o_time = avg_o;
+        if(min_o_time > pair.first) {
+            min_o_time = pair.first;
         }
 
-        if(max_o_time < avg_o) {
-            max_o_time = avg_o;
+        if(max_o_time < pair.first) {
+            max_o_time = pair.first;
         }
 
         if(timer.time() < min) {
@@ -401,7 +403,8 @@ void benchmark_tea() {
     std::cout << "average time: " << sum.time() / trials << std::endl;
     std::cout << "max. time: " << max << std::endl;
     std::cout << "min. time: " << min << std::endl;
-    std::cout << "average time orientation test: " << sum_times_orientation_tests / trials << std::endl;
+    std::cout << "average number of o-tests: " << number_o_tests / trials << std::endl;
+    std::cout << "average time o-test: " << sum_times_orientation_tests / trials << std::endl;
     std::cout << "max. time o-test: " << max_o_time << std::endl;
     std::cout << "min. time o-test: " << min_o_time << std::endl;
 }

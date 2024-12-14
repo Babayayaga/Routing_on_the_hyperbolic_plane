@@ -482,7 +482,7 @@ namespace CGAL::Qt {
 
         bool can_p_see_q(Vertex_handle vp, Vertex_handle vq);
 
-        double build_visibility_graph();
+        std::pair<double, double> build_visibility_graph();
 
         void use_triangulation_as_visibility_graph();
 
@@ -695,7 +695,7 @@ namespace CGAL::Qt {
     }
 
     template<typename T>
-    double Routing_scenario<T>::build_visibility_graph() {
+    std::pair<double, double> Routing_scenario<T>::build_visibility_graph() {
         number_of_orientation_tests = 0; //for evaluation
         CGAL::Timer timer;
 
@@ -750,7 +750,7 @@ namespace CGAL::Qt {
         //std::cout << "average time orientation test: " << timer.time() / number_of_orientation_tests << std::endl;
 
         compute_distances();
-        return timer.time() / number_of_orientation_tests;
+        return std::make_pair(timer.time() / number_of_orientation_tests, number_of_orientation_tests);
     }
 
     template<typename T>

@@ -410,6 +410,7 @@ void benchmark_on_domain() {
     int action;
     std::cout << "Benchmark TEA                         (0)" << std::endl;
     std::cout << "Benchmark routing on triangulation    (1)" << std::endl;
+    std::cout << "Leave                                 (2)" << std::endl;
     std::cout << "Select action: ";
     std::cin >> action;
     if(action == 0) {

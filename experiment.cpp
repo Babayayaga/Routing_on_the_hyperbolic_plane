@@ -407,6 +407,13 @@ void benchmark_tea() {
     std::cout << "average time o-test: " << sum_times_orientation_tests / trials << std::endl;
     std::cout << "max. time o-test: " << max_o_time << std::endl;
     std::cout << "min. time o-test: " << min_o_time << std::endl;
+
+    bool b1;
+    std::cout << "Again (0/1) ? ";
+    std::cin >> b1;
+    if(b1) {
+        benchmark_tea();
+    }
 }
 
 void benchmark_on_domain() {

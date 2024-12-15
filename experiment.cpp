@@ -93,6 +93,8 @@ void load_polygonal_domain() {
         std::cout << "Failed to open file." << std::endl;
         return;
     }
+    routing_scenario.clear();
+
     std::vector<Point_2> obstacle;
     int length;
     std::string model;
@@ -126,7 +128,7 @@ void load_polygonal_domain() {
         routing_scenario.insert_obstacle(obstacle.begin(), obstacle.end(), true);
         obstacle.clear();
     }
-    routing_scenario.discover_components();
+    //routing_scenario.discover_components();
 
     std::cout << "Loading successfully" << std::endl;
     std::cout << "number of vertices: " << routing_scenario.number_of_vertices() << std::endl;
@@ -369,9 +371,10 @@ void benchmark_tea() {
 
     CGAL::Timer sum;
     sum.start();
-    double number_o_tests = 0;
-    double sum_times_orientation_tests = 0;
-    double min_o_time = DBL_MAX, max_o_time = 0;
+    //double number_o_tests = 0;
+    //double sum_times_orientation_tests = 0;
+    //double min_o_time = DBL_MAX, max_o_time = 0;
+    double distance_comp_time = 0;
     double min = DBL_MAX, max = 0;
     for(int i = 0; i < trials; ++i) {
         CGAL::Timer timer;
@@ -379,16 +382,18 @@ void benchmark_tea() {
         const std::pair<double, double> pair = routing_scenario.build_visibility_graph();
         timer.stop();
 
-        sum_times_orientation_tests +=pair.first;
-        number_o_tests += pair.second;
+        //sum_times_orientation_tests +=pair.first;
+        //number_o_tests += pair.second;
 
-        if(min_o_time > pair.first) {
+        distance_comp_time += pair.second;
+
+        /*if(min_o_time > pair.first) {
             min_o_time = pair.first;
         }
 
         if(max_o_time < pair.first) {
             max_o_time = pair.first;
-        }
+        }*/
 
         if(timer.time() < min) {
             min = timer.time();
@@ -403,10 +408,11 @@ void benchmark_tea() {
     std::cout << "average time: " << sum.time() / trials << std::endl;
     std::cout << "max. time: " << max << std::endl;
     std::cout << "min. time: " << min << std::endl;
-    std::cout << "average number of o-tests: " << number_o_tests / trials << std::endl;
-    std::cout << "average time o-test: " << sum_times_orientation_tests / trials << std::endl;
-    std::cout << "max. time o-test: " << max_o_time << std::endl;
-    std::cout << "min. time o-test: " << min_o_time << std::endl;
+    std::cout << "average distance comp time: " << distance_comp_time / trials << std::endl;
+    //std::cout << "average number of o-tests: " << number_o_tests / trials << std::endl;
+    //std::cout << "average time o-test: " << sum_times_orientation_tests / trials << std::endl;
+    //std::cout << "max. time o-test: " << max_o_time << std::endl;
+    //std::cout << "min. time o-test: " << min_o_time << std::endl;
 
     bool b1;
     std::cout << "Again (0/1) ? ";

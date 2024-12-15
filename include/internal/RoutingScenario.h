@@ -708,6 +708,7 @@ namespace CGAL::Qt {
 
         //std::cout << "start building visibility graph" << std::endl;
 
+        timer.start();
         for (int i = 0; i < number_of_vertices(); ++i) {
             //std::cout << "i: " << i << std::endl;
             Vertex_handle center = index_vertex_map[i];
@@ -738,19 +739,23 @@ namespace CGAL::Qt {
                 Vertex_handle left = fc->vertex(fc->cw(index));
                 Vertex_handle right = fc->vertex(fc->ccw(index));
 
-                timer.start();
                 visibles_from_angle(Edge(fc, index), left, right, center/*->point()*/, &adjacency_counter);
-                timer.stop();
             } while (++fc != first);
             offsets.push_back(adjacency_counter);
         }
+        timer.stop();
+        double time_visibility_graph = timer.time();
+        timer.reset();
         defined_visibility_graph = true;
         //std::cout << "building visibility graph took: " << timer.time() << std::endl;
         //std::cout << "number of orientation test: " << number_of_orientation_tests << std::endl;
         //std::cout << "average time orientation test: " << timer.time() / number_of_orientation_tests << std::endl;
 
+        timer.start();
         compute_distances();
-        return std::make_pair(timer.time() / number_of_orientation_tests, number_of_orientation_tests);
+        timer.stop();
+
+        return std::make_pair(time_visibility_graph, timer.time());
     }
 
     template<typename T>

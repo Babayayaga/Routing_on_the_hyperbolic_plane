@@ -128,7 +128,7 @@ void load_polygonal_domain() {
         routing_scenario.insert_obstacle(obstacle.begin(), obstacle.end(), true);
         obstacle.clear();
     }
-    //routing_scenario.discover_components();
+    routing_scenario.discover_components();
 
     std::cout << "Loading successfully" << std::endl;
     std::cout << "number of vertices: " << routing_scenario.number_of_vertices() << std::endl;

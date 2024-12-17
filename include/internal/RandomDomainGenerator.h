@@ -57,8 +57,8 @@ namespace CGAL::Qt {
         void generate_random_domain(const int number_of_points, const double radius,
                                     const double threshold, const int erosions, const int dilations, const int min,
                                     const bool erosion_before_dilation, const bool blue_noise, const int candidates) {
-            std::cout << std::endl;
-            std::cout << "-----Domain generation-----" << std::endl;
+            //std::cout << std::endl;
+            //std::cout << "-----Domain generation-----" << std::endl;
             Timer sum;
             sum.start();
             r->clear();
@@ -139,7 +139,7 @@ namespace CGAL::Qt {
 
             sum.stop();
             const double sum_time = sum.time();
-            std::cout << "sampling points: " << sampling_time << " %: " << sampling_time / sum_time  << std::endl;
+            /*std::cout << "sampling points: " << sampling_time << " %: " << sampling_time / sum_time  << std::endl;
             std::cout << "inserting points: " << insertion_time << " %: " << insertion_time / sum_time  << std::endl;
             std::cout << "boolean assignment: " << boolean_time << " %: " << boolean_time / sum_time  << std::endl;
             std::cout << "smoothing took: " << smoothing_time << " %: " << smoothing_time / sum_time  << std::endl;
@@ -148,7 +148,7 @@ namespace CGAL::Qt {
             std::cout << "remove points: " << remove_points_time << " %: " << remove_points_time / sum_time  << std::endl;
             std::cout << "discover components: " << discover_time << " %: " << discover_time / sum_time  << std::endl;
             std::cout << "-----Generating domain took: " << sum.time() << " seconds.-----" << std::endl;
-            std::cout << std::endl;
+            std::cout << std::endl;*/
         }
 
         void insert_uniformly_distributed_points(const int n, const double radius, const bool b, const int k) {

@@ -1048,7 +1048,7 @@ namespace CGAL::Qt {
 
     template<typename T>
     void Routing_scenario<T>::discover_components() {
-        std::cout << "discover components" << std::endl;
+        //std::cout << "discover components" << std::endl;
         if (t->dimension() != 2)
             return;
 

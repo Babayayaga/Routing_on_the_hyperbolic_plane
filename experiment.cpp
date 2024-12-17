@@ -458,6 +458,58 @@ void benchmark_on_domain() {
     }
 }
 
+void big_benchmark_tea() {
+    const std::list<double> t_list = {0.55, 0.60, 0.62};
+    const std::list<double> r_h_list = {5, 8, 10, 11, 12};
+    const std::vector<int> trial_list = {100, 50, 50, 25, 10};
+
+    CGAL::Timer timer;
+
+    for(const double t : t_list) {
+
+        int r_h_counter = 0;
+        for(const double r_h : r_h_list) {
+            const int n = (int) (100 * 2 * CGAL_PI * (std::cosh(r_h) - 1));
+
+            double avg_N = 0;
+            double avg_edges_V = 0;
+            double min_time = DBL_MAX, max_time = 0, avg_time = 0;
+            double avg_avg_vertex_degree_V = 0;
+            for(int i = 0; i < trial_list[r_h_counter]; ++i) {
+                random_generator.generate_random_domain(n, r_h, t, 5, 5, 10, true, false, 0);
+
+                avg_N += routing_scenario.number_of_vertices();
+
+                timer.start();
+                routing_scenario.build_visibility_graph();
+                timer.stop();
+
+                const double time = timer.time();
+                avg_time += time;
+                if(time > max_time) {
+                    max_time = time;
+                }
+                if(time < min_time) {
+                    min_time = time;
+                }
+                timer.reset();
+
+                avg_avg_vertex_degree_V += routing_scenario.average_vertex_degree();
+                avg_edges_V += routing_scenario.edges_visibility_graph();
+            }
+            std::cout << "new row" << std::endl;
+            std::cout << "t: " << t << " r_h: " << r_h << std::endl;
+            std::cout << "avg_N: " << avg_N / trial_list[r_h_counter] << " avg_edges: "
+                << avg_edges_V / trial_list[r_h_counter] << " avg_degree: "
+                << avg_avg_vertex_degree_V / trial_list[r_h_counter] << std::endl;
+            std::cout << "min_time: " << min_time << " max_time: "
+                            << max_time << " avg_time: "
+                            << avg_time / trial_list[r_h_counter]  << std::endl;
+            ++r_h_counter;
+        }
+    }
+}
+
 int main() {
     bool again;
     int action;
@@ -465,6 +517,7 @@ int main() {
         std::cout << "Benchmark polygonal domain gen.   (0)" << std::endl;
         std::cout << "Load polygonal domain             (1)" << std::endl;
         std::cout << "Generate polygonal domain         (2)" << std::endl;
+        std::cout << "Benchmark TEA                     (3)" << std::endl;
         std::cout << "Select action: ";
         std::cin >> action;
         if(action == 0) {
@@ -474,11 +527,16 @@ int main() {
             load_polygonal_domain();
             std::cout << std::endl;
             benchmark_on_domain();
-        } else {
+        }
+        else if(action == 2) {
             std::cout << std::endl;
             generate_polygonal_domain();
             std::cout << std::endl;
             benchmark_on_domain();
+        } else {
+            std::cout << std::endl;
+            big_benchmark_tea();
+            std::cout << std::endl;
         }
 
         std::cout << "Again (0/1)? ";

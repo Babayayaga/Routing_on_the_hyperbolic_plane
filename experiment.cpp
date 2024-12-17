@@ -26,6 +26,10 @@ auto routing_scenario = RoutingScenario();
 auto random_generator = CGAL::Qt::Random_domain_generator<T>(&routing_scenario);
 
 void benchmark_random_generation() {
+    bool b1;
+    std::cout << "Benchmark average vertex degree (0/1) ?";
+    std::cin >> b1;
+
     //domain gen. parameters
     int n;
     int m;
@@ -61,12 +65,25 @@ void benchmark_random_generation() {
     CGAL::Timer sum_timer;
     sum_timer.start();
     double total_number_of_points = 0;
+    double average_vertex_degree = 0;
+    double min_degree = DBL_MAX, max_degree = 0;
     for(int i = 0; i < trials; ++i) {
         CGAL::Timer timer;
         timer.start();
         random_generator.generate_random_domain(n, r_h, t, 5, 5, m, true, false, 0);
-        total_number_of_points += routing_scenario.number_of_vertices();
         timer.stop();
+        total_number_of_points += routing_scenario.number_of_vertices();
+
+        if(b1) {
+            routing_scenario.build_visibility_graph();
+            average_vertex_degree += routing_scenario.average_vertex_degree();
+            if(max_degree < routing_scenario.average_vertex_degree()) {
+                max_degree = routing_scenario.average_vertex_degree();
+            }
+            if(min_degree > routing_scenario.average_vertex_degree()) {
+                min_degree = routing_scenario.average_vertex_degree();
+            }
+        }
 
         if(timer.time() > max_time) {
             max_time = timer.time();
@@ -79,6 +96,11 @@ void benchmark_random_generation() {
     sum_timer.stop();
 
     std::cout << "average number of points: " << total_number_of_points / trials << std::endl;
+    if(b1) {
+        std::cout << "average vertex degree: " << average_vertex_degree / trials << std::endl;
+        std::cout << "min vertex degree: " << min_degree << std::endl;
+        std::cout << "max vertex degree: " << max_degree << std::endl;
+    }
     std::cout << "average time: " << sum_timer.time() / trials << std::endl;
     std::cout << "min. time: " << min_time << std::endl;
     std::cout << "max. time: " << max_time << std::endl;

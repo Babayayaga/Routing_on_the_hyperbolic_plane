@@ -235,7 +235,10 @@ void benchmark_routing_on_triangulation() {
     std::vector<double> path_lengths;
     for(int i = 0; i < trials; ++i) {
         const int start_index = random.get_int(0, routing_scenario.number_of_vertices() - 1);
-        const int dest_index = random.get_int(0, routing_scenario.number_of_vertices() - 1);
+        int dest_index = start_index;
+        while(dest_index == start_index) {
+            dest_index = random.get_int(0, routing_scenario.number_of_vertices() - 1);
+        }
         Vertex_handle start = routing_scenario.index_vertex_map[start_index];
         Vertex_handle dest = routing_scenario.index_vertex_map[dest_index];
         queries.push_back(std::make_pair(start, dest));
@@ -264,9 +267,10 @@ void benchmark_routing_on_triangulation() {
 
         if(reachable) {
             a_star_sum_time += timer.time();
-            a_star_sum_path_length += routing_scenario.get_path_length();
+            double path_length = routing_scenario.get_path_length();
+            a_star_sum_path_length += path_length;
             ++reachable_counter;
-            path_lengths.push_back(routing_scenario.get_path_length());
+            path_lengths.push_back(path_length);
         }
         timer.reset();
 
@@ -364,8 +368,9 @@ void benchmark_routing_on_triangulation() {
                 }
 
                 a_star_sum_time += timer.time();
-                a_star_approx_sum_path_length += routing_scenario.get_path_length();
-                approx_path_lengths.push_back(routing_scenario.get_path_length());
+                double path_length = routing_scenario.get_path_length();
+                a_star_approx_sum_path_length += path_length;
+                approx_path_lengths.push_back(path_length);
             }
             timer.reset();
 
@@ -383,7 +388,7 @@ void benchmark_routing_on_triangulation() {
         for(int i = 0; i < reachable_counter; ++i) {
             const double ratio = approx_path_lengths[i] / path_lengths[i];
             if(ratio < 1) {
-                std::cout << approx_path_lengths[i] << " real: " << path_lengths[i] << std::endl;
+                std::cout << "error: " << approx_path_lengths[i] << " real: " << path_lengths[i] << std::endl;
             }
             if(ratio > max) {
                 max = ratio;

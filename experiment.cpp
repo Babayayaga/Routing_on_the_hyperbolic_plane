@@ -382,7 +382,7 @@ void benchmark_routing_on_triangulation() {
         double min = DBL_MAX, max = 0;
         for(int i = 0; i < reachable_counter; ++i) {
             const double ratio = approx_path_lengths[i] / path_lengths[i];
-            if(ratio > 1) {
+            if(ratio < 1) {
                 std::cout << approx_path_lengths[i] << " real: " << path_lengths[i];
             }
             if(ratio > max) {

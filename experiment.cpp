@@ -328,7 +328,7 @@ void benchmark_routing_on_triangulation() {
         }
 
         timer.start();
-        routing_scenario.build_visibility_graph();
+        routing_scenario.use_triangulation_as_visibility_graph();
         timer.stop();
         std::cout << "building subgraph took: " << timer.time() << std::endl;
         std::cout << "number of edges subgraph: " << routing_scenario.edges_visibility_graph() << std::endl;
@@ -382,6 +382,9 @@ void benchmark_routing_on_triangulation() {
         double min = DBL_MAX, max = 0;
         for(int i = 0; i < reachable_counter; ++i) {
             const double ratio = approx_path_lengths[i] / path_lengths[i];
+            if(ratio > 1) {
+                std::cout << approx_path_lengths[i] << " real: " << path_lengths[i];
+            }
             if(ratio > max) {
                 max = ratio;
             }

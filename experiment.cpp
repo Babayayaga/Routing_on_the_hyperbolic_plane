@@ -459,8 +459,8 @@ void benchmark_on_domain() {
 }
 
 void big_benchmark_tea() {
-    const std::list<double> t_list = {0.55, 0.60, 0.62};
-    const std::list<double> r_h_list = {5, 8, 10, 11, 12};
+    const std::list<double> t_list = {/*0.55, 0.60, 0.62*/0.65};
+    const std::list<double> r_h_list = {/*5, 8, 10, 11, 12*/ 5,7,8,9,10};
     const std::vector<int> trial_list = {100, 50, 50, 25, 10};
 
     CGAL::Timer timer;
@@ -474,7 +474,7 @@ void big_benchmark_tea() {
             double avg_N = 0;
             double avg_edges_V = 0;
             double min_time = DBL_MAX, max_time = 0, avg_time = 0;
-            double avg_avg_vertex_degree_V = 0;
+            double avg_avg_vertex_degree_V = 0, min_avg_degree = DBL_MAX, max_avg_degree = 0;
             for(int i = 0; i < trial_list[r_h_counter]; ++i) {
                 random_generator.generate_random_domain(n, r_h, t, 5, 5, 10, true, false, 0);
 
@@ -494,7 +494,15 @@ void big_benchmark_tea() {
                 }
                 timer.reset();
 
-                avg_avg_vertex_degree_V += routing_scenario.average_vertex_degree();
+                const double avg_degree = routing_scenario.average_vertex_degree();
+                avg_avg_vertex_degree_V += avg_degree;
+                if(avg_degree < min_avg_degree) {
+                    min_avg_degree = avg_degree;
+                }
+                if(avg_degree > max_avg_degree) {
+                    max_avg_degree = avg_degree;
+                }
+
                 avg_edges_V += routing_scenario.edges_visibility_graph();
             }
             std::cout << "new row" << std::endl;
@@ -502,6 +510,7 @@ void big_benchmark_tea() {
             std::cout << "avg_N: " << avg_N / trial_list[r_h_counter] << " avg_edges: "
                 << avg_edges_V / trial_list[r_h_counter] << " avg_degree: "
                 << avg_avg_vertex_degree_V / trial_list[r_h_counter] << std::endl;
+            std::cout << "min_avg_degree: " << min_avg_degree << " max_avg_degree: " << max_avg_degree << std::endl;
             std::cout << "min_time: " << min_time << " max_time: "
                             << max_time << " avg_time: "
                             << avg_time / trial_list[r_h_counter]  << std::endl;

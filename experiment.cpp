@@ -270,14 +270,14 @@ void benchmark_routing_on_triangulation() {
         }
         timer.reset();
 
-        timer.start();
+        /*timer.start();
         routing_scenario.dijkstra();
         timer.stop();
 
         dijkstra_sum_time += timer.time();
         dijkstra_sum_length += routing_scenario.average_path_length_dijkstra();
 
-        timer.reset();
+        timer.reset();*/
     }
     std::cout << "reachable paths: " << reachable_counter << std::endl;
     std::cout << "average A* time: " << a_star_sum_time / reachable_counter << std::endl;
@@ -369,14 +369,14 @@ void benchmark_routing_on_triangulation() {
             }
             timer.reset();
 
-            timer.start();
+            /*timer.start();
             routing_scenario.dijkstra();
             timer.stop();
 
             dijkstra_sum_time += timer.time();
             dijkstra_approx_sum_path_length += routing_scenario.average_path_length_dijkstra();
 
-            timer.reset();
+            timer.reset();*/
         }
 
         double min = DBL_MAX, max = 0;

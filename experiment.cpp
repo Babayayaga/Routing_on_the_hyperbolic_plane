@@ -250,8 +250,9 @@ void benchmark_routing_on_triangulation() {
     timer.reset();
 
     std::cout << "--routing on visibility graph--" << std::endl;
-    double sum_time = 0;
-    double sum_path_length = 0;
+    double a_star_sum_time = 0;
+    double dijkstra_sum_time = 0;
+    double a_star_sum_path_length = 0, dijkstra_sum_length = 0;
     double reachable_counter = 0;
     for(std::pair<Vertex_handle, Vertex_handle> query : queries) {
         routing_scenario.set_point_to_start(query.first);
@@ -262,16 +263,25 @@ void benchmark_routing_on_triangulation() {
         timer.stop();
 
         if(reachable) {
-            sum_time += timer.time();
-            sum_path_length += routing_scenario.get_path_length();
+            a_star_sum_time += timer.time();
+            a_star_sum_path_length += routing_scenario.get_path_length();
             ++reachable_counter;
             path_lengths.push_back(routing_scenario.get_path_length());
         }
         timer.reset();
+
+        timer.start();
+        routing_scenario.dijkstra();
+        timer.stop();
+
+        dijkstra_sum_time += timer.time();
+        dijkstra_sum_length += routing_scenario.average_path_length_dijkstra();
     }
     std::cout << "reachable paths: " << reachable_counter << std::endl;
-    std::cout << "average A* time: " << sum_time / reachable_counter << std::endl;
-    std::cout << "average path length: " << sum_path_length / reachable_counter << std::endl;
+    std::cout << "average A* time: " << a_star_sum_time / reachable_counter << std::endl;
+    std::cout << "average point-to-point path length: " << a_star_sum_path_length / reachable_counter << std::endl;
+    std::cout << "average Dijkstra time: " << dijkstra_sum_time / trials << std::endl;
+    std::cout << "average Dijkstra path length: " << dijkstra_sum_length / trials << std::endl;
 
     bool end;
     do {
@@ -323,9 +333,10 @@ void benchmark_routing_on_triangulation() {
         timer.reset();
 
         std::cout << "--routing on subgraph--" << std::endl;
-        sum_time = 0;
+        a_star_sum_time = 0;
+        dijkstra_sum_time = 0;
         double opti_time = 0;
-        double approx_sum_path_length = 0;
+        double a_star_approx_sum_path_length = 0, dijkstra_approx_sum_path_length = 0;
         std::vector<double> approx_path_lengths;
         for(std::pair<Vertex_handle, Vertex_handle> query : queries) {
             routing_scenario.set_point_to_start(query.first);
@@ -349,11 +360,18 @@ void benchmark_routing_on_triangulation() {
                     opti_time += opti_timer.time();
                 }
 
-                sum_time += timer.time();
-                approx_sum_path_length += routing_scenario.get_path_length();
+                a_star_sum_time += timer.time();
+                a_star_approx_sum_path_length += routing_scenario.get_path_length();
                 approx_path_lengths.push_back(routing_scenario.get_path_length());
             }
             timer.reset();
+
+            timer.start();
+            routing_scenario.dijkstra();
+            timer.stop();
+
+            dijkstra_sum_time += timer.time();
+            dijkstra_approx_sum_path_length += routing_scenario.average_path_length_dijkstra();
         }
 
         double min = DBL_MAX, max = 0;
@@ -371,9 +389,13 @@ void benchmark_routing_on_triangulation() {
         }
         std::cout << "min ratio: " << min << std::endl;
         std::cout << "max ratio: " << max << std::endl;
-        std::cout << "average A* time: " << sum_time / reachable_counter << std::endl;
-        std::cout << "average path length: " << approx_sum_path_length / reachable_counter << std::endl;
-        std::cout << "-> quality of approx. paths is: " << approx_sum_path_length / sum_path_length << std::endl;
+        std::cout << "average A* time: " << a_star_sum_time / reachable_counter << std::endl;
+        std::cout << "average A* path length: " << a_star_approx_sum_path_length / reachable_counter << std::endl;
+        std::cout << "-> A* quality of approx. paths is: " << a_star_approx_sum_path_length / a_star_sum_path_length << std::endl;
+
+        std::cout << "average Dijkstra time: " << dijkstra_sum_time / trials << std::endl;
+        std::cout << "average Dijkstra path length: " << dijkstra_sum_length / trials << std::endl;
+        std::cout << "-> Dijkstra quality of approx. paths is: " << dijkstra_approx_sum_path_length / dijkstra_sum_length << std::endl;
 
         if(b1) {
             routing_scenario.remove_all_unconstrained_points();
@@ -459,8 +481,8 @@ void benchmark_on_domain() {
 }
 
 void big_benchmark_tea() {
-    const std::list<double> t_list = {/*0.55, 0.60, 0.62*/0.65};
-    const std::list<double> r_h_list = {/*5, 8, 10, 11, 12*/ 5,7,8,9,10};
+    const std::list<double> t_list = {/*0.55,*/ 0.60/*, 0.62*/};
+    const std::list<double> r_h_list = {5, 8, 10, 11, 12};
     const std::vector<int> trial_list = {100, 50, 50, 25, 10};
 
     CGAL::Timer timer;

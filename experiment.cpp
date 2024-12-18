@@ -281,7 +281,7 @@ void benchmark_routing_on_triangulation() {
     }
     std::cout << "reachable paths: " << reachable_counter << std::endl;
     std::cout << "average A* time: " << a_star_sum_time / reachable_counter << std::endl;
-    std::cout << "average point-to-point path length: " << a_star_sum_path_length / reachable_counter << std::endl;
+    std::cout << "average A* path length: " << a_star_sum_path_length / reachable_counter << std::endl;
     std::cout << "average Dijkstra time: " << dijkstra_sum_time / trials << std::endl;
     std::cout << "average Dijkstra path length: " << dijkstra_sum_length / trials << std::endl;
 
@@ -340,6 +340,7 @@ void benchmark_routing_on_triangulation() {
         double opti_time = 0;
         double a_star_approx_sum_path_length = 0, dijkstra_approx_sum_path_length = 0;
         std::vector<double> approx_path_lengths;
+        reachable_counter = 0;
         for(std::pair<Vertex_handle, Vertex_handle> query : queries) {
             routing_scenario.set_point_to_start(query.first);
             routing_scenario.set_point_to_destination(query.second);
@@ -349,7 +350,7 @@ void benchmark_routing_on_triangulation() {
             timer.stop();
 
             if(reachable) {
-
+                ++reachable_counter;
                 if(opti != -1) {
                     CGAL::Timer opti_timer;
                     opti_timer.start();
@@ -391,6 +392,7 @@ void benchmark_routing_on_triangulation() {
         if(opti != -1) {
             std::cout << "average path optimization took: " << opti_time / reachable_counter << std::endl;
         }
+        std::cout << "reachable paths: " << reachable_counter << std::endl;
         std::cout << "min ratio: " << min << std::endl;
         std::cout << "max ratio: " << max << std::endl;
         std::cout << "average A* time: " << a_star_sum_time / reachable_counter << std::endl;
@@ -398,7 +400,7 @@ void benchmark_routing_on_triangulation() {
         std::cout << "-> A* quality of approx. paths is: " << a_star_approx_sum_path_length / a_star_sum_path_length << std::endl;
 
         std::cout << "average Dijkstra time: " << dijkstra_sum_time / trials << std::endl;
-        std::cout << "average Dijkstra path length: " << dijkstra_sum_length / trials << std::endl;
+        std::cout << "average Dijkstra path length: " << dijkstra_approx_sum_path_length / trials << std::endl;
         std::cout << "-> Dijkstra quality of approx. paths is: " << dijkstra_approx_sum_path_length / dijkstra_sum_length << std::endl;
 
         if(b1) {

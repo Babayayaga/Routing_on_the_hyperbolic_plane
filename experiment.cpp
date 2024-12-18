@@ -328,7 +328,7 @@ void benchmark_routing_on_triangulation() {
         }
 
         timer.start();
-        routing_scenario.use_triangulation_as_visibility_graph();
+        routing_scenario.build_visibility_graph();
         timer.stop();
         std::cout << "building subgraph took: " << timer.time() << std::endl;
         std::cout << "number of edges subgraph: " << routing_scenario.edges_visibility_graph() << std::endl;

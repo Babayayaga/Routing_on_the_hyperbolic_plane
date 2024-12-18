@@ -457,7 +457,7 @@ namespace CGAL::Qt {
                 r = 2 * r / (1 + r * r);
             }
 
-            return std::log((1 + r) / (1 - r));
+            return 0.5 * std::log((1 + r) / (1 - r));
             //return std::sqrt((p.x() - q.x()) * (p.x() - q.x()) + (p.y() - q.y()) * (p.y() - q.y()));
         }
 

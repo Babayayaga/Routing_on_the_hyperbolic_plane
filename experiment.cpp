@@ -251,7 +251,8 @@ void benchmark_routing_on_triangulation() {
         timer.start();
         routing_scenario.build_visibility_graph();
         timer.stop();
-        std::cout << "building visbility graph took: " << timer.time() << std::endl;
+        const double build_v_time = timer.time();
+        std::cout << "building visbility graph took: " << build_v_time << std::endl;
         std::cout << "number of edges visbility graph: " << routing_scenario.edges_visibility_graph() << std::endl;
         timer.reset();
 
@@ -293,8 +294,10 @@ void benchmark_routing_on_triangulation() {
         std::cout << "reachable paths: " << reachable_counter << std::endl;
         std::cout << "average A* time: " << a_star_sum_time / reachable_counter << std::endl;
         std::cout << "average A* path length: " << a_star_sum_path_length / reachable_counter << std::endl;
+        std::cout << "one-to-one total time: " << build_v_time + a_star_sum_time / reachable_counter << std::endl;
         std::cout << "average Dijkstra time: " << dijkstra_sum_time / trials << std::endl;
         std::cout << "average Dijkstra path length: " << dijkstra_sum_length / trials << std::endl;
+        std::cout << "one-to-all total time: " << build_v_time + dijkstra_sum_time / trials << std::endl;
 
         bool end1;
         do {
@@ -341,7 +344,8 @@ void benchmark_routing_on_triangulation() {
             timer.start();
             routing_scenario.use_triangulation_as_visibility_graph();
             timer.stop();
-            std::cout << "building subgraph took: " << timer.time() << std::endl;
+            const double build_s_time = timer.time();
+            std::cout << "building subgraph took: " << build_s_time << std::endl;
             std::cout << "number of edges subgraph: " << routing_scenario.edges_visibility_graph() << std::endl;
             timer.reset();
 
@@ -416,10 +420,12 @@ void benchmark_routing_on_triangulation() {
             std::cout << "average A* time: " << a_star_sum_time / reachable_counter << std::endl;
             std::cout << "average A* path length: " << a_star_approx_sum_path_length / reachable_counter << std::endl;
             std::cout << "-> A* quality of approx. paths is: " << a_star_approx_sum_path_length / a_star_sum_path_length << std::endl;
+            std::cout << "one-to-one total time: " << build_s_time + a_star_sum_time / reachable_counter << std::endl;
 
             std::cout << "average Dijkstra time: " << dijkstra_sum_time / trials << std::endl;
             std::cout << "average Dijkstra path length: " << dijkstra_approx_sum_path_length / trials << std::endl;
             std::cout << "-> Dijkstra quality of approx. paths is: " << dijkstra_approx_sum_path_length / dijkstra_sum_length << std::endl;
+            std::cout << "one-to-all total time: " << build_s_time + dijkstra_sum_time / reachable_counter << std::endl;
 
             if(b1) {
                 routing_scenario.remove_all_unconstrained_points();

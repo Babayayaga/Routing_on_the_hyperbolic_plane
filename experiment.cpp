@@ -225,17 +225,6 @@ void generate_polygonal_domain() {
     }
 }
 
-double compute_path_length(std::vector<int> path) {
-    double sum = 0;
-    for (int i = 0; i < path.size() - 1; ++i) {
-        const double segment = routing_scenario.hyperbolic_distance(routing_scenario.index_vertex_map[path[i]]->point(),
-                                   routing_scenario.index_vertex_map[path[i + 1]]->point());
-        sum += segment;
-        std::cout << "segment: " << segment << std::endl;
-    }
-    return sum;
-}
-
 void benchmark_routing_on_triangulation() {
     bool end;
     do {
@@ -292,14 +281,14 @@ void benchmark_routing_on_triangulation() {
             }
             timer.reset();
 
-            /*timer.start();
+            timer.start();
             routing_scenario.dijkstra();
             timer.stop();
 
             dijkstra_sum_time += timer.time();
             dijkstra_sum_length += routing_scenario.average_path_length_dijkstra();
 
-            timer.reset();*/
+            timer.reset();
         }
         std::cout << "reachable paths: " << reachable_counter << std::endl;
         std::cout << "average A* time: " << a_star_sum_time / reachable_counter << std::endl;
@@ -318,7 +307,7 @@ void benchmark_routing_on_triangulation() {
                 bool blue_noise;
                 int candidates = 0;
                 double radius;
-                int old_number_of_vertices = routing_scenario.number_of_vertices();
+                const int old_number_of_vertices = routing_scenario.number_of_vertices();
                 std::cout << "number of extra points: ";
                 std::cin >> amount;
                 std::cout << "blue noise sampling (0/1) ?";
@@ -396,41 +385,20 @@ void benchmark_routing_on_triangulation() {
                 }
                 timer.reset();
 
-                /*timer.start();
+                timer.start();
                 routing_scenario.dijkstra();
                 timer.stop();
 
                 dijkstra_sum_time += timer.time();
                 dijkstra_approx_sum_path_length += routing_scenario.average_path_length_dijkstra();
 
-                timer.reset();*/
+                timer.reset();
             }
 
             double min = DBL_MAX, max = 0;
             for(int i = 0; i < trials; ++i) {
                 if(path_lengths[i] != DBL_MAX) {
                     const double ratio = approx_path_lengths[i] / path_lengths[i];
-                    if(ratio < 1) {
-                        std::cout << "error: " << approx_path_lengths[i] << " real: " << path_lengths[i] << std::endl;
-                        std::cout << "error at quiery: " << routing_scenario.vertex_index_map[queries[i].first] << " , "
-                            << routing_scenario.vertex_index_map[queries[i].second] << std::endl;
-
-                        std::cout << "shortest path length: " << shortest_paths[i].size() << std::endl;
-                        std::cout << "approx path length: " << approx_paths[i].size() << std::endl;
-
-                        std::cout << "shortest path length: " << compute_path_length(shortest_paths[i]) << std::endl;
-                        std::cout << "approx path length: " << compute_path_length(approx_paths[i]) << std::endl;
-                        /*std::cout << "begin shortest path:  " << std::endl;
-                        for(const int ind : shortest_paths[i]) {
-                            std::cout << "shortest path: " << ind << std::endl;
-                        }
-                        std::cout << "end shortest path:  " << std::endl;
-                        std::cout << "begin approx. path:  " << std::endl;
-                        for(const int ind : approx_paths[i]) {
-                            std::cout << "approx path: " << ind << std::endl;
-                        }
-                        std::cout << "end approx. path:  " << std::endl;*/
-                    }
                     if(ratio > max) {
                         max = ratio;
                     }

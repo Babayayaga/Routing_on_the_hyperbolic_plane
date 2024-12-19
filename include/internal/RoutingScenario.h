@@ -451,17 +451,7 @@ namespace CGAL::Qt {
             real = real / d;
             img = img / d;
 
-            double r = std::sqrt(to_double(real * real + img * img));
-
-            /*if (typeid(Beltrami_klein_traits) == typeid(Traits)) {
-                r = 2 * r / (1 + r * r);
-            }*/
-
-            //double tmp = std::log((1 + r) / (1 - r));
-
-            /*if (typeid(Beltrami_klein_traits) == typeid(Traits)) {
-                tmp = tmp * 0.5;
-            }*/
+            const double r = std::sqrt(to_double(real * real + img * img));
 
             return std::log((1 + r) / (1 - r));
             //return std::sqrt((p.x() - q.x()) * (p.x() - q.x()) + (p.y() - q.y()) * (p.y() - q.y()));

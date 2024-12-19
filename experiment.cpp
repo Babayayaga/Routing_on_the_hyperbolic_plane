@@ -247,6 +247,8 @@ void benchmark_routing_on_triangulation() {
             queries.push_back(std::make_pair(start, dest));
         }
 
+        std::cout << std::endl;
+        std::cout << "--routing on visibility graph--" << std::endl;
         CGAL::Timer timer;
         timer.start();
         routing_scenario.build_visibility_graph();
@@ -255,8 +257,6 @@ void benchmark_routing_on_triangulation() {
         std::cout << "building visbility graph took: " << build_v_time << std::endl;
         std::cout << "number of edges visbility graph: " << routing_scenario.edges_visibility_graph() << std::endl;
         timer.reset();
-
-        std::cout << "--routing on visibility graph--" << std::endl;
         double a_star_sum_time = 0;
         double dijkstra_sum_time = 0;
         double a_star_sum_path_length = 0, dijkstra_sum_length = 0;
@@ -344,6 +344,8 @@ void benchmark_routing_on_triangulation() {
                 std::cin >> opti;
             }
 
+            std::cout << std::endl;
+            std::cout << "--routing on subgraph--" << std::endl;
             timer.start();
             routing_scenario.use_triangulation_as_visibility_graph();
             timer.stop();
@@ -351,8 +353,6 @@ void benchmark_routing_on_triangulation() {
             std::cout << "building subgraph took: " << build_s_time << std::endl;
             std::cout << "number of edges subgraph: " << routing_scenario.edges_visibility_graph() << std::endl;
             timer.reset();
-
-            std::cout << "--routing on subgraph--" << std::endl;
             a_star_sum_time = 0;
             dijkstra_sum_time = 0;
             double opti_time = 0;

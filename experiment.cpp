@@ -429,7 +429,7 @@ void benchmark_routing_on_triangulation() {
             std::cout << "average Dijkstra time: " << dijkstra_sum_time / trials << std::endl;
             std::cout << "average Dijkstra path length: " << dijkstra_approx_sum_path_length / trials << std::endl;
             std::cout << "-> Dijkstra quality of approx. paths is: " << dijkstra_approx_sum_path_length / dijkstra_sum_length << std::endl;
-            std::cout << "one-to-all total time: " << build_s_time + dijkstra_sum_time / reachable_counter << std::endl;
+            std::cout << "one-to-all total time: " << build_s_time + dijkstra_sum_time / trials << std::endl;
             std::cout << std::endl;
 
             if(b1) {

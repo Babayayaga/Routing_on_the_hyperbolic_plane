@@ -443,9 +443,13 @@ void benchmark_routing_on_triangulation() {
             std::cout << "Again (0/1)? ";
             std::cin >> end1;
             std::cout << std::endl;
+            std::cout << std::endl;
+            std::cout << std::endl;
         } while(end1);
         std::cout << "Again (0/1)? ";
         std::cin >> end;
+        std::cout << std::endl;
+        std::cout << std::endl;
         std::cout << std::endl;
     } while(end);
 }

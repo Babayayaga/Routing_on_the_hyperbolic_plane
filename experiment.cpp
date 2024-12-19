@@ -300,6 +300,7 @@ void benchmark_routing_on_triangulation() {
         std::cout << "average Dijkstra time: " << dijkstra_sum_time / trials << std::endl;
         std::cout << "average Dijkstra path length: " << dijkstra_sum_length / trials << std::endl;
         std::cout << "one-to-all total time: " << build_v_time + dijkstra_sum_time / trials << std::endl;
+        std::cout << std::endl;
 
         bool end1;
         do {

@@ -10,7 +10,7 @@ typedef CGAL::Beltrami_klein_traits<CGAL::Exact_predicates_inexact_constructions
 typedef CGAL::Poincare_disk_traits<CGAL::Exact_predicates_inexact_constructions_kernel> Poincare_disk_traits;
 
 //set either to Poincare_disk_traits or Beltrami_klein_traits
-typedef Beltrami_klein_traits K;
+typedef Poincare_disk_traits K;
 
 typedef CGAL::Delaunay_mesh_face_base_2<K> Face_base;
 typedef CGAL::Triangulation_vertex_base_2<K> Vertex_base;
@@ -225,126 +225,52 @@ void generate_polygonal_domain() {
     }
 }
 
+double compute_path_length(std::vector<int> path) {
+    double sum = 0;
+    for (int i = 0; i < path.size() - 1; ++i) {
+        const double segment = routing_scenario.hyperbolic_distance(routing_scenario.index_vertex_map[path[i]]->point(),
+                                   routing_scenario.index_vertex_map[path[i + 1]]->point());
+        sum += segment;
+        std::cout << "segment: " << segment << std::endl;
+    }
+    return sum;
+}
+
 void benchmark_routing_on_triangulation() {
-    int trials;
-    std::cout << "trials: ";
-    std::cin >> trials;
-
-    CGAL::Random random;
-    std::vector<std::pair<Vertex_handle, Vertex_handle>> queries;
-    std::vector<double> path_lengths;
-    for(int i = 0; i < trials; ++i) {
-        const int start_index = random.get_int(0, routing_scenario.number_of_vertices() - 1);
-        int dest_index = start_index;
-        while(dest_index == start_index) {
-            dest_index = random.get_int(0, routing_scenario.number_of_vertices() - 1);
-        }
-        Vertex_handle start = routing_scenario.index_vertex_map[start_index];
-        Vertex_handle dest = routing_scenario.index_vertex_map[dest_index];
-        queries.push_back(std::make_pair(start, dest));
-    }
-
-    CGAL::Timer timer;
-    timer.start();
-    routing_scenario.build_visibility_graph();
-    timer.stop();
-    std::cout << "building visbility graph took: " << timer.time() << std::endl;
-    std::cout << "number of edges visbility graph: " << routing_scenario.edges_visibility_graph() << std::endl;
-    timer.reset();
-
-    std::cout << "--routing on visibility graph--" << std::endl;
-    double a_star_sum_time = 0;
-    double dijkstra_sum_time = 0;
-    double a_star_sum_path_length = 0, dijkstra_sum_length = 0;
-    double reachable_counter = 0;
-    for(std::pair<Vertex_handle, Vertex_handle> query : queries) {
-        routing_scenario.set_point_to_start(query.first);
-        routing_scenario.set_point_to_destination(query.second);
-
-        timer.start();
-        const bool reachable = routing_scenario.a_star();
-        timer.stop();
-
-        double path_length = routing_scenario.get_path_length();
-        if(reachable) {
-            a_star_sum_time += timer.time();
-            a_star_sum_path_length += path_length;
-            ++reachable_counter;
-        }
-        path_lengths.push_back(path_length);
-        timer.reset();
-
-        /*timer.start();
-        routing_scenario.dijkstra();
-        timer.stop();
-
-        dijkstra_sum_time += timer.time();
-        dijkstra_sum_length += routing_scenario.average_path_length_dijkstra();
-
-        timer.reset();*/
-    }
-    std::cout << "reachable paths: " << reachable_counter << std::endl;
-    std::cout << "average A* time: " << a_star_sum_time / reachable_counter << std::endl;
-    std::cout << "average A* path length: " << a_star_sum_path_length / reachable_counter << std::endl;
-    std::cout << "average Dijkstra time: " << dijkstra_sum_time / trials << std::endl;
-    std::cout << "average Dijkstra path length: " << dijkstra_sum_length / trials << std::endl;
-
     bool end;
     do {
-        //routing on triangulation
-        bool b1;
-        std::cout << "Insert extra points (0/1) ? ";
-        std::cin >> b1;
-        if(b1) {
-            int amount;
-            bool blue_noise;
-            int candidates = 0;
-            double radius;
-            int old_number_of_vertices = routing_scenario.number_of_vertices();
-            std::cout << "number of extra points: ";
-            std::cin >> amount;
-            std::cout << "blue noise sampling (0/1) ?";
-            std::cin >> blue_noise;
-            if(blue_noise) {
-                std::cout << "number of candidates: ";
-                std::cin >> candidates;
+        int trials;
+        std::cout << "trials: ";
+        std::cin >> trials;
+
+        CGAL::Random random;
+        std::vector<std::pair<Vertex_handle, Vertex_handle>> queries;
+        std::vector<double> path_lengths;
+        std::vector<std::vector<int>> shortest_paths;
+        for(int i = 0; i < trials; ++i) {
+            const int start_index = random.get_int(0, routing_scenario.number_of_vertices() - 1);
+            int dest_index = start_index;
+            while(dest_index == start_index) {
+                dest_index = random.get_int(0, routing_scenario.number_of_vertices() - 1);
             }
-            std::cout << "sample radius: ";
-            std::cin >> radius;
-
-            timer.start();
-            random_generator.insert_uniformly_distributed_points(amount, radius, blue_noise, candidates);
-            timer.stop();
-            std::cout << "inserting extra points took: " << timer.time() << std::endl;
-            std::cout << "points inserted into free space: " << routing_scenario.number_of_vertices() - old_number_of_vertices << std::endl;
-            timer.reset();
+            Vertex_handle start = routing_scenario.index_vertex_map[start_index];
+            Vertex_handle dest = routing_scenario.index_vertex_map[dest_index];
+            queries.push_back(std::make_pair(start, dest));
         }
 
-        bool b2;
-        int opti = -1;
-        std::cout << "Use path optimization (0/1) ? ";
-        std::cin >> b2;
-        if(b2) {
-            std::cout << "Use greedy optimization   (0)" << std::endl;
-            std::cout << "Use full optimization     (1)" << std::endl;
-            std::cout << "Which optimizazion: ";
-            std::cin >> opti;
-        }
-
+        CGAL::Timer timer;
         timer.start();
-        routing_scenario.use_triangulation_as_visibility_graph();
+        routing_scenario.build_visibility_graph();
         timer.stop();
-        std::cout << "building subgraph took: " << timer.time() << std::endl;
-        std::cout << "number of edges subgraph: " << routing_scenario.edges_visibility_graph() << std::endl;
+        std::cout << "building visbility graph took: " << timer.time() << std::endl;
+        std::cout << "number of edges visbility graph: " << routing_scenario.edges_visibility_graph() << std::endl;
         timer.reset();
 
-        std::cout << "--routing on subgraph--" << std::endl;
-        a_star_sum_time = 0;
-        dijkstra_sum_time = 0;
-        double opti_time = 0;
-        double a_star_approx_sum_path_length = 0, dijkstra_approx_sum_path_length = 0;
-        std::vector<double> approx_path_lengths;
-        reachable_counter = 0;
+        std::cout << "--routing on visibility graph--" << std::endl;
+        double a_star_sum_time = 0;
+        double dijkstra_sum_time = 0;
+        double a_star_sum_path_length = 0, dijkstra_sum_length = 0;
+        double reachable_counter = 0;
         for(std::pair<Vertex_handle, Vertex_handle> query : queries) {
             routing_scenario.set_point_to_start(query.first);
             routing_scenario.set_point_to_destination(query.second);
@@ -353,25 +279,17 @@ void benchmark_routing_on_triangulation() {
             const bool reachable = routing_scenario.a_star();
             timer.stop();
 
-            double path_length = routing_scenario.get_path_length();
             if(reachable) {
-                ++reachable_counter;
-                if(opti != -1) {
-                    CGAL::Timer opti_timer;
-                    opti_timer.start();
-                    if(opti == 0) {
-                        routing_scenario.greedy_optimization();
-                    } else if(opti == 1) {
-                        routing_scenario.path_optimization();
-                    }
-                    opti_timer.stop();
-                    opti_time += opti_timer.time();
-                }
-
+                shortest_paths.push_back(routing_scenario.get_indices_path());
+                double path_length = routing_scenario.get_path_length();
                 a_star_sum_time += timer.time();
-                a_star_approx_sum_path_length += path_length;
+                a_star_sum_path_length += path_length;
+                ++reachable_counter;
+                path_lengths.push_back(path_length);
+            } else {
+                shortest_paths.push_back({});
+                path_lengths.push_back(DBL_MAX);
             }
-            approx_path_lengths.push_back(path_length);
             timer.reset();
 
             /*timer.start();
@@ -379,47 +297,171 @@ void benchmark_routing_on_triangulation() {
             timer.stop();
 
             dijkstra_sum_time += timer.time();
-            dijkstra_approx_sum_path_length += routing_scenario.average_path_length_dijkstra();
+            dijkstra_sum_length += routing_scenario.average_path_length_dijkstra();
 
             timer.reset();*/
         }
+        std::cout << "reachable paths: " << reachable_counter << std::endl;
+        std::cout << "average A* time: " << a_star_sum_time / reachable_counter << std::endl;
+        std::cout << "average A* path length: " << a_star_sum_path_length / reachable_counter << std::endl;
+        std::cout << "average Dijkstra time: " << dijkstra_sum_time / trials << std::endl;
+        std::cout << "average Dijkstra path length: " << dijkstra_sum_length / trials << std::endl;
 
-        double min = DBL_MAX, max = 0;
-        for(int i = 0; i < trials; ++i) {
-            if(path_lengths[i] != DBL_MAX) {
-                const double ratio = approx_path_lengths[i] / path_lengths[i];
-                if(ratio < 1) {
-                    std::cout << "error: " << approx_path_lengths[i] << " real: " << path_lengths[i] << std::endl;
-                    std::cout << "error at quiery: " << routing_scenario.vertex_index_map[queries[i].first] << " , "
-                        << routing_scenario.vertex_index_map[queries[i].second] << std::endl;
+        bool end1;
+        do {
+            //routing on triangulation
+            bool b1;
+            std::cout << "Insert extra points (0/1) ? ";
+            std::cin >> b1;
+            if(b1) {
+                int amount;
+                bool blue_noise;
+                int candidates = 0;
+                double radius;
+                int old_number_of_vertices = routing_scenario.number_of_vertices();
+                std::cout << "number of extra points: ";
+                std::cin >> amount;
+                std::cout << "blue noise sampling (0/1) ?";
+                std::cin >> blue_noise;
+                if(blue_noise) {
+                    std::cout << "number of candidates: ";
+                    std::cin >> candidates;
                 }
-                if(ratio > max) {
-                    max = ratio;
+                std::cout << "sample radius: ";
+                std::cin >> radius;
+
+                timer.start();
+                random_generator.insert_uniformly_distributed_points(amount, radius, blue_noise, candidates);
+                timer.stop();
+                std::cout << "inserting extra points took: " << timer.time() << std::endl;
+                std::cout << "points inserted into free space: " << routing_scenario.number_of_vertices() - old_number_of_vertices << std::endl;
+                timer.reset();
+            }
+
+            bool b2;
+            int opti = -1;
+            std::cout << "Use path optimization (0/1) ? ";
+            std::cin >> b2;
+            if(b2) {
+                std::cout << "Use greedy optimization   (0)" << std::endl;
+                std::cout << "Use full optimization     (1)" << std::endl;
+                std::cout << "Which optimizazion: ";
+                std::cin >> opti;
+            }
+
+            timer.start();
+            routing_scenario.use_triangulation_as_visibility_graph();
+            timer.stop();
+            std::cout << "building subgraph took: " << timer.time() << std::endl;
+            std::cout << "number of edges subgraph: " << routing_scenario.edges_visibility_graph() << std::endl;
+            timer.reset();
+
+            std::cout << "--routing on subgraph--" << std::endl;
+            a_star_sum_time = 0;
+            dijkstra_sum_time = 0;
+            double opti_time = 0;
+            double a_star_approx_sum_path_length = 0, dijkstra_approx_sum_path_length = 0;
+            std::vector<double> approx_path_lengths;
+            std::vector<std::vector<int>> approx_paths;
+            reachable_counter = 0;
+            for(std::pair<Vertex_handle, Vertex_handle> query : queries) {
+                routing_scenario.set_point_to_start(query.first);
+                routing_scenario.set_point_to_destination(query.second);
+
+                timer.start();
+                const bool reachable = routing_scenario.a_star();
+                timer.stop();
+
+                if(reachable) {
+                    ++reachable_counter;
+                    if(opti != -1) {
+                        CGAL::Timer opti_timer;
+                        opti_timer.start();
+                        if(opti == 0) {
+                            routing_scenario.greedy_optimization();
+                        } else if(opti == 1) {
+                            routing_scenario.path_optimization();
+                        }
+                        opti_timer.stop();
+                        opti_time += opti_timer.time();
+                    }
+                    approx_paths.push_back(routing_scenario.get_indices_path());
+                    double path_length = routing_scenario.get_path_length();
+                    a_star_sum_time += timer.time();
+                    a_star_approx_sum_path_length += path_length;
+                    approx_path_lengths.push_back(path_length);
+                } else {
+                    approx_paths.push_back({});
+                    approx_path_lengths.push_back(DBL_MAX);
                 }
-                if(ratio < min) {
-                    min = ratio;
+                timer.reset();
+
+                /*timer.start();
+                routing_scenario.dijkstra();
+                timer.stop();
+
+                dijkstra_sum_time += timer.time();
+                dijkstra_approx_sum_path_length += routing_scenario.average_path_length_dijkstra();
+
+                timer.reset();*/
+            }
+
+            double min = DBL_MAX, max = 0;
+            for(int i = 0; i < trials; ++i) {
+                if(path_lengths[i] != DBL_MAX) {
+                    const double ratio = approx_path_lengths[i] / path_lengths[i];
+                    if(ratio < 1) {
+                        std::cout << "error: " << approx_path_lengths[i] << " real: " << path_lengths[i] << std::endl;
+                        std::cout << "error at quiery: " << routing_scenario.vertex_index_map[queries[i].first] << " , "
+                            << routing_scenario.vertex_index_map[queries[i].second] << std::endl;
+
+                        std::cout << "shortest path length: " << shortest_paths[i].size() << std::endl;
+                        std::cout << "approx path length: " << approx_paths[i].size() << std::endl;
+
+                        std::cout << "shortest path length: " << compute_path_length(shortest_paths[i]) << std::endl;
+                        std::cout << "approx path length: " << compute_path_length(approx_paths[i]) << std::endl;
+                        /*std::cout << "begin shortest path:  " << std::endl;
+                        for(const int ind : shortest_paths[i]) {
+                            std::cout << "shortest path: " << ind << std::endl;
+                        }
+                        std::cout << "end shortest path:  " << std::endl;
+                        std::cout << "begin approx. path:  " << std::endl;
+                        for(const int ind : approx_paths[i]) {
+                            std::cout << "approx path: " << ind << std::endl;
+                        }
+                        std::cout << "end approx. path:  " << std::endl;*/
+                    }
+                    if(ratio > max) {
+                        max = ratio;
+                    }
+                    if(ratio < min) {
+                        min = ratio;
+                    }
                 }
             }
-        }
-        if(opti != -1) {
-            std::cout << "average path optimization took: " << opti_time / reachable_counter << std::endl;
-        }
-        std::cout << "reachable paths: " << reachable_counter << std::endl;
-        std::cout << "min ratio: " << min << std::endl;
-        std::cout << "max ratio: " << max << std::endl;
-        std::cout << "average A* time: " << a_star_sum_time / reachable_counter << std::endl;
-        std::cout << "average A* path length: " << a_star_approx_sum_path_length / reachable_counter << std::endl;
-        std::cout << "-> A* quality of approx. paths is: " << a_star_approx_sum_path_length / a_star_sum_path_length << std::endl;
+            if(opti != -1) {
+                std::cout << "average path optimization took: " << opti_time / reachable_counter << std::endl;
+            }
+            std::cout << "reachable paths: " << reachable_counter << std::endl;
+            std::cout << "min ratio: " << min << std::endl;
+            std::cout << "max ratio: " << max << std::endl;
+            std::cout << "average A* time: " << a_star_sum_time / reachable_counter << std::endl;
+            std::cout << "average A* path length: " << a_star_approx_sum_path_length / reachable_counter << std::endl;
+            std::cout << "-> A* quality of approx. paths is: " << a_star_approx_sum_path_length / a_star_sum_path_length << std::endl;
 
-        std::cout << "average Dijkstra time: " << dijkstra_sum_time / trials << std::endl;
-        std::cout << "average Dijkstra path length: " << dijkstra_approx_sum_path_length / trials << std::endl;
-        std::cout << "-> Dijkstra quality of approx. paths is: " << dijkstra_approx_sum_path_length / dijkstra_sum_length << std::endl;
+            std::cout << "average Dijkstra time: " << dijkstra_sum_time / trials << std::endl;
+            std::cout << "average Dijkstra path length: " << dijkstra_approx_sum_path_length / trials << std::endl;
+            std::cout << "-> Dijkstra quality of approx. paths is: " << dijkstra_approx_sum_path_length / dijkstra_sum_length << std::endl;
 
-        if(b1) {
-            routing_scenario.remove_all_unconstrained_points();
-            std::cout << "removed unconstrained points" << std::endl;
-        }
+            if(b1) {
+                routing_scenario.remove_all_unconstrained_points();
+                std::cout << "removed unconstrained points" << std::endl;
+            }
 
+            std::cout << "Again (0/1)? ";
+            std::cin >> end1;
+            std::cout << std::endl;
+        } while(end1);
         std::cout << "Again (0/1)? ";
         std::cin >> end;
         std::cout << std::endl;

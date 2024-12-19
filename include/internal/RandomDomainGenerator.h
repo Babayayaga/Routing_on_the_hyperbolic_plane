@@ -157,7 +157,7 @@ namespace CGAL::Qt {
             if(!b) {
                 std::vector<Point_2> points = inverse_sampling(n, radius);
                 r->insert_points(points.begin(), points.end());
-                r->remove_unconstrained_points_in_obstacle_interior();
+                //r->remove_unconstrained_points_in_obstacle_interior();
             } else {
                 blue_noise(k, n, radius);
                 r->remove_unconstrained_points_in_obstacle_interior();

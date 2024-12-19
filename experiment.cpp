@@ -348,6 +348,7 @@ void benchmark_routing_on_triangulation() {
             std::cout << std::endl;
             std::cout << "--routing on subgraph--" << std::endl;
             std::cout << std::endl;
+            routing_scenario.discover_components();
             timer.start();
             routing_scenario.use_triangulation_as_visibility_graph();
             timer.stop();
@@ -436,7 +437,6 @@ void benchmark_routing_on_triangulation() {
 
             if(b1) {
                 routing_scenario.remove_all_unconstrained_points();
-                routing_scenario.discover_components();
                 std::cout << "removed unconstrained points" << std::endl;
             }
 

@@ -311,23 +311,23 @@ void benchmark_routing_on_triangulation() {
             std::cin >> b1;
             if(b1) {
                 int amount;
-                bool blue_noise;
+                //bool blue_noise;
                 int candidates = 0;
                 double radius;
                 const int old_number_of_vertices = routing_scenario.number_of_vertices();
                 std::cout << "number of extra points: ";
                 std::cin >> amount;
-                std::cout << "blue noise sampling (0/1) ?";
+                /*std::cout << "blue noise sampling (0/1) ?";
                 std::cin >> blue_noise;
                 if(blue_noise) {
                     std::cout << "number of candidates: ";
                     std::cin >> candidates;
-                }
+                }*/
                 std::cout << "sample radius: ";
                 std::cin >> radius;
 
                 timer.start();
-                random_generator.insert_uniformly_distributed_points(amount, radius, blue_noise, candidates);
+                random_generator.insert_uniformly_distributed_points(amount, radius, false, 0);
                 timer.stop();
                 std::cout << "inserting extra points took: " << timer.time() << std::endl;
                 std::cout << "points inserted into free space: " << routing_scenario.number_of_vertices() - old_number_of_vertices << std::endl;
@@ -424,7 +424,7 @@ void benchmark_routing_on_triangulation() {
             std::cout << "average A* time: " << a_star_sum_time / reachable_counter << std::endl;
             std::cout << "average Dijkstra time: " << dijkstra_sum_time / trials << std::endl;
             //std::cout << "average Dijkstra path length: " << dijkstra_approx_sum_path_length / trials << std::endl;
-            std::cout << "-> Dijkstra quality of approx. paths is: " << dijkstra_approx_sum_path_length / dijkstra_sum_length << std::endl;
+            //std::cout << "-> Dijkstra quality of approx. paths is: " << dijkstra_approx_sum_path_length / dijkstra_sum_length << std::endl;
             //std::cout << "average A* path length: " << a_star_approx_sum_path_length / reachable_counter << std::endl;
             std::cout << "-> A* quality of approx. paths is: " << a_star_approx_sum_path_length / a_star_sum_path_length << std::endl;
             std::cout << "min ratio: " << min << std::endl;

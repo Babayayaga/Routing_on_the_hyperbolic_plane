@@ -10,7 +10,7 @@ typedef CGAL::Beltrami_klein_traits<CGAL::Exact_predicates_inexact_constructions
 typedef CGAL::Poincare_disk_traits<CGAL::Exact_predicates_inexact_constructions_kernel> Poincare_disk_traits;
 
 //set either to Poincare_disk_traits or Beltrami_klein_traits
-typedef Poincare_disk_traits K;
+typedef Beltrami_klein_traits K;
 
 typedef CGAL::Delaunay_mesh_face_base_2<K> Face_base;
 typedef CGAL::Triangulation_vertex_base_2<K> Vertex_base;

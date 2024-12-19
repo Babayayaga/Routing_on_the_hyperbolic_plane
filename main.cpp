@@ -462,23 +462,11 @@ void MainWindow::on_actionInsertRandomPoints_triggered() {
         statusBar()->showMessage(QString("Blue noise: %1 seconds.").arg(timer.time()), 6000);
         timer.reset();
     } else {
-        const std::vector<Point_2> points = generator.inverse_sampling(number_of_points, this->radiusSpinBox->value());
-        timer.stop();
-        std::cout << "sampling points took: " << timer.time() << " seconds." << std::endl;
-        statusBar()->showMessage(QString("Sampling points: %1 seconds.").arg(timer.time()), 6000);
-        timer.reset();
-        timer.start();
-
-        routingScenario.insert_points(points.begin(), points.end());
-
-        timer.stop();
-        statusBar()->showMessage(QString("Inserting points: %1 seconds.").arg(timer.time()), 6000);
-        std::cout << "inserting points took: " << timer.time() << " seconds." << std::endl;
-        timer.reset();
+        generator.insert_uniformly_distributed_points(number_of_points, this->radiusSpinBox->value(), false, 0);
     }
 
     timer.start();
-    routingScenario.remove_unconstrained_points_in_obstacle_interior();
+    //routingScenario.remove_unconstrained_points_in_obstacle_interior();
     timer.stop();
     std::cout << "remove_unconstrained_points_in_obstacle_interior took: " << timer.time() << " seconds." << std::endl;
     statusBar()->showMessage(QString("remove_unconstrained_points_in_obstacle_interior: %1 seconds.").arg(timer.time()), 6000);

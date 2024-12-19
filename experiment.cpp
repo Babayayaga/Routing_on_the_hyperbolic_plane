@@ -436,6 +436,7 @@ void benchmark_routing_on_triangulation() {
 
             if(b1) {
                 routing_scenario.remove_all_unconstrained_points();
+                routing_scenario.discover_components();
                 std::cout << "removed unconstrained points" << std::endl;
             }
 

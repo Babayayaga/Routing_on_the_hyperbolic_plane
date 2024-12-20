@@ -465,9 +465,9 @@ void big_benchmark_routing_on_triangulation() {
     };
 
     const std::vector<int> trials = {
-        100, 50, 25,
-        100, 50, 25,
-        100, 50, 25
+        1000, 500, 250,
+        1000, 500, 250,
+        1000, 500, 250
     };
 
     for (int i = 0; i < domains.size(); ++i) {
@@ -660,6 +660,7 @@ void big_benchmark_routing_on_triangulation() {
         std::cout << std::endl;
         std::cout << "A* time: " << a_star_sum_time / reachable_counter << std::endl;
         std::cout << "Dijkstra time: " << dijkstra_sum_time / trials[i] << std::endl;
+        std::cout << std::endl;
         std::cout << "avg: " << a_star_approx_sum_path_length / a_star_sum_path_length
                 << std::endl;
         std::cout << "min: " << min << std::endl;
@@ -671,6 +672,7 @@ void big_benchmark_routing_on_triangulation() {
         std::cout << "min: " << min1 << std::endl;
         std::cout << "max: " << max1 << std::endl;
         std::cout << "time: " << opti_time1 / reachable_counter << std::endl;
+        std::cout << std::endl;
         std::cout << "FULL" << std::endl;
         std::cout << "avg: " << approx_path_length2 / a_star_sum_path_length << std::endl;
         std::cout << "min: " << min2 << std::endl;

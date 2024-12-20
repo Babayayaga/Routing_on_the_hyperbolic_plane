@@ -842,7 +842,7 @@ void MainWindow::on_pathOptimize_released() {
     if(routingScenario.defined_path) {
         std::vector<int> path = routingScenario.greedy_optimization(routingScenario.get_indices_path());
         routingGraphicsItem->repaint();
-        double length = routingScenario.get_path_length(path);git
+        double length = routingScenario.get_path_length(path);
         statusBar()->showMessage(QString("Path length: %1.").arg(length), 4000);
     }
 }

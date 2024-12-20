@@ -258,7 +258,7 @@ namespace CGAL::Qt {
             return point_path;
         }
 
-        double get_path_length() {
+        double get_path_length(std::vector<int> path) {
             double sum = 0;
             for (int i = 0; i < path.size() - 1; ++i) {
                 sum += hyperbolic_distance(index_vertex_map[path[i]]->point(),
@@ -482,9 +482,9 @@ namespace CGAL::Qt {
 
         void use_triangulation_as_visibility_graph();
 
-        void path_optimization();
+        std::vector<int> path_optimization(std::vector<int> path);
 
-        void greedy_optimization();
+        std::vector<int> greedy_optimization(std::vector<int> path);
 
         //sets in_domain for every triangle in triangulation
         void discover_components();
@@ -841,11 +841,11 @@ namespace CGAL::Qt {
     }
 
     //to be called after use_triangulation_as_visibility_graph
-    //optimizes path by checking visibilities of pairs of points
+    //optimizes a path by checking visibilities of pairs of points
     template<typename T>
-    void Routing_scenario<T>::path_optimization() {
+    std::vector<int> Routing_scenario<T>::path_optimization(std::vector<int> path) {
         if (path.size() < 3) {
-            return;
+            return path;
         }
         std::vector<int> shortend_path;
         shortend_path.push_back(path[0]);
@@ -859,13 +859,13 @@ namespace CGAL::Qt {
             index = check;
         }
         shortend_path.push_back(path[path.size() - 1]);
-        path = shortend_path;
+        return shortend_path;
     }
 
     template<typename T>
-    void Routing_scenario<T>::greedy_optimization() {
+    std::vector<int> Routing_scenario<T>::greedy_optimization(std::vector<int> path) {
         if (path.size() < 3) {
-            return;
+            return path;
         }
         std::vector<int> shortend_path;
         shortend_path.push_back(path[0]);
@@ -879,7 +879,7 @@ namespace CGAL::Qt {
             index = check - 1;
         }
         //shortend_path.push_back(path[path.size() - 1]);
-        path = shortend_path;
+        return shortend_path;
     }
 
     //uses lazy-deletion, (see https://stackoverflow.com/questions/9209323/easiest-way-of-using-min-priority-queue-with-key-update-in-c)

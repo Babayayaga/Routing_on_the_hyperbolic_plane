@@ -476,7 +476,7 @@ void big_benchmark_routing_on_triangulation() {
         std::vector<std::pair<Vertex_handle, Vertex_handle> > queries;
         std::vector<double> path_lengths;
         //std::vector<std::vector<int> > shortest_paths;
-        for (int i = 0; i < trials[i]; ++i) {
+        for (int k = 0; k < trials[i]; ++k) {
             const int start_index = random.get_int(0, routing_scenario.number_of_vertices() - 1);
             int dest_index = start_index;
             while (dest_index == start_index) {

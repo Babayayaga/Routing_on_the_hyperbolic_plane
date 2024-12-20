@@ -465,9 +465,9 @@ void big_benchmark_routing_on_triangulation() {
     };
 
     const std::vector<int> trials = {
-        1000, 500, 250,
-        1000, 500, 250,
-        1000, 500, 250
+        100, 50, 25,
+        100, 50, 25,
+        100, 50, 25
     };
 
     for (int i = 0; i < domains.size(); ++i) {

@@ -824,6 +824,7 @@ int main() {
         std::cout << "Load polygonal domain             (1)" << std::endl;
         std::cout << "Generate polygonal domain         (2)" << std::endl;
         std::cout << "Benchmark TEA                     (3)" << std::endl;
+        std::cout << "Benchmark Routing on triang.      (4)" << std::endl;
         std::cout << "Select action: ";
         std::cin >> action;
         if (action == 0) {
@@ -841,9 +842,13 @@ int main() {
             generate_polygonal_domain();
             std::cout << std::endl;
             benchmark_on_domain();
-        } else {
+        } else if (action == 3) {
             std::cout << std::endl;
             big_benchmark_tea();
+            std::cout << std::endl;
+        } else {
+            std::cout << std::endl;
+            big_benchmark_routing_on_triangulation();
             std::cout << std::endl;
         }
 

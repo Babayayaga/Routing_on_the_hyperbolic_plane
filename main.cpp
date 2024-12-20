@@ -712,7 +712,7 @@ void MainWindow::on_actionFindPath_toggled(const bool checked) {
             if (routingScenario.defined_dijkstra) {
                 const bool reachable = routingScenario.get_path_from_dijkstra();
                 if (reachable) {
-                    const double path_length = routingScenario.get_path_length();
+                    const double path_length = routingScenario.get_path_length(routingScenario.get_indices_path());
                     routingGraphicsItem->set_show_path(true);
                     statusBar()->showMessage(QString("The path is %1 long.").arg(path_length), 8000);
                 } else {
@@ -727,7 +727,7 @@ void MainWindow::on_actionFindPath_toggled(const bool checked) {
                     timer.stop();
                     if (reachable) {
                         routingGraphicsItem->set_show_path(true);
-                        double length = routingScenario.get_path_length();
+                        double length = routingScenario.get_path_length(routingScenario.get_indices_path());
                         statusBar()->showMessage(
                             QString("A*: %1 seconds, path length: %2.").arg(timer.time()).arg(length), 8000);
                     } else {
@@ -840,9 +840,9 @@ void MainWindow::on_actionShowTriangulationBetween_toggled(bool checked) {
 
 void MainWindow::on_pathOptimize_released() {
     if(routingScenario.defined_path) {
-        routingScenario.greedy_optimization();
+        std::vector<int> path = routingScenario.greedy_optimization(routingScenario.get_indices_path());
         routingGraphicsItem->repaint();
-        double length = routingScenario.get_path_length();
+        double length = routingScenario.get_path_length(path);git
         statusBar()->showMessage(QString("Path length: %1.").arg(length), 4000);
     }
 }

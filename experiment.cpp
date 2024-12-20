@@ -636,10 +636,10 @@ void big_benchmark_routing_on_triangulation() {
         for (int j = 0; j < trials[i]; ++j) {
             if (path_lengths[j] != DBL_MAX) {
                 const double ratio = optimized_path_lengths1[j] / path_lengths[j];
-                if (ratio > max) {
+                if (ratio > max1) {
                     max1 = ratio;
                 }
-                if (ratio < min) {
+                if (ratio < min1) {
                     min1 = ratio;
                 }
             }
@@ -649,10 +649,10 @@ void big_benchmark_routing_on_triangulation() {
         for (int j = 0; j < trials[i]; ++j) {
             if (path_lengths[j] != DBL_MAX) {
                 const double ratio = optimized_path_lengths2[j] / path_lengths[j];
-                if (ratio > max) {
+                if (ratio > max2) {
                     max2 = ratio;
                 }
-                if (ratio < min) {
+                if (ratio < min2) {
                     min2 = ratio;
                 }
             }

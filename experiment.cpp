@@ -687,9 +687,10 @@ void big_benchmark_routing_on_triangulation() {
 
 void benchmark_extra_points() {
     const std::vector<std::string> domains = {
-        "10_100_10_55", "11_100_10_55", "12_100_10_55",
         "10_100_10_60", "11_100_10_60", "12_100_10_60",
         "10_100_10_62", "11_100_10_62", "12_100_10_62"
+        "10_100_10_55",
+        "11_100_10_55", "12_100_10_55",
     };
 
     const std::vector<int> trials = {
@@ -705,12 +706,12 @@ void benchmark_extra_points() {
     };
 
     const std::vector<std::vector<double> > extra_points_factor = {
-        {1.0 / 16, 1.0 / 8, 1.0 / 4, 1.0 / 2}, {1.0 / 16, 1.0 / 8, 1.0 / 4, 1.0 / 2},
-        {1.0 / 16, 1.0 / 8, 1.0 / 4, 1.0 / 2},
         {1.0 / 32, 1.0 / 16, 1.0 / 8, 1.0 / 4}, {1.0 / 32, 1.0 / 16, 1.0 / 8, 1.0 / 4},
         {1.0 / 32, 1.0 / 16, 1.0 / 8, 1.0 / 4},
         {1.0 / 32, 1.0 / 16, 1.0 / 8, 1.0 / 4}, {1.0 / 32, 1.0 / 16, 1.0 / 8, 1.0 / 4},
-        {1.0 / 32, 1.0 / 16, 1.0 / 8, 1.0 / 4}
+        {1.0 / 32, 1.0 / 16, 1.0 / 8, 1.0 / 4},
+        {1.0 / 2, 1, 2, 4}, {1.0 / 2, 1, 2, 4},
+        {1.0 / 2, 1, 2, 4},
     };
 
     CGAL::Timer timer;
@@ -1040,7 +1041,7 @@ int main() {
             std::cout << std::endl;
             big_benchmark_tea();
             std::cout << std::endl;
-        } else if(action == 4) {
+        } else if (action == 4) {
             std::cout << std::endl;
             big_benchmark_routing_on_triangulation();
             std::cout << std::endl;

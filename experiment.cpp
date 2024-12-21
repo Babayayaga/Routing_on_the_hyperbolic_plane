@@ -743,17 +743,55 @@ void benchmark_tea() {
     }
 }
 
+void generate_query_list() {
+    int size;
+    std::cout << "query list size: ";
+    std::cin >> size;
+
+    CGAL::Random random;
+    std::vector<std::pair<int, int> > queries;
+    for (int i = 0; i < size; ++i) {
+        const int start_index = random.get_int(0, routing_scenario.number_of_vertices() - 1);
+        int dest_index = start_index;
+        while (dest_index == start_index) {
+            dest_index = random.get_int(0, routing_scenario.number_of_vertices() - 1);
+        }
+        queries.push_back(std::make_pair(start_index, dest_index));
+    }
+
+    std::string file_name;
+    std::cout << "save under file name: ";
+    std::cin >> file_name;
+
+    if (!file_name.empty()) {
+        std::ofstream ofs("../resources/polygonal_domains/" + file_name);
+        if (ofs.fail()) {
+            std::cout << "Failed to find directory." << std::endl;
+            return;
+        }
+
+        std::list<std::vector<Vertex_handle> > obstacles = routing_scenario.get_obstacles();
+        for (std::pair<int, int> query: queries) {
+            ofs << query.first << " " << query.second << std::endl;
+        }
+        std::cout << "saving successfully" << std::endl;
+    }
+}
+
 void benchmark_on_domain() {
     int action;
     std::cout << "Benchmark TEA                         (0)" << std::endl;
     std::cout << "Benchmark routing on triangulation    (1)" << std::endl;
-    std::cout << "Leave                                 (2)" << std::endl;
+    std::cout << "Generate point-to-point query list    (2)" << std::endl;
+    std::cout << "Leave                                 (3)" << std::endl;
     std::cout << "Select action: ";
     std::cin >> action;
     if (action == 0) {
         benchmark_tea();
     } else if (action == 1) {
         benchmark_routing_on_triangulation();
+    } else if (action == 2) {
+        generate_query_list();
     }
 }
 

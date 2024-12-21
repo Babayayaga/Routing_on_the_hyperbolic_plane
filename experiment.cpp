@@ -151,7 +151,7 @@ void load_polygonal_domain(std::string file_name) {
 
     std::cout << "Loading successfully" << std::endl;
     std::cout << "number of vertices: " << routing_scenario.number_of_vertices() << std::endl;
-    std::cout << "test: index 0 is point: " << routing_scenario.index_vertex_map[0]->point() << std::endl;
+    std::cout << "test: index 666 is point: " << routing_scenario.index_vertex_map[666]->point() << std::endl;
     std::cout << std::endl;
     std::cout << std::endl;
 }

@@ -76,12 +76,12 @@ void benchmark_random_generation() {
 
         if (b1) {
             routing_scenario.build_visibility_graph();
-            average_vertex_degree += routing_scenario.average_vertex_degree();
-            if (max_degree < routing_scenario.average_vertex_degree()) {
-                max_degree = routing_scenario.average_vertex_degree();
+            average_vertex_degree += routing_scenario.average_vertex_degree_visibility_graph();
+            if (max_degree < routing_scenario.average_vertex_degree_visibility_graph()) {
+                max_degree = routing_scenario.average_vertex_degree_visibility_graph();
             }
-            if (min_degree > routing_scenario.average_vertex_degree()) {
-                min_degree = routing_scenario.average_vertex_degree();
+            if (min_degree > routing_scenario.average_vertex_degree_visibility_graph()) {
+                min_degree = routing_scenario.average_vertex_degree_visibility_graph();
             }
         }
 
@@ -354,7 +354,6 @@ void benchmark_routing_on_triangulation() {
             timer.stop();
             const double build_s_time = timer.time();
             std::cout << "building subgraph took: " << build_s_time << std::endl;
-            std::cout << "average vertex degree: " << routing_scenario.average_vertex_degree() << std::endl;
             std::cout << "number of edges subgraph: " << routing_scenario.edges_visibility_graph() << std::endl;
             timer.reset();
             a_star_sum_time = 0;
@@ -725,7 +724,7 @@ void benchmark_tea() {
     }
     sum.stop();
     std::cout << "edges visibility graph: " << routing_scenario.edges_visibility_graph() << std::endl;
-    std::cout << "average vertex degree: " << routing_scenario.average_vertex_degree() << std::endl;
+    std::cout << "average vertex degree: " << routing_scenario.average_vertex_degree_visibility_graph() << std::endl;
     std::cout << "average time: " << sum.time() / trials << std::endl;
     std::cout << "max. time: " << max << std::endl;
     std::cout << "min. time: " << min << std::endl;
@@ -794,7 +793,7 @@ void big_benchmark_tea() {
                 }
                 timer.reset();
 
-                const double avg_degree = routing_scenario.average_vertex_degree();
+                const double avg_degree = routing_scenario.average_vertex_degree_visibility_graph();
                 avg_avg_vertex_degree_V += avg_degree;
                 if (avg_degree < min_avg_degree) {
                     min_avg_degree = avg_degree;

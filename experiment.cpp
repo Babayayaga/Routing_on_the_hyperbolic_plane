@@ -354,6 +354,7 @@ void benchmark_routing_on_triangulation() {
             timer.stop();
             const double build_s_time = timer.time();
             std::cout << "building subgraph took: " << build_s_time << std::endl;
+            std::cout << "average vertex degree: " << routing_scenario.average_vertex_degree() << std::endl;
             std::cout << "number of edges subgraph: " << routing_scenario.edges_visibility_graph() << std::endl;
             timer.reset();
             a_star_sum_time = 0;

@@ -466,7 +466,7 @@ void big_benchmark_routing_on_triangulation() {
     };
 
     const std::vector<int> trials = {
-        1000, 500, 250,
+        100, 500, 250,
         1000, 500, 250,
         1000, 500, 250
     };

@@ -486,7 +486,7 @@ void big_benchmark_routing_on_triangulation() {
             ifs >> start;
             int dest;
             ifs >> dest;
-            queries.push_back(routing_scenario.index_vertex_map[start], routing_scenario.index_vertex_map[dest]);
+            queries.push_back(std::make_pair(routing_scenario.index_vertex_map[start], routing_scenario.index_vertex_map[dest]));
         }
         std::cout << std::endl;
         std::cout << "--routing on visibility graph--" << std::endl;

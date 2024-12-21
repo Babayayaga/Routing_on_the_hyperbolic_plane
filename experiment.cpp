@@ -473,21 +473,21 @@ void big_benchmark_routing_on_triangulation() {
 
     for (int i = 0; i < domains.size(); ++i) {
         load_polygonal_domain(domains[i]);
-        CGAL::Random random;
         std::vector<std::pair<Vertex_handle, Vertex_handle> > queries;
         std::vector<double> path_lengths;
-        //std::vector<std::vector<int> > shortest_paths;
-        for (int k = 0; k < trials[i]; ++k) {
-            const int start_index = random.get_int(0, routing_scenario.number_of_vertices() - 1);
-            int dest_index = start_index;
-            while (dest_index == start_index) {
-                dest_index = random.get_int(0, routing_scenario.number_of_vertices() - 1);
-            }
-            Vertex_handle start = routing_scenario.index_vertex_map[start_index];
-            Vertex_handle dest = routing_scenario.index_vertex_map[dest_index];
-            queries.push_back(std::make_pair(start, dest));
+        //loading query file
+        std::ifstream ifs("../resources/polygonal_domains/query_" + domains[i]);
+        if (ifs.fail()) {
+            std::cout << "Failed to open file." << std::endl;
+            return;
         }
-
+        for (int m = 0; m < trials[i]; ++m) {
+            int start;
+            ifs >> start;
+            int dest;
+            ifs >> dest;
+            queries.push_back(routing_scenario.index_vertex_map[start], routing_scenario.index_vertex_map[dest]);
+        }
         std::cout << std::endl;
         std::cout << "--routing on visibility graph--" << std::endl;
         std::cout << std::endl;

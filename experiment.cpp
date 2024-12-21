@@ -687,10 +687,9 @@ void big_benchmark_routing_on_triangulation() {
 
 void benchmark_extra_points() {
     const std::vector<std::string> domains = {
+        "10_100_10_55", "11_100_10_55", "12_100_10_55",
         "10_100_10_60", "11_100_10_60", "12_100_10_60",
-        "10_100_10_62", "11_100_10_62", "12_100_10_62",
-        "10_100_10_55",
-        "11_100_10_55", "12_100_10_55",
+        "10_100_10_62", "11_100_10_62", "12_100_10_62"
     };
 
     const std::vector<int> trials = {
@@ -706,12 +705,12 @@ void benchmark_extra_points() {
     };
 
     const std::vector<std::vector<double> > extra_points_factor = {
-        {1.0 / 32, 1.0 / 16, 1.0 / 8, 1.0 / 4}, {1.0 / 32, 1.0 / 16, 1.0 / 8, 1.0 / 4},
-        {1.0 / 32, 1.0 / 16, 1.0 / 8, 1.0 / 4},
-        {1.0 / 32, 1.0 / 16, 1.0 / 8, 1.0 / 4}, {1.0 / 32, 1.0 / 16, 1.0 / 8, 1.0 / 4},
-        {1.0 / 32, 1.0 / 16, 1.0 / 8, 1.0 / 4},
         {1.0 / 8, 1.0 / 4, 1.0 / 2, 1}, {1.0 / 8, 1.0 / 4, 1.0 / 2, 1},
         {1.0 / 8, 1.0 / 4, 1.0 / 2, 1},
+        {1.0 / 64, 1.0 / 32, 1.0 / 16, 1.0 / 8}, {1.0 / 64, 1.0 / 32, 1.0 / 16, 1.0 / 8},
+        {1.0 / 64, 1.0 / 32, 1.0 / 16, 1.0 / 8},
+        {1.0 / 64, 1.0 / 32, 1.0 / 16, 1.0 / 8}, {1.0 / 64, 1.0 / 32, 1.0 / 16, 1.0 / 8},
+        {1.0 / 64, 1.0 / 32, 1.0 / 16, 1.0 / 8}
     };
 
     CGAL::Timer timer;
@@ -756,7 +755,7 @@ void benchmark_extra_points() {
         }
 
         for (double factor: extra_points_factor[i]) {
-            std::cout << "factor: " << factor << std::endl;
+            std::cout << "-------------------------factor: " << factor << std::endl;
             timer.start();
             const int amount = (int) 2.0 * CGAL_PI * (std::cosh(radius[i]) - 1) * factor * 100.0;
             random_generator.insert_uniformly_distributed_points(amount, radius[i], false, 0);
@@ -764,7 +763,6 @@ void benchmark_extra_points() {
             std::cout << "amount: " << amount << std::endl;
             std::cout << "inserting took: " << timer.time() << std::endl;
             timer.reset();
-            std::cout << "--routing on subgraph--" << std::endl;
             std::cout << std::endl;
             routing_scenario.discover_components();
             timer.start();
@@ -822,15 +820,19 @@ void benchmark_extra_points() {
 
             std::cout << std::endl;
             std::cout << "average A* time: " << a_star_sum_time / reachable_counter << std::endl;
-            std::cout << "avg. quality: " << a_star_approx_sum_path_length / a_star_sum_path_length
-                    << std::endl;
-            std::cout << "min ratio: " << min << std::endl;
-            std::cout << "max ratio: " << max << std::endl;
             std::cout << "full optimization took: " << opti_time / reachable_counter << std::endl;
+            std::cout << "avg: " << a_star_approx_sum_path_length / a_star_sum_path_length
+                    << std::endl;
+            std::cout << "min: " << min << std::endl;
+            std::cout << "max: " << max << std::endl;
             std::cout << std::endl;
             std::cout << std::endl;
             routing_scenario.remove_all_unconstrained_points();
         }
+        std::cout << std::endl;
+        std::cout << std::endl;
+        std::cout << std::endl;
+        std::cout << std::endl;
         std::cout << std::endl;
         std::cout << std::endl;
         std::cout << std::endl;

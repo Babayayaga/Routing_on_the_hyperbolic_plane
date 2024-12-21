@@ -466,7 +466,7 @@ void big_benchmark_routing_on_triangulation() {
     };
 
     const std::vector<int> trials = {
-        100, 500, 250,
+        1000, 500, 250,
         1000, 500, 250,
         1000, 500, 250
     };
@@ -486,7 +486,8 @@ void big_benchmark_routing_on_triangulation() {
             ifs >> start;
             int dest;
             ifs >> dest;
-            queries.push_back(std::make_pair(routing_scenario.index_vertex_map[start], routing_scenario.index_vertex_map[dest]));
+            queries.push_back(std::make_pair(routing_scenario.index_vertex_map[start],
+                                             routing_scenario.index_vertex_map[dest]));
         }
         std::cout << std::endl;
         std::cout << "--routing on visibility graph--" << std::endl;
@@ -601,7 +602,6 @@ void big_benchmark_routing_on_triangulation() {
                 double path_length2 = routing_scenario.get_path_length(optimized_path2);
                 approx_path_length2 += path_length2;
                 optimized_path_lengths2.push_back(path_length2);
-
             } else {
                 //approx_paths.push_back({});
                 approx_path_lengths.push_back(DBL_MAX);
@@ -679,6 +679,158 @@ void big_benchmark_routing_on_triangulation() {
         std::cout << "min: " << min2 << std::endl;
         std::cout << "max: " << max2 << std::endl;
         std::cout << "time: " << opti_time2 / reachable_counter << std::endl;
+        std::cout << std::endl;
+        std::cout << std::endl;
+        std::cout << std::endl;
+    }
+}
+
+void benchmark_extra_points() {
+    const std::vector<std::string> domains = {
+        "10_100_10_55", "11_100_10_55", "12_100_10_55",
+        "10_100_10_60", "11_100_10_60", "12_100_10_60",
+        "10_100_10_62", "11_100_10_62", "12_100_10_62"
+    };
+
+    const std::vector<int> trials = {
+        1000, 500, 250,
+        1000, 500, 250,
+        1000, 500, 250
+    };
+
+    const std::vector<double> radius = {
+        10, 11, 12,
+        10, 11, 12,
+        10, 11, 12
+    };
+
+    const std::vector<std::vector<double> > extra_points_factor = {
+        {1.0 / 16, 1.0 / 8, 1.0 / 4, 1.0 / 2}, {1.0 / 16, 1.0 / 8, 1.0 / 4, 1.0 / 2},
+        {1.0 / 16, 1.0 / 8, 1.0 / 4, 1.0 / 2},
+        {1.0 / 32, 1.0 / 16, 1.0 / 8, 1.0 / 4}, {1.0 / 32, 1.0 / 16, 1.0 / 8, 1.0 / 4},
+        {1.0 / 32, 1.0 / 16, 1.0 / 8, 1.0 / 4},
+        {1.0 / 32, 1.0 / 16, 1.0 / 8, 1.0 / 4}, {1.0 / 32, 1.0 / 16, 1.0 / 8, 1.0 / 4},
+        {1.0 / 32, 1.0 / 16, 1.0 / 8, 1.0 / 4}
+    };
+
+    CGAL::Timer timer;
+
+    for (int i = 0; i < domains.size(); ++i) {
+        std::cout << "DOMAIN NUMBER: " << i << std::endl;
+        load_polygonal_domain(domains[i]);
+        std::vector<std::pair<Vertex_handle, Vertex_handle> > queries;
+        std::vector<double> path_lengths;
+        int reachable_counter = 0;
+        double a_star_sum_path_length = 0;
+        //loading query file
+        std::ifstream ifs("../resources/polygonal_domains/query_" + domains[i]);
+        if (ifs.fail()) {
+            std::cout << "Failed to open file." << std::endl;
+            return;
+        }
+        for (int m = 0; m < trials[i]; ++m) {
+            int start;
+            ifs >> start;
+            int dest;
+            ifs >> dest;
+            queries.push_back(std::make_pair(routing_scenario.index_vertex_map[start],
+                                             routing_scenario.index_vertex_map[dest]));
+        }
+
+        routing_scenario.build_visibility_graph();
+        for (std::pair<Vertex_handle, Vertex_handle> query: queries) {
+            routing_scenario.set_point_to_start(query.first);
+            routing_scenario.set_point_to_destination(query.second);
+
+            const bool reachable = routing_scenario.a_star();
+
+            if (reachable) {
+                double path_length = routing_scenario.get_path_length(routing_scenario.get_indices_path());
+                ++reachable_counter;
+                path_lengths.push_back(path_length);
+                a_star_sum_path_length += path_length;
+            } else {
+                path_lengths.push_back(DBL_MAX);
+            }
+        }
+
+        for (double factor: extra_points_factor[i]) {
+            std::cout << "factor: " << factor << std::endl;
+            timer.start();
+            const int amount = (int) 2 * CGAL_PI * (std::cosh(radius[i]) - 1) * factor;
+            random_generator.insert_uniformly_distributed_points(amount, radius[i], false, 0);
+            timer.stop();
+            std::cout << "amount: " << amount << std::endl;
+            std::cout << "inserting took: " << timer.time() << std::endl;
+            timer.reset();
+            std::cout << "--routing on subgraph--" << std::endl;
+            std::cout << std::endl;
+            routing_scenario.discover_components();
+            timer.start();
+            routing_scenario.use_triangulation_as_visibility_graph();
+            timer.stop();
+            const double build_s_time = timer.time();
+            std::cout << "building subgraph took: " << build_s_time << std::endl;
+            std::cout << "number of edges subgraph: " << routing_scenario.edges_visibility_graph() << std::endl;
+            timer.reset();
+            double a_star_sum_time = 0;
+            double opti_time = 0;
+            double a_star_approx_sum_path_length = 0;
+            std::vector<double> approx_path_lengths;
+            //std::vector<std::vector<int> > approx_paths;
+            reachable_counter = 0;
+            for (std::pair<Vertex_handle, Vertex_handle> query: queries) {
+                routing_scenario.set_point_to_start(query.first);
+                routing_scenario.set_point_to_destination(query.second);
+
+                timer.start();
+                const bool reachable = routing_scenario.a_star();
+                timer.stop();
+                a_star_sum_time += timer.time();
+
+                std::vector<int> path = routing_scenario.get_indices_path();
+
+                if (reachable) {
+                    ++reachable_counter;
+                    CGAL::Timer opti_timer;
+                    opti_timer.start();
+                    path = routing_scenario.path_optimization(path);
+                    opti_timer.stop();
+                    opti_time += opti_timer.time();
+                    double path_length = routing_scenario.get_path_length(path);
+                    a_star_approx_sum_path_length += path_length;
+                    approx_path_lengths.push_back(path_length);
+                } else {
+                    approx_path_lengths.push_back(DBL_MAX);
+                }
+                timer.reset();
+            }
+
+            double min = DBL_MAX, max = 0;
+            for (int j = 0; j < trials[i]; ++j) {
+                if (path_lengths[j] != DBL_MAX) {
+                    const double ratio = approx_path_lengths[j] / path_lengths[j];
+                    if (ratio > max) {
+                        max = ratio;
+                    }
+                    if (ratio < min) {
+                        min = ratio;
+                    }
+                }
+            }
+
+            std::cout << std::endl;
+            std::cout << "average A* time: " << a_star_sum_time / reachable_counter << std::endl;
+            std::cout << "avg. quality: " << a_star_approx_sum_path_length / a_star_sum_path_length
+                    << std::endl;
+            std::cout << "min ratio: " << min << std::endl;
+            std::cout << "max ratio: " << max << std::endl;
+            std::cout << "full optimization took: " << opti_time / reachable_counter << std::endl;
+            std::cout << std::endl;
+            std::cout << std::endl;
+            routing_scenario.remove_all_unconstrained_points();
+        }
+        std::cout << std::endl;
         std::cout << std::endl;
         std::cout << std::endl;
         std::cout << std::endl;
@@ -782,8 +934,9 @@ void benchmark_on_domain() {
     int action;
     std::cout << "Benchmark TEA                         (0)" << std::endl;
     std::cout << "Benchmark routing on triangulation    (1)" << std::endl;
-    std::cout << "Generate point-to-point query list    (2)" << std::endl;
-    std::cout << "Leave                                 (3)" << std::endl;
+    std::cout << "Benchmark extra points                (2)" << std::endl;
+    std::cout << "Generate point-to-point query list    (3)" << std::endl;
+    std::cout << "Leave                                 (4)" << std::endl;
     std::cout << "Select action: ";
     std::cin >> action;
     if (action == 0) {
@@ -791,6 +944,8 @@ void benchmark_on_domain() {
     } else if (action == 1) {
         benchmark_routing_on_triangulation();
     } else if (action == 2) {
+        benchmark_extra_points();
+    } else if (action == 3) {
         generate_query_list();
     }
 }

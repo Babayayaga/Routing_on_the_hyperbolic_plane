@@ -934,9 +934,8 @@ void benchmark_on_domain() {
     int action;
     std::cout << "Benchmark TEA                         (0)" << std::endl;
     std::cout << "Benchmark routing on triangulation    (1)" << std::endl;
-    std::cout << "Benchmark extra points                (2)" << std::endl;
-    std::cout << "Generate point-to-point query list    (3)" << std::endl;
-    std::cout << "Leave                                 (4)" << std::endl;
+    std::cout << "Generate point-to-point query list    (2)" << std::endl;
+    std::cout << "Leave                                 (3)" << std::endl;
     std::cout << "Select action: ";
     std::cin >> action;
     if (action == 0) {
@@ -944,8 +943,6 @@ void benchmark_on_domain() {
     } else if (action == 1) {
         benchmark_routing_on_triangulation();
     } else if (action == 2) {
-        benchmark_extra_points();
-    } else if (action == 3) {
         generate_query_list();
     }
 }
@@ -1021,6 +1018,7 @@ int main() {
         std::cout << "Generate polygonal domain         (2)" << std::endl;
         std::cout << "Benchmark TEA                     (3)" << std::endl;
         std::cout << "Benchmark Routing on triang.      (4)" << std::endl;
+        std::cout << "Benchmark extra points            (5)" << std::endl;
         std::cout << "Select action: ";
         std::cin >> action;
         if (action == 0) {
@@ -1042,9 +1040,13 @@ int main() {
             std::cout << std::endl;
             big_benchmark_tea();
             std::cout << std::endl;
-        } else {
+        } else if(action == 4) {
             std::cout << std::endl;
             big_benchmark_routing_on_triangulation();
+            std::cout << std::endl;
+        } else {
+            std::cout << std::endl;
+            benchmark_extra_points();
             std::cout << std::endl;
         }
 

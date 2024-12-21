@@ -710,8 +710,8 @@ void benchmark_extra_points() {
         {1.0 / 32, 1.0 / 16, 1.0 / 8, 1.0 / 4},
         {1.0 / 32, 1.0 / 16, 1.0 / 8, 1.0 / 4}, {1.0 / 32, 1.0 / 16, 1.0 / 8, 1.0 / 4},
         {1.0 / 32, 1.0 / 16, 1.0 / 8, 1.0 / 4},
-        {1.0 / 2, 1, 2, 4}, {1.0 / 2, 1, 2, 4},
-        {1.0 / 2, 1, 2, 4},
+        {1.0 / 8, 1.0 / 4, 1.0 / 2, 1}, {1.0 / 8, 1.0 / 4, 1.0 / 2, 1},
+        {1.0 / 8, 1.0 / 4, 1.0 / 2, 1},
     };
 
     CGAL::Timer timer;
@@ -758,7 +758,7 @@ void benchmark_extra_points() {
         for (double factor: extra_points_factor[i]) {
             std::cout << "factor: " << factor << std::endl;
             timer.start();
-            const int amount = (int) 2 * CGAL_PI * (std::cosh(radius[i]) - 1) * factor;
+            const int amount = (int) 2.0 * CGAL_PI * (std::cosh(radius[i]) - 1) * factor * 100.0;
             random_generator.insert_uniformly_distributed_points(amount, radius[i], false, 0);
             timer.stop();
             std::cout << "amount: " << amount << std::endl;

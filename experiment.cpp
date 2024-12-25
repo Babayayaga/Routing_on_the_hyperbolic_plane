@@ -770,6 +770,7 @@ void benchmark_extra_points() {
             const double build_s_time = timer.time();
             std::cout << "building subgraph took: " << build_s_time << std::endl;
             std::cout << "number of edges subgraph: " << routing_scenario.edges_visibility_graph() << std::endl;
+            std::cout << "average vertex degree: " << routing_scenario.average_vertex_degree_visibility_graph() << std::endl;
             timer.reset();
             double a_star_sum_time = 0;
             double opti_time = 0;

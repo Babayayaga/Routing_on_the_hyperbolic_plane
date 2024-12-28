@@ -325,12 +325,12 @@ namespace CGAL::Qt {
         epen.setBrush(::Qt::black);
 
         vpen1.setStyle(::Qt::SolidLine);
-        vpen1.setWidth(8);
-        vpen1.setBrush(::Qt::magenta);
+        vpen1.setWidth(15);
+        vpen1.setBrush(::Qt::cyan);
         vpen1.setCapStyle(::Qt::RoundCap);
         vpen1.setJoinStyle(::Qt::RoundJoin);
         vpen2 = vpen1;
-        vpen2.setColor(::Qt::red);
+        vpen2.setColor(::Qt::cyan);
         vpen3 = vpen1;
         vpen3.setColor(::Qt::darkGreen);
     }

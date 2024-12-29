@@ -696,7 +696,7 @@ void benchmark_extra_points() {
     const std::vector<int> trials = {
         /*1000, 500, 250,
         1000, 500, 250,*/
-        1000, 500, 250
+        /*1000, 500,*/ 250
     };
 
     const std::vector<double> radius = {

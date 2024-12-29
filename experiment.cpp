@@ -26,84 +26,32 @@ auto routing_scenario = RoutingScenario();
 auto random_generator = CGAL::Qt::Random_domain_generator<T>(&routing_scenario);
 
 void benchmark_random_generation() {
-    bool b1;
-    std::cout << "Benchmark average vertex degree (0/1) ?";
-    std::cin >> b1;
+    const std::vector<double> r_h_list = {5, 6, 7, 8, 9, 10, 11, 12};
 
-    //domain gen. parameters
-    int n;
-    int m;
-    double r_h;
-    double t;
-    double pd;
+    const std::vector<int> trials = {100, 100, 100, 100, 50, 25, 10, 10};
 
-    int trials;
-    double min_time = DBL_MAX, max_time = 0;
-    bool new_domain;
-    std::cout << "----random generation benchmark----" << std::endl;
-    std::cout << "insert random gen. parameters:" << std::endl;
-
-    std::cout << "r_h: ";
-    std::cin >> r_h;
-    std::cout << "pd: ";
-    std::cin >> pd;
-    if (pd != 0) {
-        n = (int) (pd * 2 * CGAL_PI * (std::cosh(r_h) - 1));
+    CGAL::Timer timer;
+    int r_h_pointer = 0;
+    for (const double r_h: r_h_list) {
+        std::cout << "------------r_h: " << r_h << std::endl;
+        int n = (int) (100 * 2 * CGAL_PI * (std::cosh(r_h) - 1));
         std::cout << "n: " << n << std::endl;
-    } else {
-        std::cout << "n: ";
-        std::cin >> n;
-    }
-    std::cout << "m: ";
-    std::cin >> m;
-    std::cout << "t: ";
-    std::cin >> t;
+        double sum_time = 0;
+        int n_sum = 0;
 
-    std::cout << "number of trials: ";
-    std::cin >> trials;
-
-    CGAL::Timer sum_timer;
-    sum_timer.start();
-    double total_number_of_points = 0;
-    double average_vertex_degree = 0;
-    double min_degree = DBL_MAX, max_degree = 0;
-    for (int i = 0; i < trials; ++i) {
-        CGAL::Timer timer;
-        timer.start();
-        random_generator.generate_random_domain(n, r_h, t, 5, 5, m, true, false, 0);
-        timer.stop();
-        total_number_of_points += routing_scenario.number_of_vertices();
-
-        if (b1) {
-            routing_scenario.build_visibility_graph();
-            average_vertex_degree += routing_scenario.average_vertex_degree_visibility_graph();
-            if (max_degree < routing_scenario.average_vertex_degree_visibility_graph()) {
-                max_degree = routing_scenario.average_vertex_degree_visibility_graph();
-            }
-            if (min_degree > routing_scenario.average_vertex_degree_visibility_graph()) {
-                min_degree = routing_scenario.average_vertex_degree_visibility_graph();
-            }
+        for (int i = 0; i < trials[r_h_pointer]; ++i) {
+            timer.start();
+            random_generator.generate_random_domain(n, r_h, 0.55, 5, 5, 10, true, false, 0);
+            timer.stop();
+            n_sum += routing_scenario.number_of_vertices();
+            sum_time += timer.time();
+            timer.reset();
         }
 
-        if (timer.time() > max_time) {
-            max_time = timer.time();
-        }
-
-        if (timer.time() < min_time) {
-            min_time = timer.time();
-        }
+        std::cout << "average time: " << sum_time / trials[r_h_pointer] << std::endl;
+        std::cout << "average n: " << n_sum / trials[r_h_pointer] << std::endl;
+        ++r_h_pointer;
     }
-    sum_timer.stop();
-
-    std::cout << "average number of points: " << total_number_of_points / trials << std::endl;
-    if (b1) {
-        std::cout << "average vertex degree: " << average_vertex_degree / trials << std::endl;
-        std::cout << "min vertex degree: " << min_degree << std::endl;
-        std::cout << "max vertex degree: " << max_degree << std::endl;
-    }
-    std::cout << "average time: " << sum_timer.time() / trials << std::endl;
-    std::cout << "min. time: " << min_time << std::endl;
-    std::cout << "max. time: " << max_time << std::endl;
 }
 
 void load_polygonal_domain(std::string file_name) {
@@ -462,13 +410,13 @@ void big_benchmark_routing_on_triangulation() {
         /*"10_100_10_55", "11_100_10_55", "12_100_10_55",
         "10_100_10_60", "11_100_10_60", "12_100_10_60",
         "10_100_10_62", "11_100_10_62", "12_100_10_62"*/
-        "10_100_10_65", "11_100_10_65", "12_100_10_65"
+        "10_100_10_65", "11_100_10_65"/*, "12_100_10_65"*/
     };
 
     const std::vector<int> trials = {
         /*1000, 500, 250,
         1000, 500, 250,*/
-        1000, 500, 250
+        1000, 500/*, 250*/
     };
 
     for (int i = 0; i < domains.size(); ++i) {
@@ -690,7 +638,7 @@ void benchmark_extra_points() {
         /*"10_100_10_55", "11_100_10_55", "12_100_10_55",
         "10_100_10_60", "11_100_10_60", "12_100_10_60",
         "10_100_10_62", "11_100_10_62", "12_100_10_62"*/
-        /*"10_100_10_65", "11_100_10_65",*/ "12_100_10_65"
+        "10_100_10_65", "11_100_10_65" /*, "12_100_10_65"*/
     };
 
     const std::vector<int> trials = {
@@ -772,7 +720,8 @@ void benchmark_extra_points() {
             const double build_s_time = timer.time();
             std::cout << "building subgraph took: " << build_s_time << std::endl;
             std::cout << "number of edges subgraph: " << routing_scenario.edges_visibility_graph() << std::endl;
-            std::cout << "average vertex degree: " << routing_scenario.average_vertex_degree_visibility_graph() << std::endl;
+            std::cout << "average vertex degree: " << routing_scenario.average_vertex_degree_visibility_graph() <<
+                    std::endl;
             timer.reset();
             double a_star_sum_time = 0;
             double opti_time = 0;

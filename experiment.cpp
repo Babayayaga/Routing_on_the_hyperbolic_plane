@@ -903,10 +903,10 @@ void benchmark_on_domain() {
 
 void big_benchmark_tea() {
     const std::list<double> t_list = {
-        /*0.55,*/ 0.60 /*, 0.62*/
+        0.55, 0.60 , 0.62
     };
-    const std::list<double> r_h_list = {9, 10.5, 11.25, 11.5, 11.75};
-    const std::vector<int> trial_list = {50, 50, 50, 25, 25};
+    const std::list<double> r_h_list = {10.5, 11.25, 11.5, 11.75};
+    const std::vector<int> trial_list = {50, 50, 25, 25};
 
     CGAL::Timer timer;
 

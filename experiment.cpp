@@ -906,7 +906,7 @@ void big_benchmark_tea() {
         0.55, 0.60 , 0.62
     };
     const std::list<double> r_h_list = {/*10.5,*/ 11.25, 11.5, 11.75};
-    const std::vector<int> trial_list = {/*50,*/ 50, 25, 25};
+    const std::vector<int> trial_list = {/*50,*/ 25, 25, 25};
 
     CGAL::Timer timer;
 
@@ -920,6 +920,11 @@ void big_benchmark_tea() {
             double min_time = DBL_MAX, max_time = 0, avg_time = 0;
             double avg_avg_vertex_degree_V = 0, min_avg_degree = DBL_MAX, max_avg_degree = 0;
             for (int i = 0; i < trial_list[r_h_counter]; ++i) {
+
+                if(i%5==0) {
+                    std::cout << "zzz" << std::endl;
+                }
+
                 random_generator.generate_random_domain(n, r_h, t, 5, 5, 10, true, false, 0);
 
                 avg_N += routing_scenario.number_of_vertices();

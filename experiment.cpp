@@ -906,7 +906,7 @@ void big_benchmark_tea() {
         /*0.55,*/ 0.60 /*, 0.62*/
     };
     const std::list<double> r_h_list = {9, 10.5, 11.25, 11.5, 11.75};
-    const std::vector<int> trial_list = {50, 50, 25, 25, 25};
+    const std::vector<int> trial_list = {50, 50, 50, 25, 25};
 
     CGAL::Timer timer;
 

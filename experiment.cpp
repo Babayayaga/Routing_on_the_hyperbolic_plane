@@ -10,7 +10,7 @@ typedef CGAL::Beltrami_klein_traits<CGAL::Exact_predicates_inexact_constructions
 typedef CGAL::Poincare_disk_traits<CGAL::Exact_predicates_inexact_constructions_kernel> Poincare_disk_traits;
 
 //set either to Poincare_disk_traits or Beltrami_klein_traits
-typedef Beltrami_klein_traits K;
+typedef Poincare_disk_traits K;
 
 typedef CGAL::Delaunay_mesh_face_base_2<K> Face_base;
 typedef CGAL::Triangulation_vertex_base_2<K> Vertex_base;
@@ -905,8 +905,8 @@ void big_benchmark_tea() {
     const std::list<double> t_list = {
         0.55, 0.60 , 0.62
     };
-    const std::list<double> r_h_list = {/*10.5,*/ 11.25, 11.5, 11.75};
-    const std::vector<int> trial_list = {/*50,*/ 25, 25, 25};
+    const std::list<double> r_h_list = {10.5, 11.25, 11.5, 11.75};
+    const std::vector<int> trial_list = {50, 25, 25, 25};
 
     CGAL::Timer timer;
 

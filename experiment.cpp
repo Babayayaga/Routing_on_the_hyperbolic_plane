@@ -635,31 +635,32 @@ void big_benchmark_routing_on_triangulation() {
 
 void benchmark_extra_points() {
     const std::vector<std::string> domains = {
-        /*"10_100_10_55", "11_100_10_55", "12_100_10_55",
-        "10_100_10_60", "11_100_10_60", "12_100_10_60",
-        "10_100_10_62", "11_100_10_62", "12_100_10_62"*/
+        /*"10_100_10_55",*/ "11_100_10_55", "12_100_10_55",
+        "10_100_10_60", "11_100_10_60", /*"12_100_10_60",
+        "10_100_10_62",*/ "11_100_10_62", "12_100_10_62",
         "10_100_10_65", "11_100_10_65" /*, "12_100_10_65"*/
     };
 
     const std::vector<int> trials = {
         /*1000, 500, 250,
-        1000, 500, 250,*/
-        /*1000, 500,*/ 250
+        1000, 500, 250,
+        1000, 500, 250*/
+        100, 100, 100, 100, 100, 100, 100, 100
     };
 
     const std::vector<double> radius = {
         /*10, 11, 12,
         10, 11, 12,*/
-        /*10, 11,*/ 12
+        /*10, 11,*/
+        11, 12, 10, 11, 11, 12, 10, 11
     };
 
     const std::vector<std::vector<double> > extra_points_factor = {
-        /*{1.0 / 64, 1.0 / 32, 1.0 / 16, 1.0 / 8}, {1.0 / 64, 1.0 / 32, 1.0 / 16, 1.0 / 8},
+        {1.0 / 64, 1.0 / 32, 1.0 / 16, 1.0 / 8}, {1.0 / 64, 1.0 / 32, 1.0 / 16, 1.0 / 8},
         {1.0 / 64, 1.0 / 32, 1.0 / 16, 1.0 / 8},
         {1.0 / 64, 1.0 / 32, 1.0 / 16, 1.0 / 8}, {1.0 / 64, 1.0 / 32, 1.0 / 16, 1.0 / 8},
-        {1.0 / 64, 1.0 / 32, 1.0 / 16, 1.0 / 8},*/
-        /*{1.0 / 64, 1.0 / 32, 1.0 / 16, 1.0 / 8}, {1.0 / 64, 1.0 / 32, 1.0 / 16, 1.0 / 8},*/
-        {1.0 / 64, 1.0 / 32, 1.0 / 16, 1.0 / 8}
+        {1.0 / 64, 1.0 / 32, 1.0 / 16, 1.0 / 8},
+        {1.0 / 64, 1.0 / 32, 1.0 / 16, 1.0 / 8}, {1.0 / 64, 1.0 / 32, 1.0 / 16, 1.0 / 8},
     };
 
     CGAL::Timer timer;
@@ -686,7 +687,7 @@ void benchmark_extra_points() {
                                              routing_scenario.index_vertex_map[dest]));
         }
 
-        routing_scenario.build_visibility_graph();
+        /*routing_scenario.build_visibility_graph();
         for (std::pair<Vertex_handle, Vertex_handle> query: queries) {
             routing_scenario.set_point_to_start(query.first);
             routing_scenario.set_point_to_destination(query.second);
@@ -701,7 +702,7 @@ void benchmark_extra_points() {
             } else {
                 path_lengths.push_back(DBL_MAX);
             }
-        }
+        }*/
 
         for (double factor: extra_points_factor[i]) {
             std::cout << "-------------------------factor: " << factor << std::endl;
@@ -734,13 +735,15 @@ void benchmark_extra_points() {
                 routing_scenario.set_point_to_destination(query.second);
 
                 timer.start();
-                const bool reachable = routing_scenario.a_star();
+                //const bool reachable = routing_scenario.a_star();
+                routing_scenario.dijkstra();
+
                 timer.stop();
                 a_star_sum_time += timer.time();
 
-                std::vector<int> path = routing_scenario.get_indices_path();
+                //std::vector<int> path = routing_scenario.get_indices_path();
 
-                if (reachable) {
+                /*if (reachable) {
                     ++reachable_counter;
                     CGAL::Timer opti_timer;
                     opti_timer.start();
@@ -752,11 +755,11 @@ void benchmark_extra_points() {
                     approx_path_lengths.push_back(path_length);
                 } else {
                     approx_path_lengths.push_back(DBL_MAX);
-                }
+                }*/
                 timer.reset();
             }
 
-            double min = DBL_MAX, max = 0;
+            /*double min = DBL_MAX, max = 0;
             for (int j = 0; j < trials[i]; ++j) {
                 if (path_lengths[j] != DBL_MAX) {
                     const double ratio = approx_path_lengths[j] / path_lengths[j];
@@ -767,15 +770,15 @@ void benchmark_extra_points() {
                         min = ratio;
                     }
                 }
-            }
+            }*/
 
             std::cout << std::endl;
             std::cout << "average A* time: " << a_star_sum_time / reachable_counter << std::endl;
-            std::cout << "full optimization took: " << opti_time / reachable_counter << std::endl;
+            /*std::cout << "full optimization took: " << opti_time / reachable_counter << std::endl;
             std::cout << "avg: " << a_star_approx_sum_path_length / a_star_sum_path_length
                     << std::endl;
             std::cout << "min: " << min << std::endl;
-            std::cout << "max: " << max << std::endl;
+            std::cout << "max: " << max << std::endl;*/
             std::cout << std::endl;
             std::cout << std::endl;
             routing_scenario.remove_all_unconstrained_points();

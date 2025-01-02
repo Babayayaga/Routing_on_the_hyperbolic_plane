@@ -773,7 +773,7 @@ void benchmark_extra_points() {
             }*/
 
             std::cout << std::endl;
-            std::cout << "average A* time: " << a_star_sum_time / reachable_counter << std::endl;
+            std::cout << "average A* time: " << a_star_sum_time / queries.size() << std::endl;
             /*std::cout << "full optimization took: " << opti_time / reachable_counter << std::endl;
             std::cout << "avg: " << a_star_approx_sum_path_length / a_star_sum_path_length
                     << std::endl;

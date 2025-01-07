@@ -20,6 +20,7 @@ This repository contains the code for the bachelor thesis _Routing on the Hyperb
  algorithm to generate them has been developed and implemented.
 
 ## Some pictures captured from the applet
+It is possible to turn and walk around to explore a polygonal domain.
 
 <img src="https://github.com/user-attachments/assets/c74927c3-6a4e-46ee-ab8c-5ae0fb7d053e" width="230">
 <img src="https://github.com/user-attachments/assets/f24cd5ae-f9bd-41f7-9df6-ac22e8955da4" width="230">

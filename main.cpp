@@ -18,7 +18,7 @@
 #include "include/internal/BeltramiKleinTraits.h"
 #include "include/internal/PoincareDiskTraits.h"
 #include "internal/RandomDomainGenerator.h"
-#include "internal/Qt/Input/WASDInput.h"
+#include "internal/Qt/Input/NavigateInput.h"
 #include "internal/Qt/Input/PointInput.h"
 #include "include/internal/Qt/Input/PolylineInput.h"
 #include "internal/Qt/GraphicItems/RoutingScenarioGraphicsItem.h"
@@ -30,7 +30,7 @@ typedef CGAL::Poincare_disk_traits<> Poincare_disk_traits;
 typedef CGAL::Beltrami_klein_traits<> Beltrami_klein_traits;
 
 //either choose Poincare_disk_traits or Beltrami_klein_traits
-typedef Poincare_disk_traits K;
+typedef Beltrami_klein_traits K;
 
 typedef K::FT FT;
 typedef K::Point_2 Point_2;
@@ -109,7 +109,6 @@ public Q_SLOTS:
     void on_actionRedraw_triggered();
     void on_actionWalkPathForward_triggered();
     void on_actionWalkPathBackward_triggered();
-    void on_actionTestSuite_triggered();
     void on_actionTranslateToPoint_triggered();
     void on_actionWalk_toggled(bool checked);
 
@@ -236,8 +235,6 @@ MainWindow::MainWindow()
     this->graphicsView->scale(1, -1);
 
     //Point_2 p = Point_2(0.9999, 0.999999999);
-    std::cout<< sizeof(Triangulation::Vertex) << std::endl;
-    std::cout<< sizeof(Point_2) << std::endl;
     //std::cout << std::setprecision(100) << "tanh(14)" << std::tanh(18.715) << std::endl;
     //std::cout << nextafter(1.0, 0) << std::endl;
 
@@ -246,8 +243,8 @@ MainWindow::MainWindow()
     // The navigation adds zooming and translation functionality to the
     // QGraphicsView
     this->addNavigation(this->graphicsView);
-    this->actionUse_OpenGL->setChecked(true);
-    this->setUseOpenGL(true);
+    //this->actionUse_OpenGL->setChecked(true);
+    //this->setUseOpenGL(true);
 
     this->setupStatusBar();
     this->setupOptionsMenu();
@@ -643,12 +640,6 @@ void MainWindow::on_actionComputeVisibilityGraph_triggered() {
         statusBar()->showMessage(
             QString("Building: %1 seconds, #Nodes: %2, #Edges: %3").arg(timer.time()).arg(
                 routingScenario.number_of_vertices()).arg(routingScenario.adjacencies.size() / 2), 8000);
-        std::cout << "Visibility-graph build took: " << timer.time() << " seconds. #Edges: " << routingScenario.adjacencies.size()
-                / 2 << "." << std::endl;
-        std::cout << "Vertex_index_map size: " << routingScenario.vertex_index_map.size() << std::endl;
-        if(number_of_orientation_tests != 0) {
-            std::cout << "Average time orientation test: " << timer.time()/number_of_orientation_tests << std::endl;
-        }
         timer.reset();
     } else {
         statusBar()->showMessage(QString("Already computed."), 4000);
@@ -824,10 +815,6 @@ void MainWindow::on_actionWalkPathBackward_triggered() {
     } else {
         statusBar()->showMessage(QString("Compute path first."), 4000);
     }
-}
-
-void MainWindow::on_actionTestSuite_triggered() {
-    routingScenario.test_suite();
 }
 
 void MainWindow::on_actionShowDecomposition_toggled(const bool checked) {

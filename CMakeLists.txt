@@ -36,7 +36,7 @@ if(CGAL_Qt5_FOUND
             include/internal/Qt/GraphicItems/HyperbolicTriangleGraphicsItem.h
             include/internal/RandomDomainGenerator.h
             include/internal/Triangulation_line_face_iterator.h
-            include/internal/Qt/Input/WASDInput.h
+            include/internal/Qt/Input/NavigateInput.h
             include/internal/BeltramiKleinTraits.h
     )
 
@@ -52,7 +52,7 @@ if(CGAL_Qt5_FOUND
             include/internal/Qt/GraphicItems/HyperbolicTriangleGraphicsItem.h
             include/internal/RandomDomainGenerator.h
             include/internal/Triangulation_line_face_iterator.h
-            include/internal/Qt/Input/WASDInput.h
+            include/internal/Qt/Input/NavigateInput.h
             include/internal/BeltramiKleinTraits.h
     )
 

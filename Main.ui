@@ -7,8 +7,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>905</width>
-    <height>890</height>
+    <width>792</width>
+    <height>862</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -34,14 +34,14 @@
          </font>
         </property>
         <property name="text">
-         <string>Domain generation: </string>
+         <string>Domain generation</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QLabel" name="label_4">
         <property name="text">
-         <string>Level of detail:</string>
+         <string>n :</string>
         </property>
        </widget>
       </item>
@@ -66,14 +66,14 @@
          <number>50000</number>
         </property>
         <property name="value">
-         <number>10</number>
+         <number>50</number>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QLabel" name="label_3">
         <property name="text">
-         <string>Threshold:</string>
+         <string>t :</string>
         </property>
        </widget>
       </item>
@@ -86,7 +86,7 @@
          </sizepolicy>
         </property>
         <property name="statusTip">
-         <string>Map from [-1, 1] to points. A triangle is an obstacle, if it's average is bigger than the threshold.</string>
+         <string>Likelihood of a face to be an obstacle-triangle.</string>
         </property>
         <property name="decimals">
          <number>3</number>
@@ -108,14 +108,14 @@
       <item>
        <widget class="QLabel" name="label_6">
         <property name="text">
-         <string>Radius:</string>
+         <string>r_h :</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QDoubleSpinBox" name="radiusSpinBox">
         <property name="statusTip">
-         <string>Obstacle points are located in this disk, centered in the origin. Radius is in hyperbolic units.</string>
+         <string>Hyperbolic radius of the disk in which polygonal domain is generated.</string>
         </property>
         <property name="decimals">
          <number>3</number>
@@ -140,12 +140,15 @@
       <item>
        <widget class="QLabel" name="label_11">
         <property name="text">
-         <string>Minimum:</string>
+         <string>m :</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QSpinBox" name="minSpinBox">
+        <property name="statusTip">
+         <string>Required minimal amount of vertices of an obstacle.</string>
+        </property>
         <property name="minimum">
          <number>3</number>
         </property>
@@ -160,7 +163,7 @@
       <item>
        <widget class="QLabel" name="label_5">
         <property name="text">
-         <string>Dilation: </string>
+         <string>Dilation :</string>
         </property>
        </widget>
       </item>
@@ -175,9 +178,22 @@
        </widget>
       </item>
       <item>
+       <widget class="QCheckBox" name="checkBox">
+        <property name="statusTip">
+         <string/>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QLabel" name="label_10">
         <property name="text">
-         <string>Erosion: </string>
+         <string>Erosion :</string>
         </property>
        </widget>
       </item>
@@ -192,89 +208,37 @@
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="checkBox">
+       <widget class="QCheckBox" name="blueNoise">
         <property name="statusTip">
-         <string>Erosion before dilation. Switches treatments of terrain.</string>
+         <string>Enables Mitchell's best candidate algorithm for generating random points.</string>
         </property>
         <property name="text">
-         <string>Dilation before Erosion</string>
+         <string>Blue noise</string>
         </property>
-        <property name="checked">
-         <bool>true</bool>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_13">
+        <property name="text">
+         <string>k :</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="candidatesSpinBox">
+        <property name="statusTip">
+         <string>Number of candidates for blue noise.</string>
+        </property>
+        <property name="maximum">
+         <number>20</number>
+        </property>
+        <property name="value">
+         <number>10</number>
         </property>
        </widget>
       </item>
       <item>
        <spacer name="horizontalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-     </layout>
-    </item>
-    <item row="4" column="0">
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
-      <item>
-       <spacer name="horizontalSpacer_5">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_12">
-        <property name="text">
-         <string>Choose visibility graph algorithm:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QComboBox" name="comboBox">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <item>
-         <property name="text">
-          <string>triangle expansion algorithm</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>use triangulation as visibility graph</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>all-to-all naive algorithm</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pathOptimize">
-        <property name="text">
-         <string>Optimize path</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <spacer name="horizontalSpacer">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -325,43 +289,6 @@
        <enum>QLayout::SetDefaultConstraint</enum>
       </property>
       <item>
-       <widget class="QCheckBox" name="blueNoise">
-        <property name="text">
-         <string>Blue noise</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_13">
-        <property name="text">
-         <string>Candidates:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QSpinBox" name="candidatesSpinBox">
-        <property name="maximum">
-         <number>20</number>
-        </property>
-        <property name="value">
-         <number>10</number>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <spacer name="horizontalSpacer_3">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
        <widget class="QLabel" name="label_7">
         <property name="font">
          <font>
@@ -370,7 +297,7 @@
          </font>
         </property>
         <property name="text">
-         <string>Other parameters:</string>
+         <string>Other parameters</string>
         </property>
        </widget>
       </item>
@@ -380,12 +307,15 @@
          <string>Specify the maximal radius of a hyperbolic segment, drawn as a circular arc.</string>
         </property>
         <property name="text">
-         <string>Drawing approximation:</string>
+         <string>Drawing approx.:</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QDoubleSpinBox" name="approxSpinBox">
+        <property name="statusTip">
+         <string>Required radius of hyperbolic segments in the Poincaré disk model to be drawn as circular arcs.</string>
+        </property>
         <property name="decimals">
          <number>4</number>
         </property>
@@ -403,7 +333,7 @@
       <item>
        <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>Walking speed:</string>
+         <string>Walking speed :</string>
         </property>
        </widget>
       </item>
@@ -423,29 +353,64 @@
       <item>
        <widget class="QLabel" name="label_9">
         <property name="text">
-         <string>Path step size:</string>
+         <string>Path steps :</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QSpinBox" name="pathStepSpinBox">
+        <property name="statusTip">
+         <string>Skipping nodes when shortest path is traversed.</string>
+        </property>
         <property name="value">
          <number>1</number>
         </property>
        </widget>
       </item>
       <item>
-       <spacer name="horizontalSpacer_4">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+       <widget class="QLabel" name="label_12">
+        <property name="text">
+         <string>Visibility Graph algorithm :</string>
         </property>
-        <property name="sizeHint" stdset="0">
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="comboBox">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
          <size>
-          <width>40</width>
-          <height>20</height>
+          <width>25</width>
+          <height>0</height>
          </size>
         </property>
-       </spacer>
+        <item>
+         <property name="text">
+          <string>TEA</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>On triang.</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Naive</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pathOptimize">
+        <property name="text">
+         <string>Optimize path</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </item>
@@ -503,7 +468,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>905</width>
+     <width>792</width>
      <height>21</height>
     </rect>
    </property>
@@ -544,8 +509,6 @@
     <addaction name="actionWalk"/>
     <addaction name="separator"/>
     <addaction name="actionRedraw"/>
-    <addaction name="separator"/>
-    <addaction name="actionTestSuite"/>
    </widget>
    <widget class="QMenu" name="menuOptions">
     <property name="title">
@@ -596,6 +559,9 @@
    <property name="text">
     <string>&amp;Insert random points</string>
    </property>
+   <property name="statusTip">
+    <string>Insert uniformly sampled points.</string>
+   </property>
    <property name="shortcut">
     <string>Ctrl+I</string>
    </property>
@@ -645,7 +611,7 @@
      <normaloff>:/cgal/Actions/icons/insertConstraints.png</normaloff>:/cgal/Actions/icons/insertConstraints.png</iconset>
    </property>
    <property name="text">
-    <string>Insert polyline constraints</string>
+    <string>Insert edge constraints</string>
    </property>
    <property name="statusTip">
     <string>Insert non-intersecting borders of obstacles. Mouse left -&gt; new point, Mouse right -&gt; confirm.</string>
@@ -663,10 +629,10 @@
      <normaloff>:/cgal/fileToolbar/fileOpen.png</normaloff>:/cgal/fileToolbar/fileOpen.png</iconset>
    </property>
    <property name="text">
-    <string>Load routing scenario</string>
+    <string>Load polygonal domain</string>
    </property>
    <property name="statusTip">
-    <string>Load a polygonal domain, see GitHub page for format.</string>
+    <string>Load a polygonal domain.</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+L</string>
@@ -678,13 +644,13 @@
      <normaloff>:/cgal/fileToolbar/fileSave.png</normaloff>:/cgal/fileToolbar/fileSave.png</iconset>
    </property>
    <property name="text">
-    <string>Save routing scenario</string>
+    <string>Save polygonal domain</string>
    </property>
    <property name="toolTip">
-    <string>Save routing scenario</string>
+    <string>Save polygonal domain</string>
    </property>
    <property name="statusTip">
-    <string>Save a polygonal domain, see GitHub page for format.</string>
+    <string>Save a polygonal domain.</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>
@@ -710,7 +676,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Show triangulation</string>
+    <string>Show complete triangulation</string>
    </property>
    <property name="statusTip">
     <string>Show constrained Delaunay triangulation of polygonal domain.</string>
@@ -732,10 +698,10 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Show obstacle polyline</string>
+    <string>Show constrained edges</string>
    </property>
    <property name="statusTip">
-    <string>Show borders of obstacles.</string>
+    <string>Show the borders of obstacles.</string>
    </property>
   </action>
   <action name="actionShowPoints">
@@ -779,10 +745,10 @@
      <normaloff>:/cgal/Actions/icons/visibilityPointToPoint.png</normaloff>:/cgal/Actions/icons/visibilityPointToPoint.png</iconset>
    </property>
    <property name="text">
-    <string>Can p see q?</string>
+    <string>Are p and q mutually visible?</string>
    </property>
    <property name="statusTip">
-    <string>Test visibility of selected nodes.</string>
+    <string>Test point-to-point visibility of selected nodes.</string>
    </property>
   </action>
   <action name="actionShowVisibilityGraph">
@@ -805,13 +771,13 @@
      <normaloff>:/cgal/Actions/icons/visibilityPointToAll.png</normaloff>:/cgal/Actions/icons/visibilityPointToAll.png</iconset>
    </property>
    <property name="text">
-    <string>What points can p see?</string>
+    <string>What points are visible from p?</string>
    </property>
    <property name="toolTip">
-    <string>what points can p see?</string>
+    <string>What points are visible from p?</string>
    </property>
    <property name="statusTip">
-    <string>Show visible nodes from active node.</string>
+    <string>Show all visible nodes from start node.</string>
    </property>
   </action>
   <action name="actionSetPointOnObstacle">
@@ -823,7 +789,7 @@
      <normaloff>:/cgal/Actions/icons/setObstacleOnPoint.png</normaloff>:/cgal/Actions/icons/setObstacleOnPoint.png</iconset>
    </property>
    <property name="text">
-    <string>Set point on obstacle</string>
+    <string>Set node to start/end node</string>
    </property>
    <property name="statusTip">
     <string>Shift to mark triangle, Mouse left/right to select vertex.</string>
@@ -901,6 +867,9 @@
    <property name="text">
     <string>Generate random domain</string>
    </property>
+   <property name="statusTip">
+    <string>Generate random polygonal domain with specified parameters.</string>
+   </property>
   </action>
   <action name="actionTranslateToPoint">
    <property name="icon">
@@ -908,10 +877,10 @@
      <normaloff>:/cgal/Actions/icons/translateToOrigin.png</normaloff>:/cgal/Actions/icons/translateToOrigin.png</iconset>
    </property>
    <property name="text">
-    <string>Set active_point to origin</string>
+    <string>Map start node to origin</string>
    </property>
    <property name="statusTip">
-    <string>Translation of active_point to origin.</string>
+    <string>Apply translation of start node to origin.</string>
    </property>
   </action>
   <action name="actionWalk">
@@ -923,7 +892,10 @@
      <normaloff>:/cgal/Actions/icons/walk.png</normaloff>:/cgal/Actions/icons/walk.png</iconset>
    </property>
    <property name="text">
-    <string>Walk with WASD</string>
+    <string>Walk around</string>
+   </property>
+   <property name="statusTip">
+    <string>Walk forward with W, and rotate with A and D.</string>
    </property>
   </action>
   <action name="actionShowOrigin">
@@ -968,11 +940,6 @@
    </property>
    <property name="statusTip">
     <string>Walk backward step on path.</string>
-   </property>
-  </action>
-  <action name="actionTestSuite">
-   <property name="text">
-    <string>Test suite</string>
    </property>
   </action>
   <action name="actionShowDecomposition">

@@ -377,41 +377,6 @@ namespace CGAL::Qt {
             }
 
             return true;
-
-            //test shortest path
-            //although if visibility graphs are equal, result are equal
-            /*if (active_node_handle == nullptr) {
-                set_point_active(index_vertex_map[0]);
-            }
-            if (destination_node_handle == nullptr) {
-                set_point_to_destination(index_vertex_map[index_vertex_map.size() - 1]);
-            }
-            clear_graphs();
-            build_visibility_graph_naive();
-            compute_distances();
-            const std::pair<double, int> results_1 = a_star();
-            const std::vector<int> path_copy = path;
-            clear_graphs();
-            build_visibility_graph();
-            compute_distances();
-            const std::pair<double, int> results_2 = a_star();
-
-            //compare reachability and length
-            //-1 length means unreachable
-            std::cout << "1. Algorithm: Path length = " << results_1.first << std::endl;
-            std::cout << "2. Algorithm: Path length = " << results_2.first << std::endl;
-            std::cout << "1. Algorithm: Path size = " << path_copy.size() << std::endl;
-            std::cout << "2. Algorithm: Path size = " << path.size() << std::endl;
-
-            for (int i = 0; i < path.size(); i++) {
-                if (path[i] != path_copy[i]) {
-                    std::cout << "Paths unequal!" << std::endl;
-                    break;
-                }
-            }*/
-            clear_graphs();
-            std::cout << "TEST SUITE END" << std::endl;
-            std::cout << std::endl;
         }
 
         Point_2 beltrami_klein_to_poincare(const Point_2 p) {

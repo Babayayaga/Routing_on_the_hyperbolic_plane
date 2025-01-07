@@ -19,8 +19,12 @@ This repository contains the code for the bachelor thesis _Routing on the Hyperb
  Due to the absence of polygonal land maps in the hyperbolic plane, an
  algorithm to generate them has been developed and implemented.
 
-## Some pictures captured from the applet
-It is possible to rotate and move around to explore a polygonal domain. In addition to the random generation of polygonal domains, drawing them manually has also been implemented. A polygonal domain can be stored and loaded from a text file.
+## The applet
+In addition to the implemented algorithms, the applet provides the following functions
+- freely moving around within the Poincaré disk and Beltrami-Klein models to explore polygonal domains
+- manually drawing of polygonal domains and storing/loading the created files
+- displaying various visibility/routing properties interactively
+- exporting the viewport as .svg or .png
 
 <img src="https://github.com/user-attachments/assets/c74927c3-6a4e-46ee-ab8c-5ae0fb7d053e" width="230">
 <img src="https://github.com/user-attachments/assets/f24cd5ae-f9bd-41f7-9df6-ac22e8955da4" width="230">

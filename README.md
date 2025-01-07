@@ -32,6 +32,5 @@ This repository contains the code for the bachelor thesis _Routing on the Hyperb
 <img src = "https://github.com/user-attachments/assets/6446ea86-00d4-4683-8a27-18fa84d3aee0" width = "230">
 <img src = "https://github.com/user-attachments/assets/47258cd5-2872-4e44-a02e-f9660f744cce" width = "230">
 <img src = "https://github.com/user-attachments/assets/d43c9477-93fb-43f4-b00a-8784c86ee8db" width = "230">
-<img src = "https://github.com/user-attachments/assets/c4f24ee7-48fc-410c-b7a9-2fadf095de96" width = "230">
 
 

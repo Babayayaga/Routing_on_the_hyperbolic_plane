@@ -20,7 +20,7 @@ This repository contains the code for the bachelor thesis _Routing on the Hyperb
  algorithm to generate them has been developed and implemented.
 
 ## The applet
-In addition to the implemented algorithms, the applet provides the following functions
+In addition to the implemented routing algorithms, the applet provides the following functions
 - freely moving around within the Poincaré disk and Beltrami-Klein models to explore polygonal domains
 - manually drawing of polygonal domains and storing/loading the created/generated files
 - displaying various visibility/routing properties interactively

@@ -22,7 +22,7 @@ This repository contains the code for the bachelor thesis _Routing on the Hyperb
 ## The applet
 In addition to the implemented algorithms, the applet provides the following functions
 - freely moving around within the Poincaré disk and Beltrami-Klein models to explore polygonal domains
-- manually drawing of polygonal domains and storing/loading the created files
+- manually drawing of polygonal domains and storing/loading the created/generated files
 - displaying various visibility/routing properties interactively
 - exporting the viewport as .svg or .png
 

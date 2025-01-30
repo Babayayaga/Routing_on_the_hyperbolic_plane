@@ -321,7 +321,7 @@ namespace CGAL::Qt {
         triangulation_graphics_item->setParentItem(this);
         triangulation_graphics_item->setFlag(ItemStacksBehindParent);
 
-        epen.setWidthF(0.00);
+        epen.setWidthF(0.01);
         epen.setBrush(::Qt::black);
 
         vpen1.setStyle(::Qt::SolidLine);

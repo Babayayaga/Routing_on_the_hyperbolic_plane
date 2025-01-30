@@ -8,7 +8,6 @@
 namespace CGAL::Qt {
     template<typename T>
     class WASDInput : public QObjectInput {
-
     public:
         typedef typename T::Geom_traits K;
         typedef typename K::Circle_2 Circle_2;
@@ -21,7 +20,12 @@ namespace CGAL::Qt {
             walking_speed = speed;
         }
 
+        void set_rotation_speed(const double speed) {
+            rotation_speed = speed;
+        }
+
         double walking_speed = 0.05;
+        double rotation_speed = 1.0 / 20;
 
         void keyPressedEvent(const QKeyEvent *event);
 
@@ -42,20 +46,21 @@ namespace CGAL::Qt {
             routing_scenario_graphics_item->composite_focusing(Point_2(0, walking_speed));
         }
         if (event->key() == ::Qt::Key_A) {
-            routing_scenario_graphics_item->composite_rotation(-CGAL_PI/20);
+            routing_scenario_graphics_item->composite_rotation(-CGAL_PI * rotation_speed);
         }
         if (event->key() == ::Qt::Key_S) {
             routing_scenario_graphics_item->composite_focusing(Point_2(0, -walking_speed));
         }
         if (event->key() == ::Qt::Key_D) {
-            routing_scenario_graphics_item->composite_rotation(CGAL_PI/20);
+            routing_scenario_graphics_item->composite_rotation(CGAL_PI * rotation_speed);
         }
         Q_EMIT(transformed());
     }
 
-    template<typename T> bool
+    template<typename T>
+    bool
     WASDInput<T>::eventFilter(QObject *obj, QEvent *event) {
-        if(event->type() == QEvent::KeyPress) {
+        if (event->type() == QEvent::KeyPress) {
             auto *keyEvent = dynamic_cast<QKeyEvent *>(event);
             keyPressedEvent(keyEvent);
             return true;

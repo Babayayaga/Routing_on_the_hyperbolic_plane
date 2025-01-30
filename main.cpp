@@ -30,7 +30,7 @@ typedef CGAL::Poincare_disk_traits<> Poincare_disk_traits;
 typedef CGAL::Beltrami_klein_traits<> Beltrami_klein_traits;
 
 //either choose Poincare_disk_traits or Beltrami_klein_traits
-typedef Beltrami_klein_traits K;
+typedef Poincare_disk_traits K;
 
 typedef K::FT FT;
 typedef K::Point_2 Point_2;
@@ -372,16 +372,19 @@ void MainWindow::on_actionInsertConstraints_toggled(const bool checked) {
 void MainWindow::on_actionWalk_toggled(const bool checked) {
     if (checked) {
         this->speedSpinBox->setDisabled(true);
+        this->rotationSpinBox->setDisabled(true);
         this->actionShowOrigin->setChecked(true);
         this->actionInsertPoint->setDisabled(true);
         this->actionInsertConstraints->setDisabled(true);
         this->actionSetPointOnObstacle->setChecked(false);
         this->actionSetPointOnObstacle->setDisabled(true);
         wasd_input->set_walking_speed(this->speedSpinBox->value());
+        wasd_input->set_rotation_speed(this->rotationSpinBox->value());
         scene.installEventFilter(wasd_input);
     } else {
         this->actionShowOrigin->setChecked(false);
         this->speedSpinBox->setDisabled(false);
+        this->rotationSpinBox->setDisabled(false);
         this->actionInsertPoint->setDisabled(false);
         this->actionInsertConstraints->setDisabled(false);
         this->actionSetPointOnObstacle->setDisabled(false);

@@ -830,7 +830,11 @@ void MainWindow::on_actionShowTriangulationBetween_toggled(bool checked) {
 
 void MainWindow::on_pathOptimize_released() {
     if(routingScenario.defined_path) {
-        std::vector<int> path = routingScenario.greedy_optimization(routingScenario.get_indices_path());
+        std::cout << "optimize path" << std::endl;
+        std::vector<int> path = routingScenario.path_optimization(routingScenario.get_indices_path());
+        /*for(int i : path) {
+            std::cout << "i : " << i << std::endl;
+        }*/
         routingGraphicsItem->repaint();
         double length = routingScenario.get_path_length(path);
         statusBar()->showMessage(QString("Path length: %1.").arg(length), 4000);

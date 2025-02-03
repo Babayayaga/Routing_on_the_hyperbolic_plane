@@ -823,7 +823,8 @@ namespace CGAL::Qt {
             shortend_path.push_back(path[check]);
             index = check;
         }
-        shortend_path.push_back(path[path.size() - 1]);
+        //shortend_path.push_back(path[path.size() - 1]);
+        this->path = shortend_path;
         return shortend_path;
     }
 
@@ -844,6 +845,7 @@ namespace CGAL::Qt {
             index = check - 1;
         }
         //shortend_path.push_back(path[path.size() - 1]);
+        this->path = shortend_path;
         return shortend_path;
     }
 

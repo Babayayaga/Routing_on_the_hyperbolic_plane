@@ -321,7 +321,7 @@ namespace CGAL::Qt {
         triangulation_graphics_item->setParentItem(this);
         triangulation_graphics_item->setFlag(ItemStacksBehindParent);
 
-        epen.setWidthF(0.01);
+        epen.setWidthF(0.005);
         epen.setBrush(::Qt::black);
 
         vpen1.setStyle(::Qt::SolidLine);
@@ -456,6 +456,7 @@ namespace CGAL::Qt {
         }
 
         if (show_path) {
+            epen.setWidthF(0.01);
             painter->setPen(epen);
             for (int i = 0; i < r->get_indices_path().size() - 1; i++) {
                 QHyperbolic_segment segment;
@@ -471,6 +472,7 @@ namespace CGAL::Qt {
                 }
                 hyperbolic_painter.draw_hyperbolic_segment(segment);
             }
+            epen.setWidthF(0.005);
         }
 
         painter->restore();

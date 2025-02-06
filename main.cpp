@@ -30,7 +30,7 @@ typedef CGAL::Poincare_disk_traits<> Poincare_disk_traits;
 typedef CGAL::Beltrami_klein_traits<> Beltrami_klein_traits;
 
 //either choose Poincare_disk_traits or Beltrami_klein_traits
-typedef Poincare_disk_traits K;
+typedef Beltrami_klein_traits K;
 
 typedef K::FT FT;
 typedef K::Point_2 Point_2;
@@ -125,7 +125,7 @@ void MainWindow::on_actionShowUnitCircle_triggered(const bool checked) {
 }
 
 void MainWindow::on_actionColorUnitDisk_triggered(const bool checked) {
-    if (checked) {
+    /*if (checked) {
         disk->setBrush(QBrush(QColor(0, 150, 0)));
         routingGraphicsItem->epen.setBrush(::Qt::yellow);
         routingGraphicsItem->set_obstacle_brush(::Qt::blue);
@@ -134,7 +134,7 @@ void MainWindow::on_actionColorUnitDisk_triggered(const bool checked) {
         routingGraphicsItem->epen.setBrush(::Qt::darkGreen);
         routingGraphicsItem->set_obstacle_brush(QColor(140, 140, 140, 100));
     }
-    routingGraphicsItem->repaint();
+    routingGraphicsItem->repaint();*/
 }
 
 MainWindow::MainWindow()

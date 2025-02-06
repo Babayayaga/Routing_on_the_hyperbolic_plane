@@ -407,7 +407,7 @@ namespace CGAL::Qt {
             std::random_device rd;
             std::mt19937 gen(rd());
             std::uniform_real_distribution<> x_distr(0, radius);
-            const double area = std::cosh(radius) - 1;
+            const double area = /*std::cosh(radius) - 1*/2 * CGAL_PI * radius * radius;
             const double y_max = probability_density(radius, area);
             std::uniform_real_distribution<> y_distr(0, y_max);
             std::uniform_real_distribution<> angle_distr(0, 2 * CGAL_PI);

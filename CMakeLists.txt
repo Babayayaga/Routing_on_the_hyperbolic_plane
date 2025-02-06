@@ -40,6 +40,22 @@ if(CGAL_Qt5_FOUND
             include/internal/BeltramiKleinTraits.h
     )
 
+    add_executable ( Routing_on_the_hyperbolic_plane_2 main.cpp ${CGAL_Qt5_RESOURCE_FILES} ${RESOURCE_FILES} ${UIS}
+            include/internal/Qt/Input/PointInput.h
+            include/internal/PoincareDiskTraits.h
+            include/internal/Qt/Input/PolylineInput.h
+            include/internal/Qt/GraphicItems/HyperbolicSegmentGraphicsItem.h
+            include/internal/Qt/GraphicItems/RoutingScenarioGraphicsItem.h
+            include/internal/RoutingScenario.h
+            include/internal/Qt/Input/TriangulationSelectTriangle.h
+            include/internal/Qt/Input/QObjectInput.h
+            include/internal/Qt/GraphicItems/HyperbolicTriangleGraphicsItem.h
+            include/internal/RandomDomainGenerator.h
+            include/internal/Triangulation_line_face_iterator.h
+            include/internal/Qt/Input/NavigateInput.h
+            include/internal/BeltramiKleinTraits.h
+    )
+
     add_executable ( experiments experiment.cpp
             include/internal/Qt/Input/PointInput.h
             include/internal/PoincareDiskTraits.h
@@ -63,6 +79,15 @@ if(CGAL_Qt5_FOUND
         target_link_libraries ( Routing_on_the_hyperbolic_plane CGAL::CGAL_Core)
     else()
         target_link_libraries ( Routing_on_the_hyperbolic_plane ${LEDA_LIBRARIES})
+    endif()
+
+    target_include_directories(Routing_on_the_hyperbolic_plane_2 PRIVATE ./ ./include)
+    add_to_cached_list( CGAL_EXECUTABLE_TARGETS Routing_on_the_hyperbolic_plane_2 )
+    target_link_libraries ( Routing_on_the_hyperbolic_plane_2 CGAL::CGAL CGAL::CGAL_Qt5 Qt5::Widgets)
+    if(CGAL_Core_FOUND)
+        target_link_libraries ( Routing_on_the_hyperbolic_plane_2 CGAL::CGAL_Core)
+    else()
+        target_link_libraries ( Routing_on_the_hyperbolic_plane_2 ${LEDA_LIBRARIES})
     endif()
 
     target_include_directories(experiments PRIVATE ./ ./include)

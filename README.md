@@ -1,6 +1,8 @@
 # Routing on the hyperbolic plane
 This repository contains the code for the bachelor thesis _Routing on the Hyperbolic Plane_ at the University of Stuttgart. The implementation is written in C++ and utilizes the constrained Delaunay triangulation class of CGAL (version 5.6.1). The visualization is built using Qt 5, and the images below were captured from the applet.
 
+[Link](https://doi.org/10.18419/opus-16746) to the thesis. [Youtube Video](https://www.youtube.com/watch?v=K-fwyvpuGFo) that shows the applet in action.
+
 ## Abstract
 
  The Euclidean shortest path problem is a problem in computational geometry,
